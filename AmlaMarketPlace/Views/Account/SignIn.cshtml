@@ -1,0 +1,110 @@
+﻿@model AmlaMarketPlace.Models.ViewModels.Account.SignInViewModel
+
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<div class="sigin-div">
+    <div class="left-column">
+        <h2>
+            growing fresh <br /> ideas for <br /> ecommerce.
+        </h2>
+    </div>
+    <div class="vertical-line"></div>
+    <div class="right-column">
+        @if (TempData["SignUpMessage"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["SignUpMessage"]
+            </div>
+        }
+
+        @if (TempData["invalidCredentials"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["invalidCredentials"]
+            </div>
+        }
+
+        @if (TempData["emailNotRegistered"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["emailNotRegistered"]
+            </div>
+        }
+
+        @if (TempData["UnexpectedInput"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["UnexpectedInput"]
+            </div>
+        }        
+
+        @if (TempData["VerificationLink"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["VerificationLink"]
+            </div>
+        }
+
+        @if (TempData["emailNotVerified"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["emailNotVerified"]
+            </div>
+        }        
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["SignOutMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SignOutMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <h4>Sign in</h4>
+        <hr />
+        <form asp-action="SignIn" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>                        
+
+            <div class="form-group">
+                <input type="submit" value="Sign in" class="btn btn-brand-color" />
+            </div>
+        </form>
+        <img class="sigin-in-box-brand-logo" src="~/images/layoutimages/amla_marketplace.png" />
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        
+    </script>
+
+}
