@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AmlaMarketPlace</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/AmlaMarketPlace.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm mb-3">
+            <div class="container-fluid">
+                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation" style="background-color: transparent;">
+                    <span class="navbar-toggler-icon">
+                        <span class="line"></span>
+                        <span class="line"></span>
+                        <span class="line"></span>
+                    </span>
+                </button>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span>
+                                    <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
+                                </span>
+                                <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-link nav-link px-2">
+                                        Sign Out
+                                    </button>
+                                </form>
+                            </li>
+
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">ABOUT</a>
+                            </li>
+                            @if (ViewData["Title"]?.ToString() != "Sign up")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignUp">SIGN UP</a>
+                                </li>
+                            }
+                            @if (ViewData["Title"]?.ToString() != "Sign in")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignIn">SIGN IN</a>
+                                </li>
+                            }
+                        }
+
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-div container m-3">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="container text-muted">
+            <div>
+                <img class="footer-brand-image" src="~/images/layoutimages/amla_marketplace.png" alt="Brand Logo" />
+            </div>
+            <div>
+                &copy; 2024 - Amla Marketplace - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
