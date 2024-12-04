@@ -8,6 +8,7 @@ namespace AmlaMarketPlace.Models.DTO
 {
     public class UserDTO
     {
+        public int UserId { get; set; }
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
@@ -30,6 +31,6 @@ namespace AmlaMarketPlace.Models.DTO
 
         public string? VerificationToken { get; set; }
 
-        public DateTime? TokenExpiration { get; set; } 
+        public DateTime? TokenExpiration { get; set; }
     }
 }
