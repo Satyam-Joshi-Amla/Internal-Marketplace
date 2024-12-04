@@ -1,6 +1,6 @@
 ﻿using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.ViewModels.Product;
-
+using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
 using System;
@@ -56,6 +56,31 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             }
 
             return result;
+        }
+
+        public bool AddProduct(AddProductDto Dto)
+        {
+            var product = new AmlaMarketPlace.DAL.Data.Product();
+            product.UserId = Dto.UserId;
+            product.Name = Dto.ProductName;
+            product.Price = Dto.Price;
+            product.Description = Dto.Description;
+            product.Inventory = Dto.Inventory;
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            Dto.ProductId = product.ProductId;
+
+            var image = new Image
+            {
+                ProductId = Dto.ProductId,
+                Name = Dto.ImageName,
+                Link = Dto.ImagePath
+            };
+            _context.Images.Add(image);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

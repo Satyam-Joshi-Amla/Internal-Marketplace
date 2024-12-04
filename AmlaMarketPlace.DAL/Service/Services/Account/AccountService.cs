@@ -84,6 +84,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             {
                 var userDTO = new UserDTO
                 {
+                    UserId = user.UserId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     EmailAddress = user.EmailAddress,

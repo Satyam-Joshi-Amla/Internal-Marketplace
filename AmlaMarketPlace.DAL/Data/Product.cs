@@ -13,7 +13,7 @@ public partial class Product
 
     public decimal Price { get; set; }
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     public DateTime CreatedOn { get; set; }
 

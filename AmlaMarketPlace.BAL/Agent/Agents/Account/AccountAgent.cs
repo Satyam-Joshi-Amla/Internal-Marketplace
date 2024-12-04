@@ -36,6 +36,13 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
             return userFirstName;
         }
 
+        public int getUserIdByEmail(string email)
+        {
+            int id = _accountService.GetUserByEmail(email).UserId;
+
+            return id;
+        }
+
         // Specifically for verifying the email after clicking on the link. Do not touch.
         public bool VerifyEmail(string token)
         {
