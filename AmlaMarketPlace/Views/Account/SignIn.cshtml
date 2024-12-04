@@ -38,7 +38,7 @@
             <div class="alert alert-info">
                 @TempData["UnexpectedInput"]
             </div>
-        }
+        }        
 
         @if (TempData["VerificationLink"] != null)
         {
@@ -52,7 +52,7 @@
             <div class="alert alert-info">
                 @TempData["emailNotVerified"]
             </div>
-        }
+        }        
 
         @if (TempData["SuccessMessage"] != null)
         {
@@ -88,7 +88,7 @@
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+            </div>                        
             <div class="form-group">
                 <div class="form-check">
                     <input asp-for="RememberMe" class="form-check-input" />
@@ -110,7 +110,7 @@
     }
 
     <script>
-
+        
     </script>
 
 }

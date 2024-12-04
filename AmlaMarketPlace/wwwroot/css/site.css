@@ -8,7 +8,7 @@
 @media (min-width: 768px) {
     * {
         font-size: 16px;
-    }
+}
 }
 
 header,
@@ -39,20 +39,21 @@ body {
 
     .main-div.container {
         padding: 0;
-    }
+  }
+}
 
     /* ------ Brand Things Starts ------ */
-    .btn-brand-color {
-        background-color: #6BC04B;
-        border-radius: 10px;
-        color: #ffffff;
-    }
+.btn-brand-color {
+    background-color: #6BC04B;
+    border-radius: 10px;
+    color: #ffffff;
+}
 
     .btn-brand-color:hover {
         background-color: #478032;
         border-radius: 10px;
         color: #ffffff;
-    }
+    }    
 
 /* ------ Brand Things Ends ------ */
 
@@ -69,7 +70,7 @@ body {
 .nav-link {
     text-transform: uppercase;
     font-size: 14px;
-}
+    }
 
 .navbar-nav .nav-item .nav-link {
     color: #fff;
@@ -79,7 +80,7 @@ body {
     .navbar-nav .nav-item .nav-link:hover {
         color: #6BC04B;
         text-decoration: none;
-    }
+}
 
 .navbar.navbar-expand-sm {
     padding: 0;
@@ -173,10 +174,10 @@ body {
         color: #6f6f6f;
     }
 
-    .footer-brand-image {
+.footer-brand-image {
         width: 120px;
         margin-top: 10px;
-    }
+}
 
 .privacy-link,
 .footer-link {
@@ -211,7 +212,7 @@ body {
 }
 
 .left-column {
-    letter-spacing: 3px;
+    letter-spacing: 3px;        
 }
 
 .vertical-line {
@@ -241,6 +242,7 @@ body {
     }
 
     .right-column {
+        
     }
 
     .vertical-line {
@@ -263,7 +265,7 @@ label.required::after { /* Adding Asterisk if there are required input field. */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 3%;
-    background-color: #ffffff;
+    background-color: #ffffff;    
 }
 
 /* Form layout with CSS Grid */
@@ -336,7 +338,7 @@ img {
 /* -------- Home Index Page Ends  -------- */
 
 .home-index-div {
-    
+
 }
 
 .home-index-welcome-div {

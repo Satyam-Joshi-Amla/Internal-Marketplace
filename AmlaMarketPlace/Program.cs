@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Options;
 using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.BAL.Agent.Agents.Account;
+using AmlaMarketPlace.BAL.Agent.Agents.Product;
 using AmlaMarketPlace.DAL.Service.Services.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using AmlaMarketPlace.DAL.Service.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<AmlaMarketPlaceDbContext>(options => options.UseSq
 // Registering for DI
 builder.Services.AddScoped<AccountAgent>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<ProductAgent>();
+builder.Services.AddScoped<ProductService>();
 
 // Adding cookie authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
