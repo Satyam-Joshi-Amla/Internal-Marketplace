@@ -88,7 +88,7 @@ namespace AmlaMarketPlace.Controllers
 
                             TempData["Login-Success"] = "Successfully logged in";
 
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("ProductListing", "Product");
                         }
                         else
                         {

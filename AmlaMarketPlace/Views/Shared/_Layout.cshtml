@@ -12,9 +12,19 @@
     <header>
         <nav class="navbar navbar-expand-sm">
             <div class="container-fluid">
-                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
-                </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
+                        <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                    </a>
+                }
+                else
+                {
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                    </a>
+                }
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation" style="background-color: transparent;">
                     <span class="navbar-toggler-icon">
@@ -28,18 +38,22 @@
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            @* <span class="nav-item">
+                        <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
+                        </span> *@
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Product" asp-action="#">Sell-here</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="#">Profile</a>
+                            </li>
                             <li class="nav-item d-flex align-items-center">
-                                <span>
-                                    <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
-                                </span>
                                 <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-link nav-link px-2">
                                         Sign Out
                                     </button>
                                 </form>
                             </li>
-
-
                         }
                         else
                         {
@@ -77,11 +91,11 @@
     <footer>
         <div class="container footer-div">
             <div class="col-md-4">
-            <div>
-                <img class="footer-brand-image" src="~/images/layoutimages/amla_marketplace.png" alt="Brand Logo" />
-            </div>
-            <div>
-                    <span class="copyright-footer-text">&copy; 2024 - Amla Marketplace -</span>                    
+                <div>
+                    <img class="footer-brand-image" src="~/images/layoutimages/amla_marketplace.png" alt="Brand Logo" />
+                </div>
+                <div>
+                    <span class="copyright-footer-text">&copy; 2024 - Amla Marketplace -</span>
                     <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
                         Privacy
                     </a>
@@ -106,7 +120,7 @@
                 <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
                 <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
             </div>
-            
+
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

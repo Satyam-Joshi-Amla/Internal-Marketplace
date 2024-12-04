@@ -16,7 +16,10 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult ProductListing()
         {
             List<ProductListViewModel> products = _productAgent.GetProducts();
-            return View(products);
+            int itemsToShow = 8;
+            ViewData["Products"] = products.Take(itemsToShow).ToList(); // To show only the first 8 products
+            ViewData["TotalProducts"] = products.Count; // sending the total product count to the view
+            return View();
         }
     }
 }
