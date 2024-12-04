@@ -1,38 +1,70 @@
 * {
     font-size: 14px;
     font-family: sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-html {
-    height: 100%;
+@media (min-width: 768px) {
+    * {
+        font-size: 16px;
+    }
 }
 
-.main-div {
-    flex: 1;
+header,
+footer {
+    background-color: #000;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    width: 100%;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100%;
+    align-items: center;
     margin: 0;
+    padding: 0;    
+}
+
+/* ---- Div in which contents render */
+.main-div {
+    /*padding: 2% auto;*/
+    min-height: 85vh;
+    min-width: 100%;
     /* layout background color */
     background-color: #6BC04B;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    .main-div.container {
+        padding: 0;
+    }
+
+    /* ------ Brand Things Starts ------ */
+    .btn-brand-color {
+        background-color: #6BC04B;
+        border-radius: 10px;
+        color: #ffffff;
+    }
+
+    .btn-brand-color:hover {
+        background-color: #478032;
+        border-radius: 10px;
+        color: #ffffff;
+    }
+
+/* ------ Brand Things Ends ------ */
+
+/* ------ Navigation Menu CSS Starts ------ */
+
+.brand-logo {
+    width: 150px;
 }
 
-/* Adding Asterisk if they are required input field. */
-label.required::after {
-    content: " *";
-    color: red;
-    font-weight: bold;
+.navbar-collapse.collapse {
+    margin-right: 4%;
 }
-
 
 .nav-link {
     text-transform: uppercase;
@@ -44,48 +76,16 @@ label.required::after {
     letter-spacing: 3px;
 }
 
-.navbar-nav .nav-item .nav-link:hover {
-    color: #6BC04B;
-    text-decoration: none; /* Optional: Remove underline */
-}
-
-.btn-brand-color {
-    background-color: #6BC04B;
-    border-radius: 10px;
-    color: #ffffff;
-}
-
-    .btn-brand-color:hover {
-        background-color: #478032;
-        border-radius: 10px;
-        color: #ffffff;
-    }    
-
-/* ---------- layout css properties (header(nav included) and footer) ------------ */
-
-header {
-    background-color: #000000;
-}
-
-footer {
-    background-color: #000000;
-    color: #ffffff;
-    padding: 10px 0;
-}
-
-@media (max-width: 768px) {
-    footer {
-        position: static; /* Prevent overlapping content */
-        height: auto; /* Allow dynamic height for small screens */
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #6BC04B;
+        text-decoration: none;
     }
+
+.navbar.navbar-expand-sm {
+    padding: 0;
 }
 
-.brand-logo {
-    width: 150px;
-}
-
-/* ------ Starts ------ For toggle button to have white color lines ----------- */
-
+/* ------ Starts ------ For toggle button to have white color lines (for mobile view) ----------- */
 /* Ensure the navbar toggle has no background or border */
 .navbar-toggler {
     background-color: transparent !important; /* Transparent background */
@@ -141,24 +141,77 @@ footer {
 
 /* ------ Ends ------ For toggle button to have white color lines ----------- */
 
-/* Footer */
+/* ------ Navigation Menu CSS Ends ------ */
 
-.footer-brand-image {
-    width: 100px;
+
+
+/* ------ Footer CSS Starts ------ */
+
+.footer-div {
+    font-size: 12px;
+    color: #4d4d4d;
+    letter-spacing: 0.5px;
+    display: flex;
+    padding: 0;
+    padding-bottom: 4%;
 }
 
-/* ------------------ Sign In starts ----------------------- */
+.copyright-footer-text {
+    font-size: 13px;
+}
 
+.footer-div h6 {
+    margin: 10px 0;
+    padding: 0;
+    color: #acacac;
+}
+
+    .footer-div p {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #6f6f6f;
+    }
+
+    .footer-brand-image {
+        width: 120px;
+        margin-top: 10px;
+    }
+
+.privacy-link,
+.footer-link {
+    text-decoration: none;
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+.privacy-link:hover {
+    color: #fff;
+}
+
+    .footer-link:hover {
+        color: #fff;
+    }
+
+    .footer-middle-column,
+    .footer-right-column {
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+/* ------ Footer CSS Ends ------ */
+/* ------------------ Sign In starts ----------------------- */
 .sigin-div {
     color: white;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 60vh;
+    height: 80vh;
 }
 
 .left-column {
-    letter-spacing: 3px;        
+    letter-spacing: 3px;
 }
 
 .vertical-line {
@@ -188,7 +241,6 @@ footer {
     }
 
     .right-column {
-        
     }
 
     .vertical-line {
@@ -199,13 +251,19 @@ footer {
 
 /* ------------------ Sign up starts  ----------------------- */
 
+label.required::after { /* Adding Asterisk if there are required input field. */
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
 .signup-div {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 4% auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 3%;
-    background-color: #ffffff;    
+    background-color: #ffffff;
 }
 
 /* Form layout with CSS Grid */
@@ -233,6 +291,56 @@ input.form-control {
     }
 }
 
-
-
 /* ------------------ Sign up ends  ----------------------- */
+
+/* ------------------ About Page Starts  ----------------------- */
+
+.about-page {
+    width: 100%;
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+}
+
+
+    .about-page .container {
+        max-width: 1200px;
+    }
+
+.div-about-heading {
+    padding: 50px;
+}
+
+.about-heading {
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    line-height: 1.6;
+}
+
+img {
+    object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-page .row {
+        text-align: center; /* Center-align content on smaller screens */
+    }
+}
+
+/* ------------------ About Page Ends  ----------------------- */
+
+/* -------- Home Index Page Ends  -------- */
+
+.home-index-div {
+    
+}
+
+.home-index-welcome-div {
+    color: #fff;
+    text-align: center;
+    margin: 50px auto;
+}
