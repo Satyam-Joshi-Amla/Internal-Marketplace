@@ -9,6 +9,7 @@
     * {
         font-size: 16px;
     }
+
 }
 
 header,
@@ -26,6 +27,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
+
 }
 
 /* ---- Div in which contents render */
@@ -42,6 +44,7 @@ body {
     }
 
 /* ------ Brand Things Starts ------ */
+
 .btn-brand-color {
     background-color: #6BC04B;
     border-radius: 10px;
@@ -148,7 +151,6 @@ body {
 /* ------ Navigation Menu CSS Ends ------ */
 
 
-
 /* ------ Footer CSS Starts ------ */
 
 .footer-div {
@@ -196,6 +198,7 @@ body {
     .footer-link:hover {
         color: #fff;
     }
+
 
 .footer-middle-column,
 .footer-right-column {
@@ -409,6 +412,5 @@ img {
 .view-more-btn {
     padding-bottom: 20px;
 }
-
 
 /* -------- Product Listing Page CSS Ends  -------- */
