@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm mb-3">
+        <nav class="navbar navbar-expand-sm">
             <div class="container-fluid">
                 <a class="" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
@@ -68,20 +68,45 @@
         </nav>
     </header>
 
-    <div class="main-div container m-3">
+    <div class="main-div container">
         <main role="main" class="">
             @RenderBody()
         </main>
     </div>
 
     <footer>
-        <div class="container text-muted">
+        <div class="container footer-div">
+            <div class="col-md-4">
             <div>
                 <img class="footer-brand-image" src="~/images/layoutimages/amla_marketplace.png" alt="Brand Logo" />
             </div>
             <div>
-                &copy; 2024 - Amla Marketplace - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <span class="copyright-footer-text">&copy; 2024 - Amla Marketplace -</span>                    
+                    <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                        Privacy
+                    </a>
+                </div>
+                <div>
+                    <h6>Contact us</h6>
+                    <p>satyam.joshi@amla.io</p>
+                    <p>vipul.chandrakapure@amla.io</p>
+                </div>
             </div>
+
+            <div class="col-md-4 footer-middle-column">
+                <h6>Get to know us</h6>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="About">about us</a>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
+            </div>
+
+            <div class="col-md-4 footer-right-column">
+                <h6>Sell on Amla Marketplace</h6>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
+                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
+            </div>
+            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
