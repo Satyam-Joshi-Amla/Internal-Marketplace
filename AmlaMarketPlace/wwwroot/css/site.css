@@ -303,7 +303,7 @@ input.form-control {
 /* ------------------ About Page Starts  ----------------------- */
 
 .sub-layout-div {
-    width: 100%;
+    width: 100%;    
     margin: 0;
     color: #000;
     background-color: #fff;
@@ -414,3 +414,11 @@ img {
 }
 
 /* -------- Product Listing Page CSS Ends  -------- */
+
+/* -------- Profile Details Page CSS Starts  -------- */
+
+.profile-details-div-heading {
+
+}
+
+/* -------- Profile Details Page CSS Ends  -------- */
