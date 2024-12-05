@@ -44,11 +44,15 @@ public partial class AmlaMarketPlaceDbContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
+            entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Description).IsUnicode(false);
+            entity.Property(e => e.IsPublished).HasDefaultValue(true);
+            entity.Property(e => e.ModifiedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(20, 2)");
+            entity.Property(e => e.StatusId).HasDefaultValue(1);
         });
 
         modelBuilder.Entity<Status>(entity =>

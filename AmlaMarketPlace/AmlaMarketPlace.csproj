@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
@@ -28,6 +29,10 @@
 		<ProjectReference Include="..\AmlaMarketPlace.BAL\AmlaMarketPlace.BAL.csproj" />
 		<ProjectReference Include="..\AmlaMarketPlace.ConfigurationManager\AmlaMarketPlace.ConfigurationManager.csproj" />
 		<ProjectReference Include="..\AmlaMarketPlace.Models\AmlaMarketPlace.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\images\ProductImages\" />
 	</ItemGroup>
 
 </Project>

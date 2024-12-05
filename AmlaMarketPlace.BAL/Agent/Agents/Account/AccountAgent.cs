@@ -16,17 +16,17 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
 
         public bool SignUp(SignUpViewModel signUpViewModel)
         {
-            return _accountService.addNewUser(signUpViewModel);
+            return _accountService.AddNewUser(signUpViewModel);
         }
 
         public bool isEmailRegistered(string email)
         {
-            return _accountService.doesUserExists(email);
+            return _accountService.DoesUserExists(email);
         }
 
         public bool isValidCredentials(SignInViewModel signInViewModel)
         {
-            return _accountService.isValidCredentials(signInViewModel);
+            return _accountService.IsValidCredentials(signInViewModel);
         }
 
         public string getUserNameByEmail(string email)
@@ -34,6 +34,13 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
             var userFirstName = _accountService.GetUserByEmail(email).FirstName;
 
             return userFirstName;
+        }
+
+        public int getUserIdByEmail(string email)
+        {
+            int id = _accountService.GetUserByEmail(email).UserId;
+
+            return id;
         }
 
         // Specifically for verifying the email after clicking on the link. Do not touch.

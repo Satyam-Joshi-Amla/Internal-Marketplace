@@ -17,7 +17,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             _context = context;
         }
 
-        public bool doesUserExists(string email)
+        public bool DoesUserExists(string email)
         {
             // Checking if the user already exists in the database
             var existingUser = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
@@ -29,9 +29,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             return false;
         }
 
-        public bool isValidCredentials(SignInViewModel signInViewModel)
+        public bool IsValidCredentials(SignInViewModel signInViewModel)
         {
-            if (!doesUserExists(signInViewModel.EmailAddress))
+            if (!DoesUserExists(signInViewModel.EmailAddress))
             {
                 return false;
             }
@@ -46,9 +46,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             return false;
         }
 
-        public bool addNewUser(SignUpViewModel signUpViewModel)
+        public bool AddNewUser(SignUpViewModel signUpViewModel)
         {
-            if (doesUserExists(signUpViewModel.EmailAddress))
+            if (DoesUserExists(signUpViewModel.EmailAddress))
             {
                 return false;
             }
@@ -84,6 +84,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             {
                 var userDTO = new UserDTO
                 {
+                    UserId = user.UserId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     EmailAddress = user.EmailAddress,
@@ -187,7 +188,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             UpdateUser(user);
 
             // Create the verification link (you should replace "YourAppUrl" with your actual domain)
-            var verificationLink = $"https://localhost:44321/Account/VerifyEmail?token={verificationToken}";
+            var verificationLink = $"https://localhost:7288/Account/VerifyEmail?token={verificationToken}";
 
             // Send the email
             string mailSubject = "Email Verification";
