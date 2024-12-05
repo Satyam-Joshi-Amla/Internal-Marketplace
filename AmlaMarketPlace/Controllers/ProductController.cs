@@ -55,5 +55,17 @@ namespace AmlaMarketPlace.Controllers
 
             return View(model);
         }
+
+        //[HttpGet]
+        //public IActionResult ProductDetails()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public IActionResult ProductDetails()
+        //{
+        //    return View(model);
+        //}
     }
 }
