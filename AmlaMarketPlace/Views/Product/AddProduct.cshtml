@@ -15,14 +15,14 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
+                    <label asp-for="Name" class="control-label required"></label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
+                    <label asp-for="Price" class="control-label required"></label>
                     <input asp-for="Price" class="form-control" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Inventory" class="control-label"></label>
+                    <label asp-for="Inventory" class="control-label required"></label>
                     <input asp-for="Inventory" class="form-control" />
                     <span asp-validation-for="Inventory" class="text-danger"></span>
                 </div>
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="Image">Product Default Image</label>
+                    <label for="Image" class="required">Product Default Image</label>
                     <input type="file" id="Image" name="Image" accept="image/*" required class="form-control" />
                 </div>
             </div>
