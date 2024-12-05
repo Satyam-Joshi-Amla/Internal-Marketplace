@@ -17,8 +17,7 @@
                         <div class="card h-100">
                             <img src="@item.ImageLink" class="card-img-top" alt="@item.Name">
                             <div class="card-body">
-                                <h5 class="card-title">@item.Name</h5>
-                                @* <p class="card-text text-truncate">@item.Description</p> *@
+                                <h5 class="card-title text-truncate" title="@item.Name">@item.Name</h5>
                                 <p class="card-price">₹ @item.Price/-</p>
 
                             </div>
@@ -31,7 +30,7 @@
         <!-- Show View More button if there are more than 8 products -->
         @if (totalProducts > 8)
         {
-            <div class="col-md-12 text-center view-more-btn ">
+            <div title="Click to load more products." class="col-md-12 text-center view-more-btn ">
                 <a href="@Url.Action("ProductListing", "Product")" class="btn btn-brand-color">View More</a>
             </div>
         }

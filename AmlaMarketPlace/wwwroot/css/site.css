@@ -404,10 +404,38 @@ img {
 }
 
 .text-truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap; /* Prevents the text from wrapping to the next line */
+    overflow: hidden; /* Hides any text that overflows the container */
+    text-overflow: ellipsis; /* Replaces overflow text with "..." */
+    max-width: 200px; /* Sets a maximum width for truncation */
+    display: inline-block; /* Ensures the element respects the width */
 }
+
+/* Tool tip Styling (the text box which will appear when we will hover on "..." of product name) */
+/*.card-title {
+    position: relative;
+}
+
+    .card-title:hover::after {
+        content: attr(title);*/ /* Use the title attribute's content */
+        /*position: absolute;
+        background-color: #000;*/ /* Black background */
+        /*color: #fff;*/ /* White text */
+        /*padding: 5px 10px;*/ /* Add some padding */
+        /*border-radius: 5px;*/ /* Rounded corners */
+        /*top: 100%;*/ /* Position below the text */
+        /*left: 50%;*/ /* Center align */
+        /*transform: translateX(-50%);
+        white-space: nowrap;*/ /* Prevent line breaks */
+        /*z-index: 10;
+        opacity: 1;*/ /* Make visible */
+        /*pointer-events: none;*/ /* Prevent interactions */
+    /*}
+
+    .card-title:hover::before {
+        visibility: hidden;*/ /* Hide the default browser tooltip */
+    /*}*/
+
 
 .view-more-btn {
     padding-bottom: 20px;
