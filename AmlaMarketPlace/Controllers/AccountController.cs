@@ -84,13 +84,13 @@ namespace AmlaMarketPlace.Controllers
                             // Sign in synchronously
                             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
                             {
-                                IsPersistent = true,
+                                IsPersistent = signInViewModel.RememberMe,
                                 ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
                             }).GetAwaiter().GetResult();
 
                             TempData["Login-Success"] = "Successfully logged in";
 
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("ProductListing", "Product");
                         }
                         else
                         {

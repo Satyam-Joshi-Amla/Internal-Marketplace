@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AmlaMarketPlace.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly ProductAgent _productAgent;
@@ -18,6 +19,9 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult ProductListing()
         {
             List<ProductListViewModel> products = _productAgent.GetProducts();
+            int itemsToShow = 8;
+            ViewData["Products"] = products.Take(itemsToShow).ToList(); // To show only the first 8 products
+            ViewData["TotalProducts"] = products.Count; // sending the total product count to the view
             return View(products);
         }
 

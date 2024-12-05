@@ -31,6 +31,6 @@ namespace AmlaMarketPlace.Models.DTO
 
         public string? VerificationToken { get; set; }
 
-        public DateTime? TokenExpiration { get; set; } 
+        public DateTime? TokenExpiration { get; set; }
     }
 }
