@@ -23,7 +23,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Product
         public decimal Price { get; set; }
 
         [StringLength(50000, ErrorMessage = "Description can't be longer than 50000 characters.")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Range(1, 99999, ErrorMessage = "Inventory must be between 1 and 99999.")]

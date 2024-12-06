@@ -22,7 +22,7 @@ namespace AmlaMarketPlace.Controllers
             int itemsToShow = 8;
             ViewData["Products"] = products.Take(itemsToShow).ToList(); // To show only the first 8 products
             ViewData["TotalProducts"] = products.Count; // sending the total product count to the view
-            return View(products);
+            return View();
         }
 
         [HttpGet]
@@ -38,6 +38,10 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult AddProduct(AddProductViewModel model)
         {
             model.UserId = 3;
+            if (string.IsNullOrEmpty(model.Description))
+            {
+                model.Description = "";  // Set to empty string if null or empty
+            }
             if (ModelState.IsValid)
             {
                 bool result = _productAgent.AddProduct(model);

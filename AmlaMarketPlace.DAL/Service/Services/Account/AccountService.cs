@@ -188,7 +188,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             UpdateUser(user);
 
             // Create the verification link (you should replace "YourAppUrl" with your actual domain)
-            var verificationLink = $"https://localhost:7288/Account/VerifyEmail?token={verificationToken}";
+            var verificationLink = $"https://localhost:44321/Account/VerifyEmail?token={verificationToken}";
 
             // Send the email
             string mailSubject = "Email Verification";
