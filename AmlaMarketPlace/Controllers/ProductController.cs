@@ -30,6 +30,7 @@ namespace AmlaMarketPlace.Controllers
         {
             // This will give you the "UserId" claim from the current user
             //int userId = 3;    //User.FindFirst("UserId")?.Value;
+            ViewData["EnableSidePanelForAddProductPage"] = true;
             return View();
         }
 
