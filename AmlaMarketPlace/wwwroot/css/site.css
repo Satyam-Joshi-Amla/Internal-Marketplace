@@ -3,6 +3,7 @@
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -33,7 +34,7 @@ body {
 /* ---- Div in which contents render */
 .main-div {
     /*padding: 2% auto;*/
-    min-height: 85vh;
+    min-height: 90vh;
     min-width: 100%;
     /* layout background color */
     background-color: #6BC04B;
@@ -164,8 +165,16 @@ body {
 
 /* ------ Ends ------ For toggle button to have white color lines ----------- */
 
-/* ------ Navigation Menu CSS Ends ------ */
+/* ------------ Side Panel CSS starts ------------ */
 
+.sidebar {
+    display: block;
+    visibility: visible;
+}
+
+/* ------------ Side Panel CSS Endss ------------ */
+
+/* ------ Navigation Menu CSS Ends ------ */
 
 /* ------ Footer CSS Starts ------ */
 
@@ -174,12 +183,9 @@ body {
     color: #4d4d4d;
     letter-spacing: 0.5px;
     display: flex;
-    padding: 0;
-    padding-bottom: 4%;
-}
-
-.copyright-footer-text {
-    font-size: 13px;
+    flex-direction: column;
+    padding: 0;    
+    max-width: 1080px;
 }
 
 .footer-div h6 {
@@ -193,11 +199,6 @@ body {
     padding: 0;
     font-size: 12px;
     color: #6f6f6f;
-}
-
-.footer-brand-image {
-    width: 120px;
-    margin-top: 10px;
 }
 
 .privacy-link,
@@ -215,12 +216,41 @@ body {
         color: #fff;
     }
 
+.footer-first-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 
-.footer-middle-column,
-.footer-right-column {
+.footer-first-row-individual-column {
     padding-top: 30px;
     display: flex;
     flex-direction: column;
+}
+
+.footer-vertical-line {
+    width: 1px;
+    height: 70px;
+    margin: 5% 0;
+    background-color: #6f6f6f;
+}
+
+.registered-address-div {
+    max-width: 200px; /* Limits the width of the container */
+    word-wrap: break-word; /* Allows long text to wrap to the next line */
+    hyphens: auto; /* Optionally, allows automatic hyphenation for better word splitting */
+}
+
+.footer-second-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.copyright-footer-text {
+    font-size: 13px;
+    text-align: right;
 }
 
 /* ------ Footer CSS Ends ------ */
@@ -237,7 +267,7 @@ body {
     letter-spacing: 3px;
 }
 
-.vertical-line {
+.signin-page-vertical-line {
     width: 2px;
     height: 50%;
     background-color: white;
@@ -467,7 +497,9 @@ img {
 }
 
 /* -------- Add Product CSS Ends  -------- */
+
 /* -------- Profile Details Page CSS Starts  -------- */
+
 .profile-details-div-heading {
 }
 

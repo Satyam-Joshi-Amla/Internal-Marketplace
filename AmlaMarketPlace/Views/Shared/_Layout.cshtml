@@ -73,8 +73,6 @@
                                 </li>
                             }
                         }
-
-
                     </ul>
 
                 </div>
@@ -82,46 +80,85 @@
         </nav>
     </header>
 
+    @* testing for side panel starts *@
+
     <div class="main-div container">
-        <main role="main" class="">
-            @RenderBody()
-        </main>
+        <div class="row">
+            @if (User.Identity.IsAuthenticated && User.IsInRole("User") && ViewData["EnableSidePanelForAddProductPage"]?.ToString() == "True")
+            {
+                <div class="col-md-2 sidebar">
+                    <!-- Sidebar Content -->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="#" asp-action="#">Sample Item</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="#" asp-action="#">Sample Item</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="#" asp-action="#">Sample Item</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+            <div class="col">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
     </div>
+
+    @* testing for side panel ends *@
+
+    @* <div class="main-div container">
+    <main role="main" class="">
+    @RenderBody()
+    </main>
+    </div> *@
 
     <footer>
         <div class="container footer-div">
-            <div class="col-md-4">
-              
-                <div>
-                    <img class="footer-brand-image" src="~/images/layoutimages/amla_marketplace.png" alt="Brand Logo" />
+            <div class="footer-first-row">
+                <div class="footer-first-row-individual-column">
+                    <h6>Get to know us</h6>
+                    <a class="footer-link" asp-area="" asp-controller="Home" asp-action="About">About us</a>
+                    <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
+                    <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
                 </div>
-                <div>
-                    <span class="copyright-footer-text">&copy; 2024 - Amla Marketplace -</span>
+
+                <div class="footer-first-row-individual-column">
+                    <h6>Contact Us</h6>
+                    <!-- Button that opens the default email client with the specified email -->
+                    <div class="footer-icon-div">
+                        <a href="#" class="btn btn-brand-color">
+                            <ion-icon name="call-outline"></ion-icon> 1800 1080
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-first-row-individual-column">
+                    <h6>Sell on Amla Marketplace</h6>                    
+                    <a class="footer-link" title="Sell your products on Amla Marketplace." asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
+                </div>
+
+                <div class="footer-vertical-line"></div>
+
+                <div class="footer-first-row-individual-column registered-address-div">
+                    <h6>Registered Address</h6>
+                    <p>Plot No. 2, Ground Floor South Ambazari, Ranapratap Nagar, Nagpur, Maharashtra, India, 440022.</p>
+                </div>
+            </div>
+
+            <div class="row footer-second-row">
+                <span class="copyright-footer-text">
+                    &copy; 2024 - Amla Marketplace -
                     <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
                         Privacy
                     </a>
-                </div>
-                <div>
-                    <h6>Contact us</h6>
-                    <p>satyam.joshi@amla.io</p>
-                    <p>vipul.chandrakapure@amla.io</p>
-                </div>
+                </span>
             </div>
-
-            <div class="col-md-4 footer-middle-column">
-                <h6>Get to know us</h6>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="About">about us</a>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
-            </div>
-
-            <div class="col-md-4 footer-right-column">
-                <h6>Sell on Amla Marketplace</h6>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
-                <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">sample item</a>
-            </div>
-
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -129,6 +166,11 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* Script of ion icons *@
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
