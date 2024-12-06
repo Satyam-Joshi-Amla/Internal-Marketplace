@@ -39,8 +39,8 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             @* <span class="nav-item">
-                        <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
-                        </span> *@
+                            <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
+                            </span> *@
                             <li class="nav-item">
                                 <a title="Sell your products on Amla Marketplace." class="nav-link" asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
                             </li>
@@ -84,7 +84,7 @@
 
     <div class="main-div container">
         <div class="row">
-            @if (User.Identity.IsAuthenticated && User.IsInRole("User") && ViewData["EnableSidePanelForAddProductPage"]?.ToString() == "True")
+            @if (User.Identity.IsAuthenticated && User.IsInRole("user") && ViewData["EnableSidePanelForAddProductPage"]?.ToString() == "True")
             {
                 <div class="col-md-2 sidebar">
                     <!-- Sidebar Content -->
@@ -97,6 +97,24 @@
                         </li>
                         <li class="list-group-item">
                             <a asp-area="" asp-controller="#" asp-action="#">Sample Item</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+            @* Admin side panel navigation *@
+            else if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+            {
+                <div class="col-md-2 sidebar">
+                    <!-- Sidebar Content -->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="Admin" asp-action="GetAllUsersList">List of all users</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="#" asp-action="#">Products waiting for approval</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="Admin" asp-action="GetAllProductsList">All Published Products</a>
                         </li>
                     </ul>
                 </div>

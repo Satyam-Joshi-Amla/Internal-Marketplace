@@ -4,6 +4,7 @@ using AmlaMarketPlace.Models.ViewModels.Account;
 using AmlaMarketPlace.Models.DTO;
 using System.Net.Mail;
 using System.Net;
+using System.Data;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Account
 {
@@ -79,7 +80,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         {
             // Fetching the user from the database based on the email
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
-
+            
             if (user != null)
             {
                 var userDTO = new UserDTO
@@ -98,6 +99,10 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                     VerificationToken = user.VerificationToken,
                     TokenExpiration = user.TokenExpiration
                 };
+
+                var userRoleData = _context.UserRoles.FirstOrDefault(r => r.RoleId == user.UserRoleId);
+
+                userDTO.UserRole = userRoleData != null ? userRoleData.Role : "user";
 
                 return userDTO;
             }

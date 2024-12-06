@@ -14,4 +14,8 @@
     <ProjectReference Include="..\AmlaMarketPlace.ConfigurationManager\AmlaMarketPlace.ConfigurationManager.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Admin\" />
+  </ItemGroup>
+
 </Project>

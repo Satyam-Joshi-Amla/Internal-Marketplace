@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AmlaMarketPlace.Models.DTO.UserDTO>
+
+@{
+    ViewData["Title"] = "GetAllUsersList";
+    int SRNO = 1;
+}
+
+<div class="all-Users-list-div">
+    <div class="container">
+        <div class="all-Users-list-div-heading">
+            <h3>List of all registered users</h3>
+        </div>
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        @* <th>@Html.DisplayNameFor(model => model.UserId)</th> *@
+                        <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                        <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                        <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsEmailVerified)</th>
+                        @* <th>@Html.DisplayNameFor(model => model.Password)</th> *@
+                        <th>@Html.DisplayNameFor(model => model.MobileNumber)</th>
+                        <th>@Html.DisplayNameFor(model => model.IsmobileNumberVerified)</th>
+                        @* <th>@Html.DisplayNameFor(model => model.UserRoleId)</th> *@
+                        <th>@Html.DisplayNameFor(model => model.UserRole)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
+                        <th>@Html.DisplayNameFor(model => model.EditedOn)</th>
+                        @* <th>@Html.DisplayNameFor(model => model.VerificationToken)</th> *@
+                        @* <th>@Html.DisplayNameFor(model => model.TokenExpiration)</th> *@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@SRNO</td>
+                            @{
+                                SRNO++;
+                            }
+                            @* <td>@Html.DisplayFor(modelItem => item.UserId)</td> *@
+                            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IsEmailVerified)</td>
+                            @* <td>@Html.DisplayFor(modelItem => item.Password)</td> *@
+                            <td>@Html.DisplayFor(modelItem => item.MobileNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IsmobileNumberVerified)</td>
+                            @* <td>@Html.DisplayFor(modelItem => item.UserRoleId)</td> *@
+                            <td>@Html.DisplayFor(modelItem => item.UserRole)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EditedOn)</td>
+                            @* <td>@Html.DisplayFor(modelItem => item.VerificationToken)</td> *@
+                            @* <td>@Html.DisplayFor(modelItem => item.TokenExpiration)</td> *@
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

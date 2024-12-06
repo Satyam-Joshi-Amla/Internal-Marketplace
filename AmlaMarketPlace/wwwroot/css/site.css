@@ -32,7 +32,7 @@ body {
 
 /* ---- Div in which contents render */
 .main-div {
-    /*padding: 2% auto;*/
+    padding: 2% auto;
     min-height: 90vh;
     min-width: 100%;
     /* layout background color */
@@ -173,7 +173,7 @@ body {
 }
 
 .list-group {
-    height: 100vh;
+    
 }
 
 .list-group-item {
@@ -521,3 +521,26 @@ img {
 }
 
 /* -------- Profile Details Page CSS Ends  -------- */
+
+/* -------- List of all users CSS Stars  -------- */
+
+.table td, .table th {
+    word-wrap: break-word;
+    max-width: 200px; /* Adjust as necessary */
+}
+
+table {
+    width: 100%;
+    table-layout: fixed; /* Ensures proper column widths */
+    text-align: center;
+}
+
+.all-Users-list-div {
+    
+}
+
+.all-Users-list-div-heading {
+    margin: 20px auto;
+}
+
+ /* -------- List of all users CSS Ends  -------- */
