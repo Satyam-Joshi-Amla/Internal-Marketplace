@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using AmlaMarketPlace.Models.ViewModels.Validations;
@@ -32,5 +33,9 @@ namespace AmlaMarketPlace.Models.ViewModels.Product
         [Required]
         [ImageValidation(ErrorMessage = "Only image files (JPG, PNG) are allowed.")]
         public IFormFile Image { get; set; }
+
+        
+        [OptionalImagesValidation(3, new[] { ".jpg", ".png" })]
+        public List<IFormFile>? OptionalImages { get; set; }
     }
 }

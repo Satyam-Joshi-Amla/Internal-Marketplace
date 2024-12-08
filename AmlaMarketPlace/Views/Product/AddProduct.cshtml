@@ -54,8 +54,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="OtherImages">Product Rest Images</label>
-                    <input type="file" id="OtherImages" name="OtherImages" accept="image/*" multiple class="form-control" />
+                    <label asp-for="OptionalImages">Additional Images (Optional, max 3)</label>
+                    <input asp-for="OptionalImages" type="file" id="OptionalImages" accept="image/*" multiple class="form-control" />
+                    <span asp-validation-for="OptionalImages" class="text-danger"></span>
                 </div>
             </div>
         </div>

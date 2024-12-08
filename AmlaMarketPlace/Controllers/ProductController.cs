@@ -37,7 +37,7 @@ namespace AmlaMarketPlace.Controllers
         [HttpPost]
         public IActionResult AddProduct(AddProductViewModel model)
         {
-            model.UserId = 3;
+            model.UserId = int.Parse(User.FindFirst("UserId")?.Value);
             if (string.IsNullOrEmpty(model.Description))
             {
                 model.Description = "";  // Set to empty string if null or empty
