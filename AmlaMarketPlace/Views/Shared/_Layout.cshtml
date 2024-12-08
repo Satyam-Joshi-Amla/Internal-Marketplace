@@ -38,9 +38,9 @@
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            @* <span class="nav-item">
-                            <a class="nav-link" href="#">Welcome, @User.Identity.Name.</a>
-                            </span> *@
+                            <li class="nav-item">
+                                <a title="Go to all product page" class="nav-link" asp-area="" asp-controller="Product" asp-action="ProductListing">Products</a>
+                            </li>
                             <li class="nav-item">
                                 <a title="Sell your products on Amla Marketplace." class="nav-link" asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
                             </li>

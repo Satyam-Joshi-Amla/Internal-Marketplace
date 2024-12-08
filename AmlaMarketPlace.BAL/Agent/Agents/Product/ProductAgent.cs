@@ -22,6 +22,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             return _productService.GetProducts();
         }
 
+        public ProductDetailsViewModel GetIndividualProduct(int productId)
+        {
+            return _productService.GetIndividualProduct(productId);
+        }
+
         public bool AddProduct(AddProductViewModel model)
         {
             try

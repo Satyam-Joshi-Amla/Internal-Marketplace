@@ -1,0 +1,70 @@
+﻿@model AmlaMarketPlace.Models.ViewModels.Product.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="product-details-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="@Model.ImageLink" alt="@Model.Name" class="img-fluid product-details-image" />
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        Seller Name: 
+                    </div>
+                    <div class="col-md-6">
+                        Date Posted on: 
+                    </div>
+                </div>
+                <div class="row">
+                    <h1 class="product-name">@Model.Name</h1>
+                    <p><b>Price: </b></p>
+                    <h2 class="product-price">₹ @Model.Price/-</h2>
+                    <p class="product-inventory">Available Stock: @Model.Inventory</p>
+                    <p><b>Description: </b></p>
+                    <p class="product-description">@Model.Description</p>
+                    @* <p class="product-status">@Model.StatusId == 1 ? "Active" : "Inactive"</p> *@
+                    <div>
+                        <a href="@Url.Action("#", "#")" class="btn btn-secondary">Get Seller Details on mail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-details-container {
+        margin-top: 20px;
+    }
+
+    .product-details-image {
+        max-width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+    }
+
+    .product-name {
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .product-price {
+        font-size: 24px;
+        color: #28a745;
+    }
+
+    .product-description {
+        margin-top: 15px;
+        font-size: 16px;
+    }
+
+    .product-inventory, .product-status {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>

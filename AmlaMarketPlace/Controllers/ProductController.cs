@@ -57,16 +57,22 @@ namespace AmlaMarketPlace.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //public IActionResult ProductDetails()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult ProductDetails(int id)
+        {
+            var productDetails = _productAgent.GetIndividualProduct(id);
+            if (productDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetails);
+        }
 
         //[HttpPost]
         //public IActionResult ProductDetails()
         //{
-        //    return View(model);
+        //    return View();
         //}
     }
 }

@@ -58,6 +58,25 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return result;
         }
 
+        public ProductDetailsViewModel GetIndividualProduct(int productId)
+        {
+            var product = _context.Products.Where(p => p.ProductId == productId)
+                .Select(p => new ProductDetailsViewModel
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Description = p.Description,
+                    CreatedOn = p.CreatedOn,
+                    ModifiedOn = p.ModifiedOn,
+                    Inventory = p.Inventory,
+                    StatusId = p.StatusId,
+                    IsPublished = p.IsPublished
+                }).FirstOrDefault();
+
+            return product;
+        }
+
         public bool AddProduct(AddProductDto Dto)
         {
             var product = new AmlaMarketPlace.DAL.Data.Product();
