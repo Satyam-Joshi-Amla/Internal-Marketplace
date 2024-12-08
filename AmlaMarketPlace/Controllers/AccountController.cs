@@ -68,13 +68,14 @@ namespace AmlaMarketPlace.Controllers
                     {
                         if (_accountAgent.isValidCredentials(signInViewModel))
                         {
+                            string userRole = _accountAgent.getUserRoleByEmail(signInViewModel.EmailAddress);
                             // Create claims
                             var claims = new List<Claim>
                             {
                                 new Claim(ClaimTypes.Name, _accountAgent.getUserNameByEmail(signInViewModel.EmailAddress)),
                                 new Claim(ClaimTypes.Email, signInViewModel.EmailAddress),
                                 new Claim("UserId", _accountAgent.getUserIdByEmail(signInViewModel.EmailAddress).ToString()),
-                                new Claim(ClaimTypes.Role, "User")
+                                new Claim(ClaimTypes.Role, userRole)
                             };
 
                             // Create identity and principal
@@ -90,7 +91,14 @@ namespace AmlaMarketPlace.Controllers
 
                             TempData["Login-Success"] = "Successfully logged in";
 
-                            return RedirectToAction("ProductListing", "Product");
+                            if (userRole == "user")
+                            {
+                                return RedirectToAction("ProductListing", "Product");
+                            }
+                            else if (userRole == "admin")
+                            {
+                                return RedirectToAction("DashBoard", "Admin");
+                            }
                         }
                         else
                         {
@@ -104,9 +112,11 @@ namespace AmlaMarketPlace.Controllers
                         return View();
                     }
                 }
-
-                TempData["emailNotRegistered"] = "Email is not registered. Please sign up.";
-                return View();
+                else
+                {
+                    TempData["emailNotRegistered"] = "Email is not registered. Please sign up.";
+                    return View();
+                }
             }
 
             TempData["UnexpectedInput"] = "Unexpected Input.";

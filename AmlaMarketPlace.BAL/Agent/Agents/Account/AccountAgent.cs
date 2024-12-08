@@ -36,6 +36,13 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
             return userFirstName;
         }
 
+        public string getUserRoleByEmail(string email)
+        {
+            var userRoleValue = _accountService.GetUserByEmail(email).UserRole;
+
+            return userRoleValue;
+        }
+
         public int getUserIdByEmail(string email)
         {
             int id = _accountService.GetUserByEmail(email).UserId;

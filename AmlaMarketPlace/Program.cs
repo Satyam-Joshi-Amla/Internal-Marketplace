@@ -7,6 +7,8 @@ using AmlaMarketPlace.DAL.Service.Services.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using AmlaMarketPlace.DAL.Service.Services.Product;
+using AmlaMarketPlace.DAL.Service.Services.Admin;
+using AmlaMarketPlace.BAL.Agent.Agents.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddScoped<AccountAgent>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<ProductAgent>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<AdminAgent>();
+builder.Services.AddScoped<AdminService>();
 
 // Adding cookie authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

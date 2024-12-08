@@ -30,4 +30,6 @@ public partial class User
     public string? VerificationToken { get; set; }
 
     public DateTime? TokenExpiration { get; set; }
+
+    public virtual UserRole UserRole { get; set; } = null!;
 }
