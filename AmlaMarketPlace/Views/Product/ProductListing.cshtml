@@ -1,6 +1,9 @@
 ﻿@{
     var products = (List<AmlaMarketPlace.Models.ViewModels.Product.ProductListViewModel>)ViewData["Products"];
     var totalProducts = (int)ViewData["TotalProducts"];
+    var currentPage = (int)ViewData["CurrentPage"];
+    var pageSize = (int)ViewData["PageSize"];
+    var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
     ViewData["Title"] = "ProductListing";
 }
 
@@ -28,11 +31,18 @@
         </div>
 
         <!-- Show View More button if there are more than 8 products -->
-        @if (totalProducts > 8)
-        {
-            <div title="Click to load more products." class="col-md-12 text-center view-more-btn ">
-                <a href="@Url.Action("ProductListing", "Product")" class="btn btn-brand-color">View More</a>
-            </div>
-        }
+        <div class="pagination text-center">
+            @if (currentPage > 1)
+            {
+                <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage - 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Previous</a>
+            }
+
+            <span>Page @currentPage of @totalPages</span>
+
+            @if (currentPage < totalPages)
+            {
+                <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage + 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Next</a>
+            }
+        </div>
     </div>
 </div>

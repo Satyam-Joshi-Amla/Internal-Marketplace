@@ -17,9 +17,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             _productService = productService;
         }
 
-        public List<ProductListViewModel> GetProducts()
+        public PaginatedResultDto GetProducts(int pageNumber, int pageSize)
         {
-            return _productService.GetProducts();
+            return _productService.GetProducts(pageNumber, pageSize);
         }
 
         public ProductDetailsViewModel GetIndividualProduct(int productId)

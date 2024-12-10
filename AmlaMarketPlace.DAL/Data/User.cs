@@ -31,5 +31,9 @@ public partial class User
 
     public DateTime? TokenExpiration { get; set; }
 
+    public virtual ICollection<Order> OrderBuyers { get; set; } = new List<Order>();
+
+    public virtual ICollection<Order> OrderSellers { get; set; } = new List<Order>();
+
     public virtual UserRole UserRole { get; set; } = null!;
 }
