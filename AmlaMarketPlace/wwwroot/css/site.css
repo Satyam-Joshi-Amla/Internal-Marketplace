@@ -32,11 +32,12 @@ body {
 
 /* ---- Div in which contents render */
 .main-div {
-    /*padding: 2% auto;*/
-    min-height: 85vh;
+    padding: 2% auto;
+    min-height: 90vh;
     min-width: 100%;
     /* layout background color */
     background-color: #6BC04B;
+    overflow: hidden;
 }
 
     .main-div.container {
@@ -58,6 +59,22 @@ body {
     }
 
 /* ------ Brand Things Ends ------ */
+
+/* --------- custom-sub-layout css style to accomplish white background starts ---------- */
+
+.sub-layout-div {
+    width: 100%;
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+}
+
+
+    .sub-layout-div .container {
+        max-width: 1200px;
+    }
+
+/* ----------- custom-sub-layout css style to accomplish white background ends ---------- */
 
 /* ------ Navigation Menu CSS Starts ------ */
 
@@ -148,22 +165,36 @@ body {
 
 /* ------ Ends ------ For toggle button to have white color lines ----------- */
 
+/* ------------ Side Panel CSS starts ------------ */
+
+.sidebar {
+    display: block;
+    visibility: visible;
+}
+
+.list-group {
+    
+}
+
+.list-group-item {
+}
+
+.list-group-item a {
+    text-decoration: none;
+}
+
+
+/* ------------ Side Panel CSS Endss ------------ */
 /* ------ Navigation Menu CSS Ends ------ */
-
-
 /* ------ Footer CSS Starts ------ */
-
 .footer-div {
     font-size: 12px;
     color: #4d4d4d;
     letter-spacing: 0.5px;
     display: flex;
+    flex-direction: column;
     padding: 0;
-    padding-bottom: 4%;
-}
-
-.copyright-footer-text {
-    font-size: 13px;
+    max-width: 1080px;
 }
 
 .footer-div h6 {
@@ -177,11 +208,6 @@ body {
     padding: 0;
     font-size: 12px;
     color: #6f6f6f;
-}
-
-.footer-brand-image {
-    width: 120px;
-    margin-top: 10px;
 }
 
 .privacy-link,
@@ -199,12 +225,41 @@ body {
         color: #fff;
     }
 
+.footer-first-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 
-.footer-middle-column,
-.footer-right-column {
+.footer-first-row-individual-column {
     padding-top: 30px;
     display: flex;
     flex-direction: column;
+}
+
+.footer-vertical-line {
+    width: 1px;
+    height: 70px;
+    margin: 5% 0;
+    background-color: #6f6f6f;
+}
+
+.registered-address-div {
+    max-width: 200px; /* Limits the width of the container */
+    word-wrap: break-word; /* Allows long text to wrap to the next line */
+    hyphens: auto; /* Optionally, allows automatic hyphenation for better word splitting */
+}
+
+.footer-second-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.copyright-footer-text {
+    font-size: 13px;
+    text-align: right;
 }
 
 /* ------ Footer CSS Ends ------ */
@@ -215,13 +270,15 @@ body {
     justify-content: space-evenly;
     align-items: center;
     height: 80vh;
+    margin: auto auto;
+    max-width: 1200px;
 }
 
 .left-column {
     letter-spacing: 3px;
 }
 
-.vertical-line {
+.signin-page-vertical-line {
     width: 2px;
     height: 50%;
     background-color: white;
@@ -301,18 +358,6 @@ input.form-control {
 /* ------------------ Sign up ends  ----------------------- */
 
 /* ------------------ About Page Starts  ----------------------- */
-
-.sub-layout-div {
-    width: 100%;
-    margin: 0;
-    color: #000;
-    background-color: #fff;
-}
-
-
-    .sub-layout-div .container {
-        max-width: 1200px;
-    }
 
 .div-about-heading {
     padding: 50px;
@@ -404,13 +449,98 @@ img {
 }
 
 .text-truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap; /* Prevents the text from wrapping to the next line */
+    overflow: hidden; /* Hides any text that overflows the container */
+    text-overflow: ellipsis; /* Replaces overflow text with "..." */
+    max-width: 200px; /* Sets a maximum width for truncation */
+    display: inline-block; /* Ensures the element respects the width */
 }
+
+/* Tool tip Styling (the text box which will appear when we will hover on "..." of product name) */
+/*.card-title {
+    position: relative;
+}
+
+    .card-title:hover::after {
+        content: attr(title);*/ /* Use the title attribute's content */
+        /*position: absolute;
+        background-color: #000;*/ /* Black background */
+        /*color: #fff;*/ /* White text */
+        /*padding: 5px 10px;*/ /* Add some padding */
+        /*border-radius: 5px;*/ /* Rounded corners */
+        /*top: 100%;*/ /* Position below the text */
+        /*left: 50%;*/ /* Center align */
+        /*transform: translateX(-50%);
+        white-space: nowrap;*/ /* Prevent line breaks */
+        /*z-index: 10;
+        opacity: 1;*/ /* Make visible */
+        /*pointer-events: none;*/ /* Prevent interactions */
+    /*}
+
+    .card-title:hover::before {
+        visibility: hidden;*/ /* Hide the default browser tooltip */
+    /*}*/
+
 
 .view-more-btn {
     padding-bottom: 20px;
 }
 
 /* -------- Product Listing Page CSS Ends  -------- */
+
+/* -------- Add Product CSS Starts  -------- */
+
+.add-product-mainDiv {
+    max-width: 800px;
+    margin: 4% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3%;
+    background-color: #ffffff;
+}
+
+.add-product-div-heading {
+    padding-top: 20px;
+}
+
+.add-and-close-button {
+    margin: 10px 0;
+}
+
+/* -------- Add Product CSS Ends  -------- */
+
+/* -------- Profile Details Page CSS Starts  -------- */
+
+.profile-details-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-details-div-heading {
+}
+
+/* -------- Profile Details Page CSS Ends  -------- */
+
+/* -------- List of all users CSS Stars  -------- */
+
+.table td, .table th {
+    word-wrap: break-word;
+    max-width: 200px; /* Adjust as necessary */
+}
+
+table {
+    width: 100%;
+    table-layout: fixed; /* Ensures proper column widths */
+    text-align: center;
+}
+
+.all-Users-list-div {
+    
+}
+
+.all-Users-list-div-heading {
+    margin: 20px auto;
+}
+
+ /* -------- List of all users CSS Ends  -------- */

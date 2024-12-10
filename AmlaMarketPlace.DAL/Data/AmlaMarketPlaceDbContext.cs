@@ -23,8 +23,9 @@ public partial class AmlaMarketPlaceDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,11 +45,15 @@ public partial class AmlaMarketPlaceDbContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
+            entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Description).IsUnicode(false);
+            entity.Property(e => e.IsPublished).HasDefaultValue(true);
+            entity.Property(e => e.ModifiedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(20, 2)");
+            entity.Property(e => e.StatusId).HasDefaultValue(1);
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -84,6 +89,23 @@ public partial class AmlaMarketPlaceDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.TokenExpiration).HasColumnType("datetime");
             entity.Property(e => e.VerificationToken).HasMaxLength(255);
+
+            entity.HasOne(d => d.UserRole).WithMany(p => p.Users)
+                .HasForeignKey(d => d.UserRoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Roles");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => e.RoleId).HasName("PK_Roles");
+
+            entity.ToTable("UserRole");
+
+            entity.Property(e => e.RoleId).ValueGeneratedNever();
+            entity.Property(e => e.Role)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

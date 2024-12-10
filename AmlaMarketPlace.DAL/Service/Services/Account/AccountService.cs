@@ -4,6 +4,7 @@ using AmlaMarketPlace.Models.ViewModels.Account;
 using AmlaMarketPlace.Models.DTO;
 using System.Net.Mail;
 using System.Net;
+using System.Data;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Account
 {
@@ -17,7 +18,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             _context = context;
         }
 
-        public bool doesUserExists(string email)
+        public bool DoesUserExists(string email)
         {
             // Checking if the user already exists in the database
             var existingUser = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
@@ -29,9 +30,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             return false;
         }
 
-        public bool isValidCredentials(SignInViewModel signInViewModel)
+        public bool IsValidCredentials(SignInViewModel signInViewModel)
         {
-            if (!doesUserExists(signInViewModel.EmailAddress))
+            if (!DoesUserExists(signInViewModel.EmailAddress))
             {
                 return false;
             }
@@ -46,9 +47,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             return false;
         }
 
-        public bool addNewUser(SignUpViewModel signUpViewModel)
+        public bool AddNewUser(SignUpViewModel signUpViewModel)
         {
-            if (doesUserExists(signUpViewModel.EmailAddress))
+            if (DoesUserExists(signUpViewModel.EmailAddress))
             {
                 return false;
             }
@@ -79,11 +80,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         {
             // Fetching the user from the database based on the email
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
-
+            
             if (user != null)
             {
                 var userDTO = new UserDTO
                 {
+                    UserId = user.UserId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     EmailAddress = user.EmailAddress,
@@ -97,6 +99,10 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                     VerificationToken = user.VerificationToken,
                     TokenExpiration = user.TokenExpiration
                 };
+
+                var userRoleData = _context.UserRoles.FirstOrDefault(r => r.RoleId == user.UserRoleId);
+
+                userDTO.UserRole = userRoleData != null ? userRoleData.Role : "user";
 
                 return userDTO;
             }
@@ -133,7 +139,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         }
 
         // Utility method we can say
-        private void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
+        public void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
         {
             try
             {

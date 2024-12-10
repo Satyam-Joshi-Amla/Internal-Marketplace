@@ -13,5 +13,7 @@ public partial class Image
 
     public string Link { get; set; } = null!;
 
+    public bool? IsDefault { get; set; }
+
     public virtual Product Product { get; set; } = null!;
 }
