@@ -24,7 +24,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
 
         public ProductDetailsViewModel GetIndividualProduct(int productId)
         {
-            return _productService.GetIndividualProduct(productId);
+            return _productService.GetProductDetails(productId);
         }
 
         public bool AddProduct(AddProductViewModel model)
@@ -40,6 +40,24 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
                 {
                     model.Image.CopyTo(stream);
                 }
+                List<string> optImageNames = [];
+                List<string> optImagePaths = [];
+                if (model.OptionalImages != null)
+                {
+                    foreach (var img in model.OptionalImages)
+                    {
+                        string wwwRootPathOpt = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                        string fileNameOpt = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                        string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images");
+                        string filePathOpt = Path.Combine(imagesDirectoryOpt, fileNameOpt);
+                        using (var stream = new FileStream(filePathOpt, FileMode.Create))
+                        {
+                            img.CopyTo(stream);
+                        }
+                        optImageNames.Add(fileNameOpt);
+                        optImagePaths.Add(GetRelativeImagePath(filePathOpt));
+                    }
+                }
                 AddProductDto Dto = new AddProductDto();
                 Dto.UserId = model.UserId;
                 Dto.ProductName = model.Name;
@@ -49,6 +67,8 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
                 Dto.ProductId = 0;
                 Dto.ImageName = fileName;
                 Dto.ImagePath = GetRelativeImagePath(filePath);
+                Dto.OptionalImageNames = optImageNames;
+                Dto.OptionalImagePaths = optImagePaths;
 
                 _productService.AddProduct(Dto);
             } 
@@ -67,12 +87,20 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             if (index >= 0)
             {
                 // Extract everything after "wwwroot"
-                string relativePath = fullPath.Substring(index + "wwwroot".Length); // Add the length of "wwwroot" to exclude it
-                return relativePath;
+                string relativePath = fullPath.Substring(index + "wwwroot".Length);
+
+                // Replace backslashes with forward slashes for web compatibility
+                return relativePath.Replace("\\", "/");
             }
 
             // Return an empty string if "wwwroot" is not found
             return string.Empty;
+        }
+
+        public bool PlaceOrder(int productId, int buyerId)
+        {
+            _productService.PlaceOrder(productId, buyerId);
+            return true;
         }
     }
 }

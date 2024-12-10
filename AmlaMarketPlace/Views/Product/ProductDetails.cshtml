@@ -4,7 +4,7 @@
     ViewData["Title"] = Model.Name;
 }
 
-<div class="product-details-container">
+@* <div class="product-details-container">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -26,7 +26,7 @@
                     <p class="product-inventory">Available Stock: @Model.Inventory</p>
                     <p><b>Description: </b></p>
                     <p class="product-description">@Model.Description</p>
-                    @* <p class="product-status">@Model.StatusId == 1 ? "Active" : "Inactive"</p> *@
+                    @* <p class="product-status">@Model.StatusId == 1 ? "Active" : "Inactive"</p> 
                     <div>
                         <a href="@Url.Action("#", "#")" class="btn btn-secondary">Get Seller Details on mail</a>
                     </div>
@@ -34,10 +34,45 @@
             </div>
         </div>
     </div>
+</div> *@
+<div class="product-detail">
+    <!-- Main Image -->
+    <div class="main-image">
+        <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnail-images">
+        @foreach (var image in Model.Images)
+        {
+            <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+        }
+    </div>
+
+    <!-- Product Details -->
+    <div class="product-info">
+        <h2>@Model.Name</h2>
+        <p>@Model.Description</p>
+        <p>Price: $@Model.Price</p>
+        <p>Available Stock: @Model.Inventory</p>
+    </div>
 </div>
+<form asp-action="PlaceOrder" method="post">
+    <!-- Hidden input field to pass the Product ID -->
+    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+    <button type="submit" class="btn btn-primary">Order Now</button>
+</form>
+
+<script>
+    function changeMainImage(imagePath) {
+        console.log(imagePath);
+        document.getElementById('mainImage').src = imagePath;
+    }
+</script>
 
 <style>
-    .product-details-container {
+    /* .product-details-container {
         margin-top: 20px;
     }
 
@@ -66,5 +101,31 @@
     .product-inventory, .product-status {
         font-size: 14px;
         margin-top: 10px;
+    } */
+    .main-image img {
+        width: 400px;
+        height: 400px;
+        object-fit: cover;
+        border: 2px solid #ccc;
+        margin-bottom: 15px;
+    }
+
+    .thumbnail-images img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin: 5px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        transition: transform 0.2s;
+    }
+
+        .thumbnail-images img:hover {
+            transform: scale(1.1);
+            border-color: #000;
+        }
+
+    .product-info {
+        margin-top: 20px;
     }
 </style>

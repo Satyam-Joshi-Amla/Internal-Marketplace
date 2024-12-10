@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.DTO;
 
@@ -18,8 +19,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         // Utility method to retrieve the user role by ID
         private string GetUserRoleById(int userRoleId)
         {
-            var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
-            return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
+            //var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
+            //return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
+            return "user";
         }
 
         public List<UserDTO> GetAllUsers()
@@ -77,3 +79,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
     }
 }
+
+
+

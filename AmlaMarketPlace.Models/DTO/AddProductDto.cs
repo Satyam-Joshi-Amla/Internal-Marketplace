@@ -16,5 +16,7 @@ namespace AmlaMarketPlace.Models.DTO
         public int ProductId { get; set; }
         public string ImageName { get; set; }
         public string ImagePath { get; set; }
+        public List<string>? OptionalImageNames { get; set; }
+        public List<string>? OptionalImagePaths { get; set; }
     }
 }

@@ -139,7 +139,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         }
 
         // Utility method we can say
-        private void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
+        public void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
         {
             try
             {

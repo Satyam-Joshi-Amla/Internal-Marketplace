@@ -36,7 +36,7 @@ namespace AmlaMarketPlace.Controllers
 
 
         [HttpPost]
-        public IActionResult AddProduct(AddProductViewModel model)
+        public IActionResult AddProduct(AddProductViewModel model, string action)
         {
             model.UserId = int.Parse(User.FindFirst("UserId")?.Value);
             if (string.IsNullOrEmpty(model.Description))
@@ -49,7 +49,15 @@ namespace AmlaMarketPlace.Controllers
 
                 if (result)
                 {
-                    return RedirectToAction("ProductListing");
+                    if (action=="Save and Close")
+                    { 
+                        return RedirectToAction("ProductListing"); 
+                    }
+                    else if (action == "Save and Add More")
+                    {
+                        TempData["SuccessMessage"] = "Product uploaded successfully!";
+                        return RedirectToAction("AddProduct");
+                    }
                 }
                 else
                 {
@@ -71,6 +79,14 @@ namespace AmlaMarketPlace.Controllers
             }
 
             return View(productDetails);
+        }
+
+
+
+        public IActionResult PlaceOrder(int productId)
+        {
+            _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value));
+            return Ok();
         }
 
         //[HttpPost]
