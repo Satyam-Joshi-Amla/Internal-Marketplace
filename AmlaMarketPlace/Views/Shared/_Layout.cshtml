@@ -84,7 +84,7 @@
 
     <div class="main-div container">
         <div class="row">
-            @if (User.Identity.IsAuthenticated && User.IsInRole("user") && ViewData["EnableSidePanelForAddProductPage"]?.ToString() == "True")
+            @if (User.Identity.IsAuthenticated && User.IsInRole("user") && ViewData["EnableUserSidePanel"]?.ToString() == "True")
             {
                 <div class="col-md-2 sidebar">
                     <!-- Sidebar Content -->

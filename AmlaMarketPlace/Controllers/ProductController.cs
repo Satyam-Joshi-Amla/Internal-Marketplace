@@ -30,7 +30,7 @@ namespace AmlaMarketPlace.Controllers
         {
             // This will give you the "UserId" claim from the current user
             //int userId = 3;    //User.FindFirst("UserId")?.Value;
-            ViewData["EnableSidePanelForAddProductPage"] = true;
+            ViewData["EnableUserSidePanel"] = true;
             return View();
         }
 
@@ -89,7 +89,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult GetUserUploadedProductsList(int id)
         {
             var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
-
+            ViewData["EnableUserSidePanel"] = true;
             return View(userUploadedProducts);
         }
 
