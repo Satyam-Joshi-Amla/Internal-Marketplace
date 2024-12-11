@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AmlaMarketPlace.Controllers
 {
-    [Authorize()]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly AdminAgent _adminAgent;
@@ -31,6 +31,54 @@ namespace AmlaMarketPlace.Controllers
         {
             var allPublishedProducts = _adminAgent.GetAllPublishedProducts();
             return View(allPublishedProducts);
+        }
+
+        [HttpGet]
+        public IActionResult ProductsWaitingForApproval()
+        {
+            var productWaitingForApproval = _adminAgent.ProductsWaitingForApproval();
+            return View(productWaitingForApproval);
+        }
+
+        [HttpPost]
+        public IActionResult Approve(int id)
+        {
+            bool isApprov = _adminAgent.ApproveProduct(id);
+            if (isApprov)
+            {
+                TempData["ProductApproved"] = "Product Approved.";
+            }
+            else
+            {
+                TempData["FailedToApproved"] = "Failed to approve product.";
+            }
+
+
+            return RedirectToAction("ProductsWaitingForApproval", "Admin");
+        }
+
+        [HttpPost]
+        public IActionResult Reject(int id)
+        {
+            bool isApprov = _adminAgent.RejectProduct(id);
+            if (isApprov)
+            {
+                TempData["ProductRejected"] = "Product Rejected.";
+            }
+            else
+            {
+                TempData["FailedToReject"] = "Failed to reject product.";
+            }
+
+
+            return RedirectToAction("ProductsWaitingForApproval", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult GetRejectedProducts()
+        {
+            var productRejected = _adminAgent.GetRejectedProducts();
+            return View(productRejected);
         }
     }
 }

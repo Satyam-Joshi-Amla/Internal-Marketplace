@@ -4,57 +4,61 @@
     ViewData["Title"] = "Sign up";
 }
 
-<div class="signup-div">
-    <h4>Sign up</h4>
-    <hr />
-    <form asp-action="SignUp" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="signup-div-main-container">
 
-        <!-- First Name and Last Name in the same row (2 columns) -->
-        <div class="form-group form-row">
-            <div class="form-column">
-                <label asp-for="FirstName" class="control-label required"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-column">
-                <label asp-for="LastName" class="control-label required"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-        </div>
+    <div class="signup-div">
+        <h4>Sign up</h4>
+        <hr />
+        <form asp-action="SignUp" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <!-- Two columns for the other fields -->
-        <div class="form-group form-row">
-            <div class="form-column">
-                <label asp-for="EmailAddress" class="control-label required"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            <!-- First Name and Last Name in the same row (2 columns) -->
+            <div class="form-group form-row">
+                <div class="form-column">
+                    <label asp-for="FirstName" class="control-label required"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-column">
+                    <label asp-for="LastName" class="control-label required"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-column">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-        </div>
 
-        <div class="form-group form-row">
-            <div class="form-column">
-                <label asp-for="Password" class="control-label required"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <!-- Two columns for the other fields -->
+            <div class="form-group form-row">
+                <div class="form-column">
+                    <label asp-for="EmailAddress" class="control-label required"></label>
+                    <input asp-for="EmailAddress" class="form-control" />
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="form-column">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-column">
-                <label asp-for="ConfirmedPassword" class="control-label required"></label>
-                <input asp-for="ConfirmedPassword" class="form-control" />
-                <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <input type="submit" value="Sign up" class="btn btn-brand-color" />
-        </div>
-    </form>
+            <div class="form-group form-row">
+                <div class="form-column">
+                    <label asp-for="Password" class="control-label required"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-column">
+                    <label asp-for="ConfirmedPassword" class="control-label required"></label>
+                    <input asp-for="ConfirmedPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Sign up" class="btn btn-brand-color" />
+            </div>
+        </form>
+    </div>
+
 </div>
 
 @section Scripts {
