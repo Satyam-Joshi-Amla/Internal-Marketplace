@@ -16,12 +16,18 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProductListing()
+        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
         {
-            List<ProductListViewModel> products = _productAgent.GetProducts();
-            int itemsToShow = 8;
-            ViewData["Products"] = products.Take(itemsToShow).ToList(); // To show only the first 8 products
-            ViewData["TotalProducts"] = products.Count; // sending the total product count to the view
+            var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize);
+
+            List<ProductListViewModel> products = paginatedResult.Products;
+            int totalProducts = paginatedResult.TotalCount;
+
+            ViewData["Products"] = products; 
+            ViewData["TotalProducts"] = totalProducts; 
+            ViewData["CurrentPage"] = pageNumber; 
+            ViewData["PageSize"] = pageSize; 
+
             return View();
         }
 
