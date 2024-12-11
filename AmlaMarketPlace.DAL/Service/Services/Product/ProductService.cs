@@ -4,12 +4,6 @@ using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using AmlaMarketPlace.DAL.Service.Services.Account;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
     public class ProductService
@@ -86,24 +80,37 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             };
         }
 
-        //public ProductDetailsViewModel GetIndividualProduct(int productId)
-        //{
-        //    var product = _context.Products.Where(p => p.ProductId == productId)
-        //        .Select(p => new ProductDetailsViewModel
-        //        {
-        //            ProductId = p.ProductId,
-        //            Name = p.Name,
-        //            Price = p.Price,
-        //            Description = p.Description,
-        //            CreatedOn = p.CreatedOn,
-        //            ModifiedOn = p.ModifiedOn,
-        //            Inventory = p.Inventory,
-        //            StatusId = p.StatusId,
-        //            IsPublished = p.IsPublished
-        //        }).FirstOrDefault();
+        public string GetStatusValueByStatusId(int statusID)
+        {
+            var status = _context.Statuses.FirstOrDefault(s => s.StatusId == statusID);
+            return status != null ? status.StatusValue : "pending";
+        }
 
-        //    return product;
-        //}
+        public List<ProductDTO> GetUserUploadedProducts(int userID)
+        {
+            // Fetching only published products from the database
+            var products = _context.Products
+                .Where(u => u.UserId == userID) // Filtering published products
+                .ToList();
+
+            // Mapping the filtered products to ProductDTO
+            var productDTO = products.Select(product => new ProductDTO
+            {
+                ProductId = product.ProductId,
+                UserId = product.UserId,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CreatedOn = product.CreatedOn,
+                ModifiedOn = product.ModifiedOn,
+                Inventory = product.Inventory,
+                StatusId = product.StatusId,
+                StatusValue = GetStatusValueByStatusId(product.StatusId),
+                IsPublished = product.IsPublished
+            }).ToList();
+
+            return productDTO;
+        }
 
         public ProductDetailsViewModel GetProductDetails(int productId)
         {
@@ -130,7 +137,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             return product;
         }
-
+                
         public bool AddProduct(AddProductDto Dto)
         {
             var product = new AmlaMarketPlace.DAL.Data.Product();
@@ -190,6 +197,19 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
-        
+        public bool PublishProductSuccessfully(int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+
+            if (product != null)
+            {
+                product.IsPublished = true;
+                _context.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -20,10 +20,29 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
         {
             return _adminService.GetAllUsers();
         }
-
         public List<ProductDTO> GetAllPublishedProducts()
         {
             return _adminService.GetAllPublishedProducts();
+        }
+
+        public bool ApproveProduct(int ProductID)
+        {
+            return _adminService.ApproveProduct(ProductID);
+        }
+
+        public bool RejectProduct(int ProductID)
+        {
+            return _adminService.RejectProduct(ProductID);
+        }
+
+        public List<ProductDTO> ProductsWaitingForApproval()
+        {
+            return _adminService.ProductsWaitingForApproval();
+        }
+
+        public List<ProductDTO> GetRejectedProducts()
+        {
+            return _adminService.GetRejectedProducts();
         }
     }
 }

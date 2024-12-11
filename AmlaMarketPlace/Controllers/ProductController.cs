@@ -36,10 +36,9 @@ namespace AmlaMarketPlace.Controllers
         {
             // This will give you the "UserId" claim from the current user
             //int userId = 3;    //User.FindFirst("UserId")?.Value;
-            ViewData["EnableSidePanelForAddProductPage"] = true;
+            ViewData["EnableUserSidePanel"] = true;
             return View();
         }
-
 
         [HttpPost]
         public IActionResult AddProduct(AddProductViewModel model, string action)
@@ -55,9 +54,9 @@ namespace AmlaMarketPlace.Controllers
 
                 if (result)
                 {
-                    if (action=="Save and Close")
-                    { 
-                        return RedirectToAction("ProductListing"); 
+                    if (action == "Save and Close")
+                    {
+                        return RedirectToAction("ProductListing");
                     }
                     else if (action == "Save and Add More")
                     {
@@ -87,13 +86,39 @@ namespace AmlaMarketPlace.Controllers
             return View(productDetails);
         }
 
-
-
         public IActionResult PlaceOrder(int productId)
         {
             _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value));
             return Ok();
         }
+
+        public IActionResult GetUserUploadedProductsList(int id)
+        {
+            var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
+            ViewData["EnableUserSidePanel"] = true;
+            return View(userUploadedProducts);
+        }
+
+        [HttpPost]
+        public IActionResult Publish(int id)
+        {
+            bool publishedSuccessfully = _productAgent.PublishProductSuccessfully(id);
+
+            if (publishedSuccessfully)
+            {
+                TempData["PublishedSuccess"] = "Product is now published.";
+            }
+            else
+            {
+                TempData["PublishedFailed"] = "Product cannot be published. Please contact admin.";
+            }
+
+            // Redirect back to the GetUserUploadedProductsList with the same user id
+            int userId = int.Parse(User.FindFirst("UserId")?.Value); // Extract the logged-in user's id
+            return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
+        }
+
+
 
         //[HttpPost]
         //public IActionResult ProductDetails()

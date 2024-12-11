@@ -36,7 +36,7 @@ body {
     min-height: 90vh;
     min-width: 100%;
     /* layout background color */
-    background-color: #6BC04B;
+    /*background-color: #6BC04B;*/
     overflow: hidden;
 }
 
@@ -269,9 +269,8 @@ body {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 80vh;
-    margin: auto auto;
-    max-width: 1200px;
+    height: 100vh;
+    background-color: #6BC04B;
 }
 
 .left-column {
@@ -319,6 +318,12 @@ label.required::after { /* Adding Asterisk if there are required input field. */
     content: " *";
     color: red;
     font-weight: bold;
+}
+
+.signup-div-main-container {
+    background-color: #6BC04B;
+    padding: 20px;
+    height: 100vh;
 }
 
 .signup-div {
@@ -388,12 +393,14 @@ img {
 /* -------- Home Index starts  -------- */
 
 .home-index-div {
+    background-color: #6BC04B;
+    height: 100vh;
 }
 
 .home-index-welcome-div {
     color: #fff;
     text-align: center;
-    margin: 50px auto;
+    padding: 50px;
 }
 
 /* -------- Home Index Ends  -------- */
@@ -490,6 +497,10 @@ img {
 
 /* -------- Add Product CSS Starts  -------- */
 
+.sub-layout-div-add-product-div-custom {
+    padding: 10px;
+}
+
 .add-product-mainDiv {
     max-width: 800px;
     margin: 4% auto;
@@ -536,11 +547,17 @@ table {
 }
 
 .all-Users-list-div {
-    
+    background-color: #fff;
 }
 
 .all-Users-list-div-heading {
-    margin: 20px auto;
+    margin: 0 auto;
+    padding-top: 20px;
 }
 
  /* -------- List of all users CSS Ends  -------- */
+
+
+.approve-reject-btn {
+    margin: 5px;
+}

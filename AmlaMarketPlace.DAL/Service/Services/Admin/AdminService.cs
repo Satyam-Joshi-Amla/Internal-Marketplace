@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using AmlaMarketPlace.DAL.Data;
+﻿using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.DTO;
+using AmlaMarketPlace.DAL.Service.Services.Product;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Admin
 {
@@ -20,6 +17,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         private string GetUserRoleById(int userRoleId)
         {
             var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
+
             return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
         }
 
@@ -75,7 +73,103 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
             return productDTO;
         }
 
+        public List<ProductDTO> ProductsWaitingForApproval()
+        {
+            // Fetching only published products from the database
+            var products = _context.Products
+                .Where(product => product.StatusId == 1 ) // Filtering published products
+                .ToList();
 
+            // Mapping the filtered products to ProductDTO
+            var productDTO = products.Select(product => new ProductDTO
+            {
+                ProductId = product.ProductId,
+                UserId = product.UserId,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CreatedOn = product.CreatedOn,
+                ModifiedOn = product.ModifiedOn,
+                Inventory = product.Inventory,
+                StatusId = product.StatusId,
+                StatusValue = GetStatusValueByStatusId(product.StatusId),
+                IsPublished = product.IsPublished
+            }).ToList();
+
+            return productDTO;
+        }
+
+        private string GetStatusValueByStatusId(int statusID)
+        {
+            var status = _context.Statuses.FirstOrDefault(s => s.StatusId == statusID);
+            return status != null ? status.StatusValue : "pending";
+        }
+
+        public bool ApproveProduct(int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+
+            //Status ID = 1 means Pending
+            //Status ID = 2 means Approved
+            //Status ID = 3 means Rejected
+
+            if (product != null)
+            {
+                product.StatusId = 2;
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool RejectProduct(int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+
+            //Status ID = 1 means Pending
+            //Status ID = 2 means Approved
+            //Status ID = 3 means Rejected
+
+            if (product != null)
+            {
+                product.StatusId = 3;
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public List<ProductDTO> GetRejectedProducts()
+        {
+            // Fetching only rejected products from the database
+            var products = _context.Products
+                .Where(product => product.StatusId == 3) // Filtering published products
+                .ToList();
+
+            // Mapping the filtered products to ProductDTO
+            var productDTO = products.Select(product => new ProductDTO
+            {
+                ProductId = product.ProductId,
+                UserId = product.UserId,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CreatedOn = product.CreatedOn,
+                ModifiedOn = product.ModifiedOn,
+                Inventory = product.Inventory,
+                StatusId = product.StatusId,
+                StatusValue = GetStatusValueByStatusId(product.StatusId),
+                IsPublished = product.IsPublished
+            }).ToList();
+
+            return productDTO;
+        }
     }
 }
 

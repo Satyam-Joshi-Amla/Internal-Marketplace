@@ -69,7 +69,6 @@ public partial class AmlaMarketPlaceDbContext : DbContext
         {
             entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Description).IsUnicode(false);
-            entity.Property(e => e.IsPublished).HasDefaultValue(true);
             entity.Property(e => e.ModifiedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace AmlaMarketPlace.Models.DTO
 
         public string? Description { get; set; }
 
+        [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
 
         public DateTime ModifiedOn { get; set; }
@@ -25,6 +27,9 @@ namespace AmlaMarketPlace.Models.DTO
         public int Inventory { get; set; }
 
         public int StatusId { get; set; }
+
+        [Display(Name = "Status")]
+        public string StatusValue { get; set; }
 
         public bool IsPublished { get; set; }
     }

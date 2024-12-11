@@ -22,6 +22,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             return _productService.GetProducts(pageNumber, pageSize);
         }
 
+        public List<ProductDTO> GetUserUploadedProducts(int userID)
+        {
+            return _productService.GetUserUploadedProducts(userID);
+        }
+
         public ProductDetailsViewModel GetIndividualProduct(int productId)
         {
             return _productService.GetProductDetails(productId);
@@ -101,6 +106,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             _productService.PlaceOrder(productId, buyerId);
             return true;
+        }
+
+        public bool PublishProductSuccessfully(int productID)
+        {
+            return _productService.PublishProductSuccessfully(productID);
         }
     }
 }

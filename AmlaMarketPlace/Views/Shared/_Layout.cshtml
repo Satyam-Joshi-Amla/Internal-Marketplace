@@ -84,7 +84,7 @@
 
     <div class="main-div container">
         <div class="row">
-            @if (User.Identity.IsAuthenticated && User.IsInRole("user") && ViewData["EnableSidePanelForAddProductPage"]?.ToString() == "True")
+            @if (User.Identity.IsAuthenticated && User.IsInRole("user") && ViewData["EnableUserSidePanel"]?.ToString() == "True")
             {
                 <div class="col-md-2 sidebar">
                     <!-- Sidebar Content -->
@@ -93,11 +93,11 @@
                             <a asp-area="" asp-controller="Product" asp-action="AddProduct">Add Product</a>
                         </li>
                         <li class="list-group-item">
-                            <a asp-area="" asp-controller="#" asp-action="#">Your Products</a>
+                            <a asp-area="" asp-controller="Product" asp-action="GetUserUploadedProductsList" asp-route-id="@Convert.ToInt32(User.FindFirst("UserId")?.Value)">Your Products</a>
                         </li>
-                        <li class="list-group-item">
+                        @* <li class="list-group-item">
                             <a asp-area="" asp-controller="#" asp-action="#">Sample Item</a>
-                        </li>
+                        </li> *@
                     </ul>
                 </div>
             }
@@ -111,10 +111,13 @@
                             <a asp-area="" asp-controller="Admin" asp-action="GetAllUsersList">List of all users</a>
                         </li>
                         <li class="list-group-item">
-                            <a asp-area="" asp-controller="#" asp-action="#">Products waiting for approval</a>
+                            <a asp-area="" asp-controller="Admin" asp-action="ProductsWaitingForApproval">Products waiting for approval</a>
                         </li>
                         <li class="list-group-item">
                             <a asp-area="" asp-controller="Admin" asp-action="GetAllProductsList">All Published Products</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-area="" asp-controller="Admin" asp-action="GetRejectedProducts">Rejected Products</a>
                         </li>
                     </ul>
                 </div>
