@@ -26,4 +26,6 @@ public partial class Product
     public bool IsPublished { get; set; }
 
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

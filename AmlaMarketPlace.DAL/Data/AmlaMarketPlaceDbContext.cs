@@ -17,6 +17,8 @@ public partial class AmlaMarketPlaceDbContext : DbContext
 
     public virtual DbSet<Image> Images { get; set; }
 
+    public virtual DbSet<Order> Orders { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
@@ -41,6 +43,26 @@ public partial class AmlaMarketPlaceDbContext : DbContext
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Images_Products");
+        });
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.Property(e => e.OrderTime).HasDefaultValueSql("(sysdatetime())");
+
+            entity.HasOne(d => d.Buyer).WithMany(p => p.OrderBuyers)
+                .HasForeignKey(d => d.BuyerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_User");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_Products");
+
+            entity.HasOne(d => d.Seller).WithMany(p => p.OrderSellers)
+                .HasForeignKey(d => d.SellerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orders_User1");
         });
 
         modelBuilder.Entity<Product>(entity =>

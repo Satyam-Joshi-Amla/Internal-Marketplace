@@ -18,28 +18,43 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             _service = service;
         }
 
-        public List<ProductListViewModel> GetProducts()
+        public PaginatedResultDto GetProducts(int pageNumber = 1, int pageSize = 20)
         {
             var result = new List<ProductListViewModel>();
+            int totalCount = 0; // This will store the total product count
+
             using (var connection = _context.Database.GetDbConnection())
             {
                 connection.Open(); // Open the database connection
 
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "EXEC GetAllProductsWithDefaultImage"; // Name of your SP
-                    command.CommandType = System.Data.CommandType.Text; // Can be StoredProcedure or Text
+                    // Modify the stored procedure to take pageNumber and pageSize as parameters
+                    command.CommandText = "EXEC GetPaginatedProductsWithDefaultImage @PageNumber, @PageSize"; // Name of your updated SP
+                    command.CommandType = System.Data.CommandType.Text;
+
+                    // Add the parameters for pagination
+                    var pageNumberParam = command.CreateParameter();
+                    pageNumberParam.ParameterName = "@PageNumber";
+                    pageNumberParam.Value = pageNumber;
+                    command.Parameters.Add(pageNumberParam);
+
+                    var pageSizeParam = command.CreateParameter();
+                    pageSizeParam.ParameterName = "@PageSize";
+                    pageSizeParam.Value = pageSize;
+                    command.Parameters.Add(pageSizeParam);
 
                     using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read()) // Read each row from the result set
+                        // Read the products for the current page
+                        while (reader.Read())
                         {
                             result.Add(new ProductListViewModel
                             {
                                 ProductId = reader.GetInt32(0),       // Index 0: ProductId
-                                Name = reader.GetString(1),   // Index 1: ProductName
-                                Price = (float)reader.GetDecimal(2),        // Index 2: Price
-                                Description = reader.GetString(3),      // Index 3: ImageLink
+                                Name = reader.GetString(1),           // Index 1: ProductName
+                                Price = (float)reader.GetDecimal(2),  // Index 2: Price
+                                Description = reader.GetString(3),    // Index 3: Description
                                 CreatedOn = reader.GetDateTime(4),
                                 ModifiedOn = reader.GetDateTime(5),
                                 Inventory = reader.GetInt32(6),
@@ -48,11 +63,21 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                                 ImageLink = reader.GetString(9)
                             });
                         }
+
+                        // Assuming the stored procedure returns the total product count as the last column in the result set
+                        if (reader.NextResult() && reader.Read())
+                        {
+                            totalCount = reader.GetInt32(0); // The total count of products
+                        }
                     }
                 }
             }
 
-            return result;
+            return new PaginatedResultDto
+            {
+                Products = result, // List of products for the current page
+                TotalCount = totalCount // Total product count
+            };
         }
 
         public string GetStatusValueByStatusId(int statusID)
@@ -156,6 +181,17 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         public bool PlaceOrder(int productId, int buyerId)
         {
+            var sellerId = _context.Products.Where(p => p.ProductId == productId).Select(p => p.UserId).FirstOrDefault();
+            var order = new Order
+            {
+                BuyerId = buyerId,
+                SellerId = sellerId,
+                ProductId = productId,
+            };
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+
             string buyerEmail = _context.Users.FirstOrDefault(u => u.UserId == buyerId).EmailAddress;
             _service.SendMessageOnMail(buyerEmail, "Order Placed", "Seller and buyer are notified successfully");
             return true;

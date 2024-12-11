@@ -17,7 +17,8 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         private string GetUserRoleById(int userRoleId)
         {
             var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
-            return userRole != null ? userRole.Role : "user"; // default to "user" if role not found
+
+            return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
         }
 
         public List<UserDTO> GetAllUsers()
