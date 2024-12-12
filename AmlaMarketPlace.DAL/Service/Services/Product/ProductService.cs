@@ -211,5 +211,161 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             return false;
         }
+        public EditProductViewModel GetEditDetails(int id)
+        {
+            var product = _context.Products
+                            .Include(p => p.Images)
+                            .FirstOrDefault(p => p.ProductId == id);
+
+            if (product == null)
+            {
+                return null; // If the product does not exist, return a 404 error
+            }
+            var productViewModel = new EditProductViewModel
+            {
+                ProductId = product.ProductId,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                Inventory = product.Inventory,
+                Images = product.Images.Select(i => new ImageViewModel
+                {
+                    ImagePath = i.Link,
+                    IsDefault = (bool)i.IsDefault
+                }).ToList()
+            };
+
+            return productViewModel;
+        }
+
+        public bool EditProduct(EditProductViewModel model)
+        {
+            var product = _context.Products
+                            .Include(p => p.Images)
+                            .FirstOrDefault(p => p.ProductId == model.ProductId);
+            product.Name = model.Name;
+            product.Price = model.Price;
+            string description;
+            if (model.Description==null)
+            {
+                description = "";
+            }
+            else
+            {
+                description = model.Description;
+            }
+            product.Description = description;
+            product.Inventory = model.Inventory;
+
+            if (model.Image != null)
+            {
+                string wwwRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = timeStamp + Path.GetExtension(model.Image.FileName);
+                string imagesDirectory = Path.Combine(wwwRootPath, "images");
+                string filePath = Path.Combine(imagesDirectory, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Image.CopyTo(stream);
+                }
+
+                var defaultImage = _context.Images
+                    .FirstOrDefault(i => i.ProductId == model.ProductId && (bool)i.IsDefault);
+
+                if (defaultImage != null)
+                {
+                    _context.Images.Remove(defaultImage);
+                    var image = new Image
+                    {
+                        ProductId = model.ProductId,
+                        Name = fileName,
+                        Link = GetRelativeImagePath(filePath),
+                        IsDefault = true
+                    };
+                    _context.Images.Add(image);
+                }
+                
+            }
+            if (model.OptionalImages != null)
+            {
+                var optionalImages = _context.Images
+                .Where(i => i.ProductId == model.ProductId && !(bool)i.IsDefault)
+                .ToList();
+
+                if (optionalImages.Any())
+                {
+                    _context.Images.RemoveRange(optionalImages);
+                }
+
+                foreach (var optionalImageFile in model.OptionalImages)
+                {
+                    string wwwRootPathOpt = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    string fileNameOpt = Guid.NewGuid().ToString() + Path.GetExtension(optionalImageFile.FileName);
+                    string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images");
+                    string filePathOpt = Path.Combine(imagesDirectoryOpt, fileNameOpt);
+                    using (var stream = new FileStream(filePathOpt, FileMode.Create))
+                    {
+                        optionalImageFile.CopyTo(stream);
+                    }
+
+                    _context.Images.Add(new Image
+                    {
+                        ProductId = model.ProductId,
+                        Name = fileNameOpt,
+                        Link = GetRelativeImagePath(filePathOpt),
+                        IsDefault = false
+                    });
+                }
+            }
+            _context.SaveChanges();
+
+            return true;
+        }
+
+
+
+
+
+
+        public string GetRelativeImagePath(string fullPath)
+        {
+            // Find the index of "wwwroot" in the full path
+            int index = fullPath.IndexOf("wwwroot");
+
+            if (index >= 0)
+            {
+                // Extract everything after "wwwroot"
+                string relativePath = fullPath.Substring(index + "wwwroot".Length);
+
+                // Replace backslashes with forward slashes for web compatibility
+                return relativePath.Replace("\\", "/");
+            }
+
+            // Return an empty string if "wwwroot" is not found
+            return string.Empty;
+        }
+
+
+        //public bool EditProduct(ProductDetailsViewModel model)
+        //{
+        //    var existingProduct = _context.Products
+        //    .Include(p => p.Images) // Include related images
+        //    .FirstOrDefault(p => p.ProductId == model.ProductId);
+
+        //    existingProduct.Name = model.Name;
+        //    existingProduct.Price = model.Price;
+        //    existingProduct.Description = model.Description;
+        //    existingProduct.ModifiedOn = DateTime.Now;
+        //    existingProduct.Inventory = model.Inventory;
+        //    existingProduct.StatusId = model.StatusId;
+        //    existingProduct.IsPublished = model.IsPublished;
+
+        //    _context.SaveChanges();
+        //    return true;
+        //}
+
+
+
+
     }
 }
