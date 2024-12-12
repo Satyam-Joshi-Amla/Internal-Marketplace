@@ -211,6 +211,22 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             return false;
         }
+
+        public bool UnpublishProductSuccessfully(int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+
+            if (product != null)
+            {
+                product.IsPublished = false;
+                _context.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
         public EditProductViewModel GetEditDetails(int id)
         {
             var product = _context.Products

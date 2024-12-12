@@ -10,9 +10,9 @@
         <div class="all-Users-list-div-heading">
             <h3>List of Uploaded Products</h3>
         </div>
-        <p>
+        @* <p>
             <a class="btn btn-brand-color" asp-action="AddProduct">Add New Product</a>
-        </p>
+        </p> *@
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -27,6 +27,7 @@
                         @* <th>@Html.DisplayNameFor(model => model.ModifiedOn)</th> *@
                         <th>@Html.DisplayNameFor(model => model.Inventory)</th>
                         <th>@Html.DisplayNameFor(model => model.StatusValue)</th>
+                        <th>Actions</th>
                         @* <th>@Html.DisplayNameFor(model => model.IsPublished)</th> *@
                         <th></th>
                     </tr>
@@ -54,6 +55,11 @@
                                     @Html.DisplayFor(modelItem => item.StatusValue)
                                 }
                             </td>
+                            <td>
+                                <form asp-action="EditProduct" asp-route-id="@item.ProductId" method="get">
+                                    <button type="submit" class="btn btn-brand-color">Edit</button>
+                                </form>
+                            </td>
                             @* <td>@Html.DisplayFor(modelItem => item.IsPublished)</td> *@
                             <td>
                                 @if (item.StatusValue == "Approved")
@@ -66,7 +72,9 @@
                                     }
                                     else
                                     {
-                                        <span class="text-success">Published</span>
+                                        <form asp-action="Unpublish" asp-route-id="@item.ProductId" method="post">
+                                            <button type="submit" class="btn btn-danger">Unpublish</button>
+                                        </form>
                                     }
                                 }
 
