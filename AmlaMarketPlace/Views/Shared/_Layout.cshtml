@@ -36,7 +36,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav ms-auto">
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("user"))
                         {
                             <li class="nav-item">
                                 <a title="Go to all product page" class="nav-link" asp-area="" asp-controller="Product" asp-action="ProductListing">Products</a>
@@ -44,6 +44,19 @@
                             <li class="nav-item">
                                 <a title="Sell your products on Amla Marketplace." class="nav-link" asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
                             </li>
+                            <li class="nav-item">
+                                <a title="Check your profile details and more." class="nav-link" asp-area="" asp-controller="Profile" asp-action="Details">Profile</a>
+                            </li>
+                            <li class="nav-item d-flex align-items-center">
+                                <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" class="d-inline">
+                                    <button title="Log out." type="submit" class="btn btn-link nav-link px-2">
+                                        Sign Out
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        {
                             <li class="nav-item">
                                 <a title="Check your profile details and more." class="nav-link" asp-area="" asp-controller="Profile" asp-action="Details">Profile</a>
                             </li>
@@ -108,13 +121,13 @@
                     <!-- Sidebar Content -->
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a asp-area="" asp-controller="Admin" asp-action="GetAllUsersList">List of all users</a>
+                            <a asp-area="" asp-controller="Admin" asp-action="GetAllUsersList">List of Users</a>
                         </li>
                         <li class="list-group-item">
-                            <a asp-area="" asp-controller="Admin" asp-action="ProductsWaitingForApproval">Products waiting for approval</a>
+                            <a asp-area="" asp-controller="Admin" asp-action="ProductsWaitingForApproval">Waiting for Approval</a>
                         </li>
                         <li class="list-group-item">
-                            <a asp-area="" asp-controller="Admin" asp-action="GetAllProductsList">All Published Products</a>
+                            <a asp-area="" asp-controller="Admin" asp-action="GetAllProductsList">Published Products</a>
                         </li>
                         <li class="list-group-item">
                             <a asp-area="" asp-controller="Admin" asp-action="GetRejectedProducts">Rejected Products</a>
