@@ -24,10 +24,10 @@ namespace AmlaMarketPlace.Controllers
             List<ProductListViewModel> products = paginatedResult.Products;
             int totalProducts = paginatedResult.TotalCount;
 
-            ViewData["Products"] = products; 
-            ViewData["TotalProducts"] = totalProducts; 
-            ViewData["CurrentPage"] = pageNumber; 
-            ViewData["PageSize"] = pageSize; 
+            ViewData["Products"] = products;
+            ViewData["TotalProducts"] = totalProducts;
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["PageSize"] = pageSize;
 
             return View();
         }
@@ -57,7 +57,8 @@ namespace AmlaMarketPlace.Controllers
                 {
                     if (action == "Save and Close")
                     {
-                        return RedirectToAction("ProductListing");
+                        int userId = int.Parse(User.FindFirst("UserId")?.Value); // Extract the logged-in user's id
+                        return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
                     }
                     else if (action == "Save and Add More")
                     {

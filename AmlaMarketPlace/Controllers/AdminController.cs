@@ -58,9 +58,9 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpPost]
-        public IActionResult Reject(int id)
+        public IActionResult Reject(int productId, string rejectComment)
         {
-            bool isApprov = _adminAgent.RejectProduct(id);
+            bool isApprov = _adminAgent.RejectProduct(productId, rejectComment);
             if (isApprov)
             {
                 TempData["ProductRejected"] = "Product Rejected.";
