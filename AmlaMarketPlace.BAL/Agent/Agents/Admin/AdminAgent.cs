@@ -30,9 +30,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
             return _adminService.ApproveProduct(ProductID);
         }
 
-        public bool RejectProduct(int ProductID)
+        public bool RejectProduct(int ProductID, string rejectComment)
         {
-            return _adminService.RejectProduct(ProductID);
+            return _adminService.RejectProduct(ProductID, rejectComment);
         }
 
         public List<ProductDTO> ProductsWaitingForApproval()
