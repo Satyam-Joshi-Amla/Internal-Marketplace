@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Profile
 {
-    internal class ProfileAgent
+    public class ProfileAgent
     {
     }
 }

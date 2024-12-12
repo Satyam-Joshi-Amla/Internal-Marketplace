@@ -122,15 +122,15 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             return _productService.GetEditDetails(id);
         }
-        //public bool EditProduct(ProductDetailsViewModel model)
-        //{
-        //    _productService.EditProduct(model);
-        //    return true;
-        //}
 
         public bool EditProduct(EditProductViewModel model)
         {
             return _productService.EditProduct(model);
+        }
+
+        public List<OrderDTO> GetOrderHistory(int userId)
+        {
+            return _productService.GetOrderHistory(userId);
         }
     }
 }
