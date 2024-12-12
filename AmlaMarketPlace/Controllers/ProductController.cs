@@ -99,6 +99,25 @@ namespace AmlaMarketPlace.Controllers
             return View(userUploadedProducts);
         }
 
+
+        [HttpGet]
+        public IActionResult EditProduct(int productId)
+        {
+            var productDetails = _productAgent.GetEditDetails(productId);
+            if (productDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetails);
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(EditProductViewModel model)
+        {
+            _productAgent.EditProduct(model);
+            return RedirectToAction("ProductListing");
+        }
         [HttpPost]
         public IActionResult Publish(int id)
         {

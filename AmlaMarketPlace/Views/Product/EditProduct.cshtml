@@ -1,0 +1,150 @@
+﻿@model AmlaMarketPlace.Models.ViewModels.Product.EditProductViewModel
+
+<div class="edit-product-mainDiv container">
+    <div class="edit-product-div-heading text-center">
+        <h3>Edit Product</h3>
+    </div>
+
+    <hr />
+    <form asp-action="EditProduct" enctype="multipart/form-data">
+        <input type="number" asp-for="ProductId" name="ProductId" value=@Model.ProductId hidden/>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Product Name -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label required"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label required"></label>
+                    <input asp-for="Price" class="form-control" type="number" step="0.01" min="1" max="9999999" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Inventory" class="control-label required"></label>
+                    <input asp-for="Inventory" class="form-control" type="number" min="1" max="99999" />
+                    <span asp-validation-for="Inventory" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Default Image -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="DefaultImage">Product Default Image</label>
+                    <input asp-for="Image" type="file" id="Image" class="form-control" accept="image/*" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                    <br />
+                    @if (Model.Images.Any(i => i.IsDefault))
+                    {
+                        <img src="@Url.Content(Model.Images.First(i => i.IsDefault).ImagePath)" width="100" alt="Current Default Image" />
+                    }
+                </div>
+            </div>
+
+            <!-- Optional Images -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="OptionalImages">Additional Images (Optional)</label>
+                    <input asp-for="OptionalImages" type="file" id="OptionalImages" accept="image/*" multiple class="form-control" />
+                    <span asp-validation-for="OptionalImages" class="text-danger"></span>
+                    <br />
+                    @foreach (var image in Model.Images.Where(i => !i.IsDefault))
+                    {
+                        <img src="@Url.Content(image.ImagePath)" width="100" alt="Current Optional Image" />
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="edit-and-close-button">
+            <input type="submit" value="Save" class="btn btn-brand-color" />
+        </div>
+    </form>
+
+    <div class="back-button">
+        <button class="btn btn-brand-color" onclick="history.back()">Back</button>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script>
+            // Allowed file extensions
+            const allowedExtensions = ['jpg', 'png'];
+
+            // Validate Default Image
+            document.getElementById("Image").addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const extension = file.name.split('.').pop().toLowerCase();
+                    if (!allowedExtensions.includes(extension)) {
+                        alert("Only .jpg and .png files are allowed for the default image.");
+                        this.value = ""; // Clear the input
+                    }
+                }
+            });
+
+            // Validate Optional Images
+            document.getElementById("OptionalImages").addEventListener("change", function () {
+                const files = this.files;
+                if (files.length === 0) {
+                    return;
+                }
+
+                // Check if more than 3 files are selected
+                if (files.length > 3) {
+                    alert("You can only upload a maximum of 3 optional images.");
+                    this.value = ""; // Clear the input
+                    return; // Exit the function
+                }
+                for (let i = 0; i < files.length; i++) {
+                    const extension = files[i].name.split('.').pop().toLowerCase();
+                    if (!allowedExtensions.includes(extension)) {
+                        alert("Only .jpg and .png files are allowed for additional images.");
+                        this.value = ""; // Clear the input
+                        break;
+                    }
+                }
+            });
+
+
+            const form = document.querySelector('form');
+
+            // Add event listeners to both buttons
+            form.addEventListener('submit', function (event) {
+                const actionButton = event.submitter;
+
+                // // Check which button was clicked and adjust the form action accordingly
+                // if (actionButton.value === 'Save and Close') {
+                //     // Redirect to PLP after successful product addition
+                //     form.action = '/Product/ProductListing'; // Update this URL with the actual path to PLP
+                // } else if (actionButton.value === 'Save and Add More') {
+                //     // Redirect to Sell Here page to add another product
+                //     form.action = '/Product/AddProduct'; // Update this URL with the actual path to Sell Here page
+                // }
+            });
+        </script>
+    }
+}
