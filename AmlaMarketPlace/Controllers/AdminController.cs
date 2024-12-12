@@ -70,6 +70,7 @@ namespace AmlaMarketPlace.Controllers
                 TempData["FailedToReject"] = "Failed to reject product.";
             }
 
+            // iss line pe 
 
             return RedirectToAction("ProductsWaitingForApproval", "Admin");
         }

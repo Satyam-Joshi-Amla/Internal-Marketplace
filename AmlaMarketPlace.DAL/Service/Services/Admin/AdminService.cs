@@ -75,9 +75,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
         public List<ProductDTO> ProductsWaitingForApproval()
         {
-            // Fetching only published products from the database
+            // Fetching only pending products from the database
             var products = _context.Products
-                .Where(product => product.StatusId == 1 ) // Filtering published products
+                .Where(product => product.StatusId == 1 )
                 .ToList();
 
             // Mapping the filtered products to ProductDTO

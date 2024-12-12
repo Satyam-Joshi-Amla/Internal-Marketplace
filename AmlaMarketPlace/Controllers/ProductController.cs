@@ -89,7 +89,8 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult PlaceOrder(int productId)
         {
             _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value));
-            return Ok();
+            TempData["OrderPlaced"] = true;
+            return RedirectToAction("ProductDetails", "Product", new { id = productId });
         }
 
         public IActionResult GetUserUploadedProductsList(int id)

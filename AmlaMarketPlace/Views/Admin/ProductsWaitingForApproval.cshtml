@@ -76,14 +76,14 @@
                                 <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
                                 @* <td>@Html.DisplayFor(modelItem => item.IsPublished)</td> *@
                                 <td>
-                                    @if (item.StatusValue == null)
+                                    @if (item.StatusValue == "Pending")
                                     {
-                                        <form asp-action="Reject" asp-route-id="@item.ProductId" method="post">
-                                            <button type="submit" class="btn btn-danger approve-reject-btn">Reject</button>
-                                        </form>
                                         <form asp-action="Approve" asp-route-id="@item.ProductId" method="post">
                                             <button type="submit" class="btn btn-brand-color approve-reject-btn">Approve</button>
                                         </form>
+                                        <form asp-action="Reject" asp-route-id="@item.ProductId" method="post">
+                                            <button type="submit" class="btn btn-danger approve-reject-btn">Reject</button>
+                                        </form>                                       
                                     }                                 
                                 </td>
                             </tr>
