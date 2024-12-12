@@ -21,6 +21,8 @@ public partial class AmlaMarketPlaceDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductComment> ProductComments { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -69,12 +71,21 @@ public partial class AmlaMarketPlaceDbContext : DbContext
         {
             entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Description).IsUnicode(false);
+            entity.Property(e => e.IsPublished).HasDefaultValue(true);
             entity.Property(e => e.ModifiedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(20, 2)");
             entity.Property(e => e.StatusId).HasDefaultValue(1);
+        });
+
+        modelBuilder.Entity<ProductComment>(entity =>
+        {
+            entity.HasKey(e => e.CommentId).HasName("PK_Comments");
+
+            entity.Property(e => e.Date).HasDefaultValueSql("(sysdatetime())");
+            entity.Property(e => e.RejectedComments).IsUnicode(false);
         });
 
         modelBuilder.Entity<Status>(entity =>

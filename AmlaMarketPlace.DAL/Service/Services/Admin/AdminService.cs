@@ -125,9 +125,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
             }
         }
 
-        public bool RejectProduct(int productID)
+        public bool RejectProduct(int productId, string rejectComment)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
 
             //Status ID = 1 means Pending
             //Status ID = 2 means Approved
@@ -135,6 +135,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             if (product != null)
             {
+                var commentEntry = new AmlaMarketPlace.DAL.Data.ProductComment();
+                commentEntry.ProductId = productId;
+                commentEntry.RejectedComments = rejectComment;
+                _context.ProductComments.Add(commentEntry);
+
                 product.StatusId = 3;
                 _context.SaveChanges();
                 return true;

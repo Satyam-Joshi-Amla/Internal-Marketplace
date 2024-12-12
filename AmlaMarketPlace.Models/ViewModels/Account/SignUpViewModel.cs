@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AmlaMarketPlace.ConfigurationManager.CustomValidation;
+using AmlaMarketPlace.Models.ViewModels.Validations;
 
 namespace AmlaMarketPlace.Models.ViewModels.Account
 {
@@ -18,6 +19,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Account
         [Required(ErrorMessage = "Email Address is required.")]
         [EmailAddress(ErrorMessage = "Enter a valid email.")]
         [Display(Name = "Email Address")]
+        [EmailDomainValidation("amla.io")]
         public string EmailAddress { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
