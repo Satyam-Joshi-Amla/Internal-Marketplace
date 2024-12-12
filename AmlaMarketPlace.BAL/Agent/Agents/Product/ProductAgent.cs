@@ -112,5 +112,20 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             return _productService.PublishProductSuccessfully(productID);
         }
+
+        public EditProductViewModel GetEditDetails(int id)
+        {
+            return _productService.GetEditDetails(id);
+        }
+        //public bool EditProduct(ProductDetailsViewModel model)
+        //{
+        //    _productService.EditProduct(model);
+        //    return true;
+        //}
+
+        public bool EditProduct(EditProductViewModel model)
+        {
+            return _productService.EditProduct(model);
+        }
     }
 }
