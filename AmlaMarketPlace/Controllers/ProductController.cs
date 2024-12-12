@@ -101,9 +101,9 @@ namespace AmlaMarketPlace.Controllers
 
 
         [HttpGet]
-        public IActionResult EditProduct(int productId)
+        public IActionResult EditProduct(int id)
         {
-            var productDetails = _productAgent.GetEditDetails(productId);
+            var productDetails = _productAgent.GetEditDetails(id);
             if (productDetails == null)
             {
                 return NotFound();
@@ -118,6 +118,7 @@ namespace AmlaMarketPlace.Controllers
             _productAgent.EditProduct(model);
             return RedirectToAction("ProductListing");
         }
+
         [HttpPost]
         public IActionResult Publish(int id)
         {
@@ -137,12 +138,24 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
         }
 
+        [HttpPost]
+        public IActionResult Unpublish(int id)
+        {
+            bool UnpublishedSuccessfully = _productAgent.UnpublishProductSuccessfully(id);
 
+            if (UnpublishedSuccessfully)
+            {
+                TempData["UnpublishedSuccess"] = "Product is now Unpublished.";
+            }
+            else
+            {
+                TempData["unpublishedFailed"] = "Product cannot be unpublished. Please contact admin.";
+            }
 
-        //[HttpPost]
-        //public IActionResult ProductDetails()
-        //{
-        //    return View();
-        //}
+            // Redirect back to the GetUserUploadedProductsList with the same user id
+            int userId = int.Parse(User.FindFirst("UserId")?.Value); // Extract the logged-in user's id
+            return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
+        }
+
     }
 }

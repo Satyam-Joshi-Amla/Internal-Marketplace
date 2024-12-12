@@ -9,9 +9,9 @@
         <div class="all-Users-list-div-heading">
             <h3>List of all published products</h3>
         </div>
-        <p>
+        @* <p>
             <a asp-action="Create">Create New</a>
-        </p>
+        </p> *@
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -43,11 +43,11 @@
                             <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                             <td>@Html.DisplayFor(modelItem => item.StatusId)</td>
                             <td>@Html.DisplayFor(modelItem => item.IsPublished)</td>
-                            <td>
+                            @* <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
                                 @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
                                 @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
-                            </td>
+                            </td> *@
                         </tr>
                     }
                 </tbody>

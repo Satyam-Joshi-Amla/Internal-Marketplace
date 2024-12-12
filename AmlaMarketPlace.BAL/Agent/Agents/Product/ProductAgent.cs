@@ -113,6 +113,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             return _productService.PublishProductSuccessfully(productID);
         }
 
+        public bool UnpublishProductSuccessfully(int productID)
+        {
+            return _productService.UnpublishProductSuccessfully(productID);
+        }
+
         public EditProductViewModel GetEditDetails(int id)
         {
             return _productService.GetEditDetails(id);
