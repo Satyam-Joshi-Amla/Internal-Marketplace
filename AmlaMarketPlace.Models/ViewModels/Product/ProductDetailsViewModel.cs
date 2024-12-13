@@ -15,6 +15,8 @@ namespace AmlaMarketPlace.Models.ViewModels.Product
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
         public int Inventory { get; set; }
+        public int SellerId { get; set; }
+        public string SellerName { get; set; }
         public int StatusId { get; set; }
         public bool IsPublished { get; set; }
         //public string ImageLink { get; set; }

@@ -117,7 +117,17 @@ namespace AmlaMarketPlace.Controllers
         [HttpPost]
         public IActionResult EditProduct(EditProductViewModel model)
         {
-            _productAgent.EditProduct(model);
+            try
+            {
+                _productAgent.EditProduct(model);
+                _productAgent.ChangeStatusTOPending(model.ProductId);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = "An error occurred while editing the product. Please try again later. from controller";
+                return RedirectToAction("Error", new { errorMessage = errorMessage });
+            }
+            
             return RedirectToAction("ProductListing");
         }
 

@@ -27,11 +27,18 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProductsList()
+        public IActionResult GetAllPublishedProducts()
         {
             var allPublishedProducts = _adminAgent.GetAllPublishedProducts();
             return View(allPublishedProducts);
         }
+
+        //[HttpGet]
+        //public IActionResult GetOnlyApprovedProducts()
+        //{
+        //    var allPublishedProducts = _adminAgent.GetAllPublishedProducts();
+        //    return View(allPublishedProducts);
+        //}
 
         [HttpGet]
         public IActionResult ProductsWaitingForApproval()

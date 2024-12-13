@@ -29,7 +29,14 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
 
         public ProductDetailsViewModel GetIndividualProduct(int productId)
         {
-            return _productService.GetProductDetails(productId);
+            try
+            {
+                return _productService.GetProductDetails(productId);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("An error occurred while fetching product details. Please try again later. from agent");
+            }
         }
 
         public bool AddProduct(AddProductViewModel model)
@@ -76,7 +83,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
                 Dto.OptionalImagePaths = optImagePaths;
 
                 _productService.AddProduct(Dto);
-            } 
+            }
             catch
             {
 
@@ -131,6 +138,19 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         public List<OrderDTO> GetOrderHistory(int userId)
         {
             return _productService.GetOrderHistory(userId);
+        }
+
+        public bool ChangeStatusTOPending(int productId)
+        {
+            return _productService.ChangeStatusTO(1, productId);
+        }
+        public bool ChangeStatusTOApproved(int productId)
+        {
+            return _productService.ChangeStatusTO(2, productId);
+        }
+        public bool ChangeStatusTORejected(int productId)
+        {
+            return _productService.ChangeStatusTO(3, productId);
         }
     }
 }

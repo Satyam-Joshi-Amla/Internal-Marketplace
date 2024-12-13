@@ -10,25 +10,18 @@
         <div class="all-Users-list-div-heading">
             <h3>List of Uploaded Products</h3>
         </div>
-        @* <p>
-            <a class="btn btn-brand-color" asp-action="AddProduct">Add New Product</a>
-        </p> *@
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Sr. No.</th>
-                        @* <th>@Html.DisplayNameFor(model => model.ProductId)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.UserId)</th> *@
                         <th>@Html.DisplayNameFor(model => model.Name)</th>
                         <th>@Html.DisplayNameFor(model => model.Price)</th>
                         <th>@Html.DisplayNameFor(model => model.Description)</th>
-                        @* <th>@Html.DisplayNameFor(model => model.CreatedOn)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.ModifiedOn)</th> *@
                         <th>@Html.DisplayNameFor(model => model.Inventory)</th>
                         <th>@Html.DisplayNameFor(model => model.StatusValue)</th>
+                        <th></th>
                         <th>Actions</th>
-                        @* <th>@Html.DisplayNameFor(model => model.IsPublished)</th> *@
                         <th></th>
                     </tr>
                 </thead>
@@ -37,13 +30,9 @@
                     {
                         <tr>
                             <td>@SrNo</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.ProductId)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.UserId)</td> *@
                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
                             <td>@Html.DisplayFor(modelItem => item.Price)</td>
                             <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.ModifiedOn)</td> *@
                             <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                             <td>                                
                                 @if (item.StatusValue == "Rejected")
@@ -60,7 +49,6 @@
                                     <button type="submit" class="btn btn-brand-color">Edit</button>
                                 </form>
                             </td>
-                            @* <td>@Html.DisplayFor(modelItem => item.IsPublished)</td> *@
                             <td>
                                 @if (item.StatusValue == "Approved")
                                 {

@@ -4,74 +4,71 @@
     ViewData["Title"] = Model.Name;
 }
 
-<div class="product-detail">
-    @if (TempData["OrderPlaced"] != null)
-    {
-        @* using id to send changes in js for timing message *@
-        <div class="alert alert-success" id="orderPlacedMessage"> 
-            Seller Details sent on your mail successfully!
-        </div>
-    }
-    <!-- Main Image -->
-    <div class="main-image">
-        <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
-    </div>
+<div class="container">
 
-    <!-- Thumbnails -->
-    <div class="thumbnail-images">
-        @foreach (var image in Model.Images)
+    <div class="product-detail">
+        @if (TempData["OrderPlaced"] != null)
         {
-            <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+            @* using id to send changes in js for timing message *@
+            <div class="alert alert-success" id="orderPlacedMessage">
+                Seller Details sent on your mail successfully!
+            </div>
         }
+
+        <div class="pdp-left-column">
+            <!-- Main Image -->
+            <div class="main-image">
+                <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="thumbnail-images">
+                @foreach (var image in Model.Images)
+                {
+                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+                }
+            </div>
+        </div>
+
+        <div class="pdp-vertical-line"></div>
+
+        <div class="pdp-right-column">
+            <div class="pdp-crucial-info">
+                <div>Seller: @Model.SellerName</div>
+                <div>Date Posted On: @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
+            </div>
+            <!-- Product Details -->
+            <div class="product-info">
+                <h2 class="product-name">@Model.Name</h2>
+                <p class="product-price">₹ @Model.Price/-</p>
+                <p class="product-inventory">Available Inventory: <span class="product-inventory-value"> @Model.Inventory </span></p>
+                <form asp-action="PlaceOrder" method="post">
+                    <!-- Hidden input field to pass the Product ID -->
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                    <button type="submit" class="btn btn-brand-color">Order Now</button>
+                </form>
+                <div class="description-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <p>
+                        Description
+                    </p>
+                    <ion-icon name="caret-down-outline"></ion-icon>
+                </div>
+                <div class="" id="collapseExample">
+                    @Model.Description
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
-    <!-- Product Details -->
-    <div class="product-info">
-        <h2>@Model.Name</h2>
-        <p>@Model.Description</p>
-        <p>Price: $@Model.Price</p>
-        <p>Available Stock: @Model.Inventory</p>
-    </div>
 </div>
-<form asp-action="PlaceOrder" method="post">
-    <!-- Hidden input field to pass the Product ID -->
-    <input type="hidden" name="ProductId" value="@Model.ProductId" />
-
-    <button type="submit" class="btn btn-brand-color">Get Seller Details</button>
-</form>
 
 <script>
     function changeMainImage(imagePath) {
         console.log(imagePath);
         document.getElementById('mainImage').src = imagePath;
-    }    
+    }
 </script>
 
-<style>
-    .main-image img {
-        width: 400px;
-        height: 400px;
-        object-fit: cover;
-        border: 2px solid #ccc;
-        margin-bottom: 15px;
-    }
-
-    .thumbnail-images img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        margin: 5px;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        transition: transform 0.2s;
-    }
-
-        .thumbnail-images img:hover {
-            transform: scale(1.1);
-            border-color: #000;
-        }
-
-    .product-info {
-        margin-top: 20px;
-    }
-</style>

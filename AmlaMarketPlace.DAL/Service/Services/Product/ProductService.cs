@@ -114,30 +114,43 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         public ProductDetailsViewModel GetProductDetails(int productId)
         {
-            var product = _context.Products
-                .Where(p => p.ProductId == productId)
-                .Select(p => new ProductDetailsViewModel
-                {
-                    ProductId = p.ProductId,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Description = p.Description,
-                    CreatedOn = p.CreatedOn,
-                    ModifiedOn = p.ModifiedOn,
-                    Inventory = p.Inventory,
-                    StatusId = p.StatusId,
-                    IsPublished = p.IsPublished,
-                    Images = p.Images.Select(i => new ImageViewModel
+            try
+            {
+                var product = _context.Products
+                    .Where(p => p.ProductId == productId)
+                    .Select(p => new ProductDetailsViewModel
                     {
-                        ImagePath = i.Link,
-                        IsDefault = (bool)i.IsDefault
-                    }).OrderByDescending(i => i.IsDefault).ToList()
-                })
-                .FirstOrDefault();
+                        ProductId = p.ProductId,
+                        Name = p.Name,
+                        Price = p.Price,
+                        Description = p.Description,
+                        CreatedOn = p.CreatedOn,
+                        ModifiedOn = p.ModifiedOn,
+                        Inventory = p.Inventory,
+                        SellerId = p.UserId,
+                        StatusId = p.StatusId,
+                        IsPublished = p.IsPublished,
+                        Images = p.Images.Select(i => new ImageViewModel
+                        {
+                            ImagePath = i.Link,
+                            IsDefault = (bool)i.IsDefault
+                        }).OrderByDescending(i => i.IsDefault).ToList()
+                    })
+                    .FirstOrDefault();
 
-            return product;
+                if (product != null)
+                {
+                    product.SellerName = GetUserNameByID(product.SellerId);
+                }
+
+                return product;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching product details. Please try again later. from service");
+            }
         }
-                
+
         public bool AddProduct(AddProductDto Dto)
         {
             var product = new AmlaMarketPlace.DAL.Data.Product();
@@ -162,7 +175,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             if (Dto.OptionalImageNames != null && Dto.OptionalImageNames.Any())
             {
-                for (int i=0; i<Dto.OptionalImageNames.Count; i++)
+                for (int i = 0; i < Dto.OptionalImageNames.Count; i++)
                 {
                     var optImage = new Image
                     {
@@ -201,11 +214,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             // Fetching Seller Details
             string sellerName = GetUserNameByID(sellerId);
-            string sellerEmail = GetUserEmailByID(sellerId);            
+            string sellerEmail = GetUserEmailByID(sellerId);
 
             // Mail Contents to send to buyer
             string buyerMailSubject = $"Order Placed";
-            string buyerMailMessage = $"Hi,\nThank you for Showing interest in {productName}.\n\nHere are the seller Details:\nName: {sellerName}\nEmail: {sellerEmail}\n\nThank you for using our service. "; 
+            string buyerMailMessage = $"Hi,\nThank you for Showing interest in {productName}.\n\nHere are the seller Details:\nName: {sellerName}\nEmail: {sellerEmail}\n\nThank you for using our service. ";
 
             // Mail Contents to send to seller
             string sellerMailSubject = $"Order Received";
@@ -284,7 +297,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             product.Name = model.Name;
             product.Price = model.Price;
             string description;
-            if (model.Description==null)
+            if (model.Description == null)
             {
                 description = "";
             }
@@ -322,7 +335,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     };
                     _context.Images.Add(image);
                 }
-                
+
             }
             if (model.OptionalImages != null)
             {
@@ -393,7 +406,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         private string GetProductNameByID(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);            
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
             return $"{product.Name}";
         }
 
@@ -417,6 +430,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             }).ToList();
 
             return orderDTO;
+        }
+        public bool ChangeStatusTO(int statusID, int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+            product.StatusId = statusID;
+            return true;
         }
     }
 }

@@ -4,15 +4,12 @@
     var currentPage = (int)ViewData["CurrentPage"];
     var pageSize = (int)ViewData["PageSize"];
     var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
-    ViewData["Title"] = "ProductListing";
+    ViewData["Title"] = "Products";
 }
 
 <div class="sub-layout-div">
     <div class="container">
-        <div class="div-plp-heading">
-            <h4>Product Listing</h4>
-        </div>
-        <div class="row">
+        <div class="row mt-5">
             @foreach (var item in products)
             {
                 <div class="col-md-3 mb-4">                    
@@ -32,16 +29,19 @@
 
         <!-- Show View More button if there are more than 8 products -->
         <div class="pagination text-center">
-            @if (currentPage > 1)
+            @if (totalPages > 1)
             {
-                <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage - 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Previous</a>
-            }
+                @if (currentPage > 1)
+                {
+                    <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage - 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Previous</a>
+                }
 
-            <span>Page @currentPage of @totalPages</span>
+                <span>Page @currentPage of @totalPages</span>
 
-            @if (currentPage < totalPages)
-            {
-                <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage + 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Next</a>
+                @if (currentPage < totalPages)
+                {
+                    <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage + 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Next</a>
+                }
             }
         </div>
     </div>
