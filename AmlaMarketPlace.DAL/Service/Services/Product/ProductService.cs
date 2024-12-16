@@ -9,13 +9,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
     public class ProductService
     {
         private readonly AmlaMarketPlaceDbContext _context;
-        private readonly AccountService _service;
+        private readonly AccountService _accountService;
 
         // Initialize the DbContext
-        public ProductService(AmlaMarketPlaceDbContext context, AccountService service)
+        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService)
         {
             _context = context;
-            _service = service;
+            _accountService = accountService;
         }
 
         public PaginatedResultDto GetProducts(int pageNumber = 1, int pageSize = 20)
@@ -114,30 +114,43 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         public ProductDetailsViewModel GetProductDetails(int productId)
         {
-            var product = _context.Products
-                .Where(p => p.ProductId == productId)
-                .Select(p => new ProductDetailsViewModel
-                {
-                    ProductId = p.ProductId,
-                    Name = p.Name,
-                    Price = p.Price,
-                    Description = p.Description,
-                    CreatedOn = p.CreatedOn,
-                    ModifiedOn = p.ModifiedOn,
-                    Inventory = p.Inventory,
-                    StatusId = p.StatusId,
-                    IsPublished = p.IsPublished,
-                    Images = p.Images.Select(i => new ImageViewModel
+            try
+            {
+                var product = _context.Products
+                    .Where(p => p.ProductId == productId)
+                    .Select(p => new ProductDetailsViewModel
                     {
-                        ImagePath = i.Link,
-                        IsDefault = (bool)i.IsDefault
-                    }).OrderByDescending(i => i.IsDefault).ToList()
-                })
-                .FirstOrDefault();
+                        ProductId = p.ProductId,
+                        Name = p.Name,
+                        Price = p.Price,
+                        Description = p.Description,
+                        CreatedOn = p.CreatedOn,
+                        ModifiedOn = p.ModifiedOn,
+                        Inventory = p.Inventory,
+                        SellerId = p.UserId,
+                        StatusId = p.StatusId,
+                        IsPublished = p.IsPublished,
+                        Images = p.Images.Select(i => new ImageViewModel
+                        {
+                            ImagePath = i.Link,
+                            IsDefault = (bool)i.IsDefault
+                        }).OrderByDescending(i => i.IsDefault).ToList()
+                    })
+                    .FirstOrDefault();
 
-            return product;
+                if (product != null)
+                {
+                    product.SellerName = GetUserNameByID(product.SellerId);
+                }
+
+                return product;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching product details. Please try again later. from service");
+            }
         }
-                
+
         public bool AddProduct(AddProductDto Dto)
         {
             var product = new AmlaMarketPlace.DAL.Data.Product();
@@ -162,7 +175,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             if (Dto.OptionalImageNames != null && Dto.OptionalImageNames.Any())
             {
-                for (int i=0; i<Dto.OptionalImageNames.Count; i++)
+                for (int i = 0; i < Dto.OptionalImageNames.Count; i++)
                 {
                     var optImage = new Image
                     {
@@ -191,9 +204,31 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             _context.Orders.Add(order);
             _context.SaveChanges();
 
+            // Fetching Product Details
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            string productName = product.Name;
 
+            // Fetching Buyer Details
+            string buyerName = GetUserNameByID(buyerId);
             string buyerEmail = _context.Users.FirstOrDefault(u => u.UserId == buyerId).EmailAddress;
-            _service.SendMessageOnMail(buyerEmail, "Order Placed", "Seller and buyer are notified successfully");
+
+            // Fetching Seller Details
+            string sellerName = GetUserNameByID(sellerId);
+            string sellerEmail = GetUserEmailByID(sellerId);
+
+            // Mail Contents to send to buyer
+            string buyerMailSubject = $"Order Placed";
+            string buyerMailMessage = $"Hi,\nThank you for Showing interest in {productName}.\n\nHere are the seller Details:\nName: {sellerName}\nEmail: {sellerEmail}\n\nThank you for using our service. ";
+
+            // Mail Contents to send to seller
+            string sellerMailSubject = $"Order Received";
+            string sellerMailMessage = $"Hi,\nSomeone is interested in purchasing \"{productName}\" from you.\n\nHere are the buyer Details:\nName: {buyerName}\nEmail: {buyerEmail}\n\nThank you for using our service.";
+
+            // Sending Mail to Buyer with Contact Details of Seller
+            _accountService.SendMessageOnMail(buyerEmail, buyerMailSubject, buyerMailMessage);
+
+            // Sending Mail to Seller with Contact Details of Buyer
+            _accountService.SendMessageOnMail(sellerEmail, sellerMailSubject, sellerMailMessage);
             return true;
         }
 
@@ -262,7 +297,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             product.Name = model.Name;
             product.Price = model.Price;
             string description;
-            if (model.Description==null)
+            if (model.Description == null)
             {
                 description = "";
             }
@@ -300,7 +335,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     };
                     _context.Images.Add(image);
                 }
-                
+
             }
             if (model.OptionalImages != null)
             {
@@ -338,11 +373,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
-
-
-
-
-
         public string GetRelativeImagePath(string fullPath)
         {
             // Find the index of "wwwroot" in the full path
@@ -361,27 +391,51 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return string.Empty;
         }
 
+        private string GetUserNameByID(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            string name = $"{user.FirstName} {user.LastName}";
+            return name;
+        }
 
-        //public bool EditProduct(ProductDetailsViewModel model)
-        //{
-        //    var existingProduct = _context.Products
-        //    .Include(p => p.Images) // Include related images
-        //    .FirstOrDefault(p => p.ProductId == model.ProductId);
+        private string GetUserEmailByID(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            return user.EmailAddress;
+        }
 
-        //    existingProduct.Name = model.Name;
-        //    existingProduct.Price = model.Price;
-        //    existingProduct.Description = model.Description;
-        //    existingProduct.ModifiedOn = DateTime.Now;
-        //    existingProduct.Inventory = model.Inventory;
-        //    existingProduct.StatusId = model.StatusId;
-        //    existingProduct.IsPublished = model.IsPublished;
+        private string GetProductNameByID(int id)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            return $"{product.Name}";
+        }
 
-        //    _context.SaveChanges();
-        //    return true;
-        //}
+        public List<OrderDTO> GetOrderHistory(int userId)
+        {
+            List<Order> orders = _context.Orders
+                .Where(s => s.SellerId == userId) // Filtering all orders of specific user
+                .ToList();
 
+            List<OrderDTO> orderDTO = orders.Select(o => new OrderDTO
+            {
+                OrderId = o.OrderId,
+                BuyerId = o.BuyerId,
+                BuyerName = GetUserNameByID(o.BuyerId),
+                SellerId = o.SellerId,
+                SellerName = GetUserNameByID(o.SellerId),
+                ProductId = o.ProductId,
+                ProductName = GetProductNameByID(o.ProductId),
+                OrderTime = o.OrderTime,
+                IsApproved = o.IsApproved,
+            }).ToList();
 
-
-
+            return orderDTO;
+        }
+        public bool ChangeStatusTO(int statusID, int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+            product.StatusId = statusID;
+            return true;
+        }
     }
 }

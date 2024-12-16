@@ -3,6 +3,7 @@ using AmlaMarketPlace.BAL.Agent.Agents.Product;
 using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.DAL.Service.Services.Product;
 using Microsoft.AspNetCore.Authorization;
+using AmlaMarketPlace.Models.DTO;
 
 namespace AmlaMarketPlace.Controllers
 {
@@ -16,7 +17,7 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
+        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 16)
         {
             var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize);
 
@@ -101,7 +102,6 @@ namespace AmlaMarketPlace.Controllers
             return View(userUploadedProducts);
         }
 
-
         [HttpGet]
         public IActionResult EditProduct(int id)
         {
@@ -117,7 +117,17 @@ namespace AmlaMarketPlace.Controllers
         [HttpPost]
         public IActionResult EditProduct(EditProductViewModel model)
         {
-            _productAgent.EditProduct(model);
+            try
+            {
+                _productAgent.EditProduct(model);
+                _productAgent.ChangeStatusTOPending(model.ProductId);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = "An error occurred while editing the product. Please try again later. from controller";
+                return RedirectToAction("Error", new { errorMessage = errorMessage });
+            }
+            
             return RedirectToAction("ProductListing");
         }
 
@@ -159,5 +169,10 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
         }
 
+        public IActionResult OrderHistory(int id)
+        {
+            List<OrderDTO> orderDTOs = _productAgent.GetOrderHistory(id);
+            return View(orderDTOs);
+        }
     }
 }

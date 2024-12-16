@@ -459,7 +459,7 @@ img {
     white-space: nowrap; /* Prevents the text from wrapping to the next line */
     overflow: hidden; /* Hides any text that overflows the container */
     text-overflow: ellipsis; /* Replaces overflow text with "..." */
-    max-width: 200px; /* Sets a maximum width for truncation */
+    max-width: 150px; /* Sets a maximum width for truncation */
     display: inline-block; /* Ensures the element respects the width */
 }
 
@@ -561,3 +561,90 @@ table {
 .approve-reject-btn {
     margin: 5px;
 }
+
+/* Product Details Page CSS Starts */
+
+.product-detail {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    padding-top: 20px;
+    margin: 0;
+}
+
+.main-image img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: transform 0.2s;
+}
+
+    .thumbnail-images img:hover {
+        transform: scale(1.1);
+        border-color: #000;
+    }
+
+.pdp-vertical-line {
+    width: 1.5px;
+    height: 400px;
+    background-color: #000;
+    margin: 0 50px;
+}
+
+.pdp-right-column {
+    flex-grow: 1;
+}
+
+.pdp-crucial-info {
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+    opacity: 50%;
+    letter-spacing: 0.4px;
+}
+
+.product-info {
+    margin-top: 20px;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-price {
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.product-inventory {
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+}
+
+.product-inventory-value {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.description-collapse {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Product Details Page CSS Ends */

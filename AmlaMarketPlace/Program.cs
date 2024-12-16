@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using AmlaMarketPlace.DAL.Service.Services.Product;
 using AmlaMarketPlace.DAL.Service.Services.Admin;
 using AmlaMarketPlace.BAL.Agent.Agents.Admin;
+using AmlaMarketPlace.BAL.Agent.Agents.Profile;
+using AmlaMarketPlace.DAL.Service.Services.Profile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,8 @@ builder.Services.AddScoped<ProductAgent>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<AdminAgent>();
 builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<ProfileAgent>();
+builder.Services.AddScoped<ProfileService>();
 
 // Adding cookie authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
@@ -62,6 +66,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Product}/{action=ProductListing}/{id?}");
 
 app.Run();

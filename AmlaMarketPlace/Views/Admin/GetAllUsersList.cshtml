@@ -8,31 +8,18 @@
 <div class="all-Users-list-div">
     <div class="container">
         <div class="all-Users-list-div-heading">
-            @* <h3>Registered Users</h3> *@
         </div>
-        @* <p>
-            <a asp-action="Create">Create New</a>
-        </p> *@
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Sr. No.</th>
-                        @* <th>@Html.DisplayNameFor(model => model.UserId)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-                        <th>@Html.DisplayNameFor(model => model.LastName)</th> *@
                         <th>Name</th>
                         <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
                         <th>@Html.DisplayNameFor(model => model.IsEmailVerified)</th>
-                        @* <th>@Html.DisplayNameFor(model => model.Password)</th> *@
                         <th>@Html.DisplayNameFor(model => model.MobileNumber)</th>
-                        @* <th>@Html.DisplayNameFor(model => model.IsmobileNumberVerified)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.UserRoleId)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.UserRole)</th> *@
-                        <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
-                        <th>@Html.DisplayNameFor(model => model.EditedOn)</th>
-                        @* <th>@Html.DisplayNameFor(model => model.VerificationToken)</th> *@
-                        @* <th>@Html.DisplayNameFor(model => model.TokenExpiration)</th> *@
+                        @* <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
+                        <th>@Html.DisplayNameFor(model => model.EditedOn)</th> *@
                         <th></th>
                     </tr>
                 </thead>
@@ -44,21 +31,12 @@
                             @{
                                 SRNO++;
                             }
-                            @* <td>@Html.DisplayFor(modelItem => item.UserId)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.FirstName)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.LastName)</td> *@
                             <td>@($"{item.FirstName} {item.LastName}")</td>
                             <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
                             <td>@(item.IsEmailVerified ? "Yes" : "No")</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.Password)</td> *@
                             <td>@(string.IsNullOrEmpty(item.MobileNumber) ? "-" : item.MobileNumber)</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.IsmobileNumberVerified)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.UserRoleId)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.UserRole)</td> *@
-                            <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
-                            <td>@Html.DisplayFor(modelItem => item.EditedOn)</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.VerificationToken)</td> *@
-                            @* <td>@Html.DisplayFor(modelItem => item.TokenExpiration)</td> *@
+                            @* <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EditedOn)</td> *@
                             <td>
                                 @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
