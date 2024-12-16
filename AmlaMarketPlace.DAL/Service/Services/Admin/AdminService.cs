@@ -14,7 +14,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         }
 
         // Utility method to retrieve the user role by ID
-        private string GetUserRoleById(int userRoleId)
+        public string GetUserRoleById(int userRoleId)
         {
             var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
 
@@ -67,6 +67,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 ModifiedOn = product.ModifiedOn,
                 Inventory = product.Inventory,
                 StatusId = product.StatusId,
+                StatusValue = GetStatusValueByStatusId(product.StatusId),
                 IsPublished = product.IsPublished
             }).ToList();
 

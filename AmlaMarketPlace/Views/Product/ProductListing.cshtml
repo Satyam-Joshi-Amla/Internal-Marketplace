@@ -6,6 +6,7 @@
     var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
     var topProducts = products.Take(8).ToList();
     var sliderProducts = products.Skip(8).Take(8).ToList();
+    ViewData["Title"] = "Products";
 }
 
 <div class="sub-layout-div">
