@@ -1,4 +1,6 @@
 ﻿using AmlaMarketPlace.BAL.Agent.Agents.Admin;
+using AmlaMarketPlace.BAL.Agent.Agents.Product;
+using AmlaMarketPlace.Controllers;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +10,12 @@ namespace AmlaMarketPlace.Controllers
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
+        private readonly ProductAgent _productAgent;
         private readonly AdminAgent _adminAgent;
-        public AdminController(AdminAgent adminAgent)
+        public AdminController(AdminAgent adminAgent, ProductAgent productAgent)
         {
             _adminAgent = adminAgent;
+            _productAgent = productAgent;
         }
 
         public IActionResult DashBoard()
@@ -45,6 +49,18 @@ namespace AmlaMarketPlace.Controllers
         {
             var productWaitingForApproval = _adminAgent.ProductsWaitingForApproval();
             return View(productWaitingForApproval);
+        }
+
+        [HttpGet]
+        public IActionResult ProductDetails(int id)
+        {
+            var productDetails = _productAgent.GetIndividualProduct(id);
+            if (productDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetails);
         }
 
         [HttpPost]

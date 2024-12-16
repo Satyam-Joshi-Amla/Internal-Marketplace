@@ -1,0 +1,74 @@
+﻿@model AmlaMarketPlace.Models.ViewModels.Product.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container">
+
+    <div class="product-detail">
+        @if (TempData["OrderPlaced"] != null)
+        {
+            @* using id to send changes in js for timing message *@
+            <div class="alert alert-success" id="orderPlacedMessage">
+                Seller Details sent on your mail successfully!
+            </div>
+        }
+
+        <div class="pdp-left-column">
+            <!-- Main Image -->
+            <div class="main-image">
+                <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="thumbnail-images">
+                @foreach (var image in Model.Images)
+                {
+                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+                }
+            </div>
+        </div>
+
+        <div class="pdp-vertical-line"></div>
+
+        <div class="pdp-right-column">
+            <div class="pdp-crucial-info">
+                <div>Seller: @Model.SellerName</div>
+                <div>Date Posted On: @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
+            </div>
+            <!-- Product Details -->
+            <div class="product-info">
+                <h2 class="product-name">@Model.Name</h2>
+                <p class="product-price">₹ @Model.Price/-</p>
+                <p class="product-inventory">Available Inventory: <span class="product-inventory-value"> @Model.Inventory </span></p>
+                <form asp-action="PlaceOrder" method="post">
+                    <!-- Hidden input field to pass the Product ID -->
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                    <button type="submit" class="btn btn-brand-color">Order Now</button>
+                </form>
+                <div class="description-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <p>
+                        Description
+                    </p>
+                    <ion-icon name="caret-down-outline"></ion-icon>
+                </div>
+                <div class="" id="collapseExample">
+                    @Model.Description
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function changeMainImage(imagePath) {
+        console.log(imagePath);
+        document.getElementById('mainImage').src = imagePath;
+    }
+</script>
+

@@ -121,6 +121,7 @@ namespace AmlaMarketPlace.Controllers
             {
                 _productAgent.EditProduct(model);
                 _productAgent.ChangeStatusTOPending(model.ProductId);
+                _productAgent.UnpublishProductSuccessfully(model.ProductId);
             }
             catch (Exception e)
             {

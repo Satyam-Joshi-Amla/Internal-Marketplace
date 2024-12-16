@@ -435,6 +435,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
             product.StatusId = statusID;
+            _context.SaveChanges();
             return true;
         }
     }
