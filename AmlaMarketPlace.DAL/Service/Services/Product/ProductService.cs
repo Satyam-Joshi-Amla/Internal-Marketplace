@@ -192,7 +192,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
-        public bool PlaceOrder(int productId, int buyerId)
+        public bool PlaceOrder(int productId, int buyerId, int orderQuantity)
         {
             var sellerId = _context.Products.Where(p => p.ProductId == productId).Select(p => p.UserId).FirstOrDefault();
             var order = new Order
@@ -229,6 +229,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             // Sending Mail to Seller with Contact Details of Buyer
             _accountService.SendMessageOnMail(sellerEmail, sellerMailSubject, sellerMailMessage);
+
+            int? inventory = GetInventory(productId);
+            if (inventory >= orderQuantity)
+            {
+                UpdateInventory(productId, (int)(inventory - orderQuantity));
+            }
             return true;
         }
 
@@ -435,8 +441,48 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
             product.StatusId = statusID;
-            _context.SaveChanges();
             return true;
+        }
+
+        public int? GetInventory(int productId)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            return product?.Inventory;
+        }
+
+        public bool UpdateInventory(int productId, int updatedInventory)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            if(product != null)
+            {
+                product.Inventory = updatedInventory;
+                _context.Products.Update(product);
+                _context.SaveChanges();
+            }
+            return true;
+
+        }
+
+        public List<OrderDTO> GetMyRequests(int userId)
+        {
+            List<Order> orders = _context.Orders
+                .Where(s => s.BuyerId == userId) // Filtering all orders of specific user
+                .ToList();
+
+            List<OrderDTO> myOrders = orders.Select(o => new OrderDTO
+            {
+                OrderId = o.OrderId,
+                BuyerId = o.BuyerId,
+                BuyerName = GetUserNameByID(o.BuyerId),
+                SellerId = o.SellerId,
+                SellerName = GetUserNameByID(o.SellerId),
+                ProductId = o.ProductId,
+                ProductName = GetProductNameByID(o.ProductId),
+                OrderTime = o.OrderTime,
+                IsApproved = o.IsApproved,
+            }).ToList();
+
+            return myOrders;
         }
     }
 }

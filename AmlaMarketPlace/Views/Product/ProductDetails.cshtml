@@ -9,7 +9,6 @@
     <div class="product-detail">
         @if (TempData["OrderPlaced"] != null)
         {
-            @* using id to send changes in js for timing message *@
             <div class="alert alert-success" id="orderPlacedMessage">
                 Seller Details sent on your mail successfully!
             </div>
@@ -22,11 +21,17 @@
             </div>
 
             <!-- Thumbnails -->
-            <div class="thumbnail-images">
-                @foreach (var image in Model.Images)
-                {
-                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
-                }
+            <div class="thumbnail-slider-container">
+                <button class="slider-btn left-btn" onclick="slideThumbnails(-1)">&#8249;</button>
+                <div class="thumbnail-images-wrapper">
+                    <div class="thumbnail-images">
+                        @foreach (var image in Model.Images)
+                        {
+                            <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+                        }
+                    </div>
+                </div>
+                <button class="slider-btn right-btn" onclick="slideThumbnails(1)">&#8250;</button>
             </div>
         </div>
 
@@ -42,33 +47,226 @@
                 <h2 class="product-name">@Model.Name</h2>
                 <p class="product-price">₹ @Model.Price/-</p>
                 <p class="product-inventory">Available Inventory: <span class="product-inventory-value"> @Model.Inventory </span></p>
-                <form asp-action="PlaceOrder" method="post">
-                    <!-- Hidden input field to pass the Product ID -->
-                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
 
-                    <button type="submit" class="btn btn-brand-color">Order Now</button>
-                </form>
+                <!-- Quantity Selector -->
+                <div class="quantity-selector">
+                    <button type="button" class="btn btn-secondary" id="decreaseQuantity">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="@Model.Inventory" readonly />
+                    <button type="button" class="btn btn-secondary" id="increaseQuantity">+</button>
+                </div>
+
+                <button type="button" class="btn btn-brand-color mt-3" id="confirmOrderButton" data-bs-toggle="modal" data-bs-target="#orderConfirmationModal">
+                    Order Now
+                </button>
+
                 <div class="description-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <p>
-                        Description
-                    </p>
-                    @* <ion-icon name="caret-down-outline"></ion-icon> *@
+                    <p>Description</p>
+                    <ion-icon name="caret-down-outline"></ion-icon>
                 </div>
                 <div class="" id="collapseExample">
                     @Model.Description
                 </div>
             </div>
-
-
         </div>
     </div>
+</div>
 
+<!-- Modal for Order Confirmation -->
+<div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderConfirmationModalLabel">Confirm Your Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Product Name:</strong> <span id="modalProductName">@Model.Name</span></p>
+                <p><strong>Seller Name:</strong> <span id="modalSellerName">@Model.SellerName</span></p>
+                <p><strong>Quantity:</strong> <span id="modalQuantity">1</span></p>
+                <p><strong>Total Price:</strong> ₹<span id="modalTotalPrice">@Model.Price</span>/-</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="PlaceOrder" method="post">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" id="orderQuantity" name="OrderQuantity" value="1" />
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+<!-- Modal for Order Confirmation -->
+<div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderConfirmationModalLabel">Confirm Your Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Product Name:</strong> <span id="modalProductName">@Model.Name</span></p>
+                <p><strong>Seller Name:</strong> <span id="modalSellerName">@Model.SellerName</span></p>
+                <p><strong>Quantity:</strong> <span id="modalQuantity">1</span></p>
+                <p><strong>Total Price:</strong> ₹<span id="modalTotalPrice">@Model.Price</span>/-</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="PlaceOrder" method="post">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" id="orderQuantity" name="OrderQuantity" value="1" />
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const decreaseBtn = document.getElementById("decreaseQuantity");
+        const increaseBtn = document.getElementById("increaseQuantity");
+        const quantityInput = document.getElementById("quantity");
+        const orderQuantityInput = document.getElementById("orderQuantity");
+        const maxInventory = parseInt(quantityInput.max, 10);
+        const modalQuantity = document.getElementById("modalQuantity");
+        const modalTotalPrice = document.getElementById("modalTotalPrice");
+
+        decreaseBtn.addEventListener("click", function () {
+            let currentValue = parseInt(quantityInput.value, 10);
+            if (currentValue > 1) {
+                currentValue--;
+                quantityInput.value = currentValue;
+                orderQuantityInput.value = currentValue;
+                modalQuantity.textContent = currentValue;
+                modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
+            }
+        });
+
+        increaseBtn.addEventListener("click", function () {
+            let currentValue = parseInt(quantityInput.value, 10);
+            if (currentValue < maxInventory) {
+                currentValue++;
+                quantityInput.value = currentValue;
+                orderQuantityInput.value = currentValue;
+                modalQuantity.textContent = currentValue;
+                modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
+            }
+        });
+
+        // Update modal details on Order Now button click
+        const confirmOrderButton = document.getElementById("confirmOrderButton");
+        confirmOrderButton.addEventListener("click", function () {
+            modalQuantity.textContent = quantityInput.value;
+            modalTotalPrice.textContent = quantityInput.value * parseInt("@Model.Price", 10);
+        });
+    });
+
     function changeMainImage(imagePath) {
-        console.log(imagePath);
         document.getElementById('mainImage').src = imagePath;
+    }
+
+    let currentSlide = 0; // Track the current starting index
+    const thumbnailContainer = document.querySelector('.thumbnail-images');
+    const thumbnailCount = document.querySelectorAll('.thumbnail').length;
+    const maxVisibleThumbnails = 4;
+
+    function slideThumbnails(direction) {
+        const thumbnailWidth = 110; // 100px width + 10px gap
+        const maxSlide = thumbnailCount - maxVisibleThumbnails;
+
+        // Update current slide index
+        currentSlide += direction;
+
+        // Restrict sliding within bounds
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide > maxSlide) currentSlide = maxSlide;
+
+        // Apply the transform for sliding
+        const offset = -currentSlide * thumbnailWidth;
+        thumbnailContainer.style.transform = `translateX(${offset}px)`;
     }
 </script>
 
+<style>
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+        .quantity-selector input {
+            width: 60px;
+            text-align: center;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .quantity-selector button {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+    .thumbnail {
+        max-width: 100px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    .main-image img {
+        max-width: 100%;
+        height: auto;
+
+    }
+
+    .thumbnail-slider-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+        position: relative;
+    }
+
+    /* Buttons for Slider */
+    .slider-btn {
+        background-color: #ccc;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 50%;
+        color: white;
+        background-color: #007bff;
+    }
+
+        .slider-btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Thumbnails Wrapper */
+    .thumbnail-images-wrapper {
+        width: 440px; /* 4 thumbnails * 110px (100px size + 10px gap) */
+        overflow: hidden;
+        position: relative;
+    }
+
+    .thumbnail-images {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        gap: 10px;
+    }
+
+    /* Thumbnail Images */
+    .thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+</style>

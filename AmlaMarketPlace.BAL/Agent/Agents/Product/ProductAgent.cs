@@ -109,9 +109,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             return string.Empty;
         }
 
-        public bool PlaceOrder(int productId, int buyerId)
+        public bool PlaceOrder(int productId, int buyerId, int orderQuantity)
         {
-            _productService.PlaceOrder(productId, buyerId);
+            _productService.PlaceOrder(productId, buyerId, orderQuantity);
             return true;
         }
 
@@ -151,6 +151,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         public bool ChangeStatusTORejected(int productId)
         {
             return _productService.ChangeStatusTO(3, productId);
+        }
+
+        public List<OrderDTO> GetMyRequests(int userId)
+        {
+            return _productService.GetMyRequests(userId);
         }
     }
 }

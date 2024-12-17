@@ -14,7 +14,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Published Products</h6>
     </div>
     <div class="card-body">
-        <div class="table-responsive">            
+        <div class="table-responsive">
             @if (Model == null || !Model.Any()) // Check if the list is empty
             {
                 <div class="alert alert-warning">
@@ -30,15 +30,15 @@
                             <p>@TempData["UnpublishedSuccess"]</p>
                         </div>
                     }
-                    <thead>
-                        <tr>
-                            <th>Sr. No.</th>
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>Inventory</th>
                             <th>Action</th>
-                        </tr>
-                    </thead>
+                    </tr>
+                </thead>
                     @if (Model.Count() > 10)
                     {
                         <tfoot>
@@ -51,12 +51,12 @@
                             </tr>
                         </tfoot>
                     }                    
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
 
-                            <tr>
-                                <td>@SrNo</td>                                
+                        <tr>
+                            <td>@SrNo</td>
                                 <td>
                                     <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                         @Html.DisplayFor(modelItem => item.Name)
@@ -64,7 +64,7 @@
                                 </td>
 
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>
                                     @if (item.StatusValue == "Approved")
                                     {
@@ -75,11 +75,11 @@
                                         </div>
                                     }
                                 </td>
-                            </tr>
+                        </tr>
                             SrNo++; // Incrementing Serial Number
-                        }
-                    </tbody>
-                </table>
+                    }
+                </tbody>
+            </table>
             }
         </div>
     </div>

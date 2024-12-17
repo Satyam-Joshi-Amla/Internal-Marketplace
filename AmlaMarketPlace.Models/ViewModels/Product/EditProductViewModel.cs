@@ -33,7 +33,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Product
         public IFormFile? Image { get; set; }
 
 
-        [OptionalImagesValidation(3, new[] { ".jpg", ".png" })]
+        [OptionalImagesValidation(9, new[] { ".jpg", ".png" })]
         public List<IFormFile>? OptionalImages { get; set; }
 
 
