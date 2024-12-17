@@ -31,6 +31,9 @@ namespace AmlaMarketPlace.Models.DTO
         [Display(Name = "Status")]
         public string StatusValue { get; set; }
 
+        [Display(Name = "Is Published ?")]
         public bool IsPublished { get; set; }
+        [Display(Name = "Comment")]
+        public string CommentForRejecting { get; set; }
     }
 }
