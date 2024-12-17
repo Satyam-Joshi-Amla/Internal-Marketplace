@@ -4,22 +4,28 @@
     var currentPage = (int)ViewData["CurrentPage"];
     var pageSize = (int)ViewData["PageSize"];
     var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+    var topProducts = products.Take(8).ToList();
+    var sliderProducts = products.Skip(8).Take(8).ToList();
     ViewData["Title"] = "Products";
 }
 
 <div class="sub-layout-div">
     <div class="container">
-        <div class="row mt-5">
-            @foreach (var item in products)
+        <div class="div-plp-heading">
+            <h4>Product Listing</h4>
+        </div>
+
+        <!-- Top Products Section -->
+        <div class="row">
+            @foreach (var item in topProducts)
             {
-                <div class="col-md-3 mb-4">                    
+                <div class="col-md-3 mb-4">
                     <a class="product-item-anchor" asp-action="ProductDetails" asp-route-id="@item.ProductId">
                         <div class="card h-100">
                             <img src="@item.ImageLink" class="card-img-top" alt="@item.Name">
                             <div class="card-body">
                                 <h5 class="card-title text-truncate" title="@item.Name">@item.Name</h5>
                                 <p class="card-price">₹ @item.Price/-</p>
-
                             </div>
                         </div>
                     </a>
@@ -27,22 +33,131 @@
             }
         </div>
 
-        <!-- Show View More button if there are more than 8 products -->
-        <div class="pagination text-center">
-            @if (totalPages > 1)
+        <!-- Slider Section -->
+        <div class="slider-container">
+            @if (sliderProducts.Count > 0)
             {
-                @if (currentPage > 1)
-                {
-                    <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage - 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Previous</a>
-                }
+                <div id="product-slider" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                @for (int i = 0; i < sliderProducts.Count; i++)
+                                {
+                                    var item = sliderProducts[i];
+                                    <div class="col-md-3 product-slide">
+                                        <a class="product-item-anchor" asp-action="ProductDetails" asp-route-id="@item.ProductId">
+                                            <div class="card slider-card">
+                                                <img src="@item.ImageLink" class="card-img-top" alt="@item.Name">
+                                                <div class="card-body">
+                                                    <h5 class="card-title text-truncate" title="@item.Name">@item.Name</h5>
+                                                    <p class="card-price">₹ @item.Price/-</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
 
-                <span>Page @currentPage of @totalPages</span>
-
-                @if (currentPage < totalPages)
-                {
-                    <a asp-action="ProductListing" asp-route-pageNumber="@(currentPage + 1)" asp-route-pageSize="@pageSize" class="btn btn-brand-color">Next</a>
-                }
+                    <!-- Navigation controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#product-slider" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#product-slider" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <p>No products to display in the slider.</p>
             }
         </div>
     </div>
 </div>
+
+<style>
+    .slider-container {
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .product-slide {
+        flex: 0 0 25%; /* 4 items per row */
+        max-width: 25%;
+    }
+
+    .slider-card {
+        margin: 0 auto;
+        max-height: 300px;
+    }
+
+        .slider-card img {
+            max-height: 200px;
+            object-fit: contain;
+            width: 100%;
+        }
+
+    .carousel-inner {
+        display: flex;
+        flex-wrap: nowrap; /* Ensure all products are in a single row */
+    }
+
+    .carousel-item {
+        display: flex;
+        justify-content: space-between;
+        transition: transform 0.5s ease;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nextButton = document.querySelector(".carousel-control-next");
+        const prevButton = document.querySelector(".carousel-control-prev");
+        const carouselItem = document.querySelector(".carousel-item");
+        let currentIndex = 0;
+        const visibleItems = 4;  // Number of items to show
+        const totalItems = document.querySelectorAll(".product-slide").length;
+
+        // Update the carousel to show 4 items at a time
+        function updateCarousel() {
+            const start = currentIndex * visibleItems;
+            const end = start + visibleItems;
+            const items = document.querySelectorAll(".product-slide");
+
+            items.forEach((item, index) => {
+                if (index >= start && index < end) {
+                    item.style.display = "block";  // Show items
+                } else {
+                    item.style.display = "none";  // Hide items
+                }
+            });
+        }
+
+        // Move to the next set of items
+        nextButton.addEventListener("click", () => {
+            if (currentIndex < Math.floor(totalItems / visibleItems)) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop back to start
+            }
+            updateCarousel();
+        });
+
+        // Move to the previous set of items
+        prevButton.addEventListener("click", () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = Math.floor(totalItems / visibleItems); // Go to the last set
+            }
+            updateCarousel();
+        });
+
+        // Initialize carousel on page load
+        updateCarousel();
+    });
+</script>
