@@ -20,7 +20,8 @@ namespace AmlaMarketPlace.Controllers
 
         public IActionResult DashBoard()
         {
-            return View();
+            var dashBoardNumbers = _adminAgent.GetDashBoardNumbers();
+            return View(dashBoardNumbers);
         }
 
         [HttpGet]
@@ -64,6 +65,21 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpPost]
+        public IActionResult PutProductToWaitingForApproval(int id)
+        {
+            bool isWaitingForApproved = _adminAgent.MakeWaitingForApproval(id);
+            if (isWaitingForApproved)
+            {
+                TempData["WaitingForApprovedSuccess"] = "Product status changes to Pending.";
+            }
+            else
+            {
+                TempData["WaitingForApprovedFailed"] = "Failed to change Product status to Pending.";
+            }
+            return RedirectToAction("GetAllApprovedProducts", "Admin");
+        }
+
+        [HttpPost]
         public IActionResult Approve(int id)
         {
             bool isApprov = _adminAgent.ApproveProduct(id);
@@ -75,8 +91,6 @@ namespace AmlaMarketPlace.Controllers
             {
                 TempData["FailedToApproved"] = "Failed to approve product.";
             }
-
-
             return RedirectToAction("ProductsWaitingForApproval", "Admin");
         }
 
@@ -122,6 +136,12 @@ namespace AmlaMarketPlace.Controllers
         {
             var productRejected = _adminAgent.GetRejectedProducts();
             return View(productRejected);
+        }
+
+        public IActionResult GetUserDetails(int id)
+        {
+            UserDTO userDetail = _adminAgent.GetUserDetail(id);
+            return View(userDetail);
         }
 
         //[HttpGet]

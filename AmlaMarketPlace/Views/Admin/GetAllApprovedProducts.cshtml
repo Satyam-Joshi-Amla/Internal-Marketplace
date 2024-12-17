@@ -22,10 +22,19 @@
             }
             else
             {
-                <p>
-                    <a asp-action="Create" class="btn btn-primary mb-3">Create New Product</a>
-                </p>
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    @if (TempData["WaitingForApprovedSuccess"] != null) // Check if the list is empty
+                    {
+                        <div class="alert alert-warning">
+                            @TempData["WaitingForApprovedSuccess"]
+                        </div>
+                    }
+                    @if (TempData["WaitingForApprovedFailed"] != null) // Check if the list is empty
+                    {
+                        <div class="alert alert-warning">
+                            @TempData["WaitingForApprovedFailed"]
+                        </div>
+                    }
                     <thead>
                         <tr>
                             <th>Sr. No.</th>
@@ -35,6 +44,7 @@
                             <th>@Html.DisplayNameFor(model => model.Inventory)</th>
                             <th>@Html.DisplayNameFor(model => model.StatusValue)</th>
                             <th>@Html.DisplayNameFor(model => model.IsPublished)</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +61,38 @@
                                 <td class="text-truncate" style="max-width: 300px;">@Html.DisplayFor(modelItem => item.Description)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
-                                <td>@Html.DisplayFor(modelItem => item.IsPublished)</td>
+                                <td>
+                                    @if(item.IsPublished)
+                                    {
+                                        <span class="text-success">Published</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">No</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.StatusValue == "Approved")
+                                    {
+                                        @if (item.IsPublished)
+                                        {
+                                            <div class="d-flex">
+                                                <form asp-action="Unpublish" asp-route-id="@item.ProductId" method="post">
+                                                    <button type="submit" class="btn btn-danger approve-reject-btn mx-2">Unpublish</button>
+                                                </form>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex">
+                                                <form asp-action="PutProductToWaitingForApproval" asp-route-id="@item.ProductId" method="post">
+                                                    <button type="submit" class="btn btn-warning approve-reject-btn mx-2">Revert</button>
+                                                </form>
+                                            </div>
+                                        }
+                                    }
+                                </td>
+
                             </tr>
                             SrNo++; // Incrementing Serial Number
                         }

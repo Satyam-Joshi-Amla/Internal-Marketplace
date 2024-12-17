@@ -1,24 +1,26 @@
 ﻿@model IEnumerable<AmlaMarketPlace.Models.DTO.UserDTO>
 
 @{
-    ViewData["Title"] = "GetAllUsersList";
+    ViewData["Title"] = "All Users";
     int SRNO = 1;
 }
 
-<div class="all-Users-list-div">
-    <div class="container">
-        <div class="all-Users-list-div-heading">
-        </div>
+<!-- Begin Page Content -->
+<!-- Page Heading -->
+<!-- DataTables Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
+    </div>
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Sr. No.</th>
                         <th>Name</th>
                         <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
-                        <th>@Html.DisplayNameFor(model => model.IsEmailVerified)</th>
                         <th>@Html.DisplayNameFor(model => model.MobileNumber)</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,17 +28,21 @@
                     {
                         <tr>
                             <td>@SRNO</td>
-                            @{
-                                SRNO++;
-                            }
-                            <td>@($"{item.FirstName} {item.LastName}")</td>
+                            <td>
+                                <a href="@Url.Action("GetUserDetails", "Admin", new { id = item.UserId })">
+                                    @($"{item.FirstName} {item.LastName}")
+                                </a>
+                            </td>
+
                             <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
-                            <td>@(item.IsEmailVerified ? "Yes" : "No")</td>
-                            <td>@(string.IsNullOrEmpty(item.MobileNumber) ? "-" : item.MobileNumber)</td>                            
+                            <td>@(string.IsNullOrEmpty(item.MobileNumber) ? "-" : item.MobileNumber)</td>
                         </tr>
+                        SRNO++;
                     }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<!-- /.container-fluid -->
+<!-- End of Main Content -->

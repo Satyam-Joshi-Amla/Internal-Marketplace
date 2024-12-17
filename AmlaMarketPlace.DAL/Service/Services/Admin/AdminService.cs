@@ -78,7 +78,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         {
             // Fetching only pending products from the database
             var products = _context.Products
-                .Where(product => product.StatusId == 1 )
+                .Where(product => product.StatusId == 1)
                 .ToList();
 
             // Mapping the filtered products to ProductDTO
@@ -132,6 +132,25 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
             return status != null ? status.StatusValue : "pending";
         }
 
+        public bool MakeWaitingForApproval(int productID)
+        {
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
+
+            //Status ID = 1 means Pending
+            //Status ID = 2 means Approved
+            //Status ID = 3 means Rejected
+
+            if (product != null)
+            {
+                product.StatusId = 1;
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool ApproveProduct(int productID)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
@@ -151,7 +170,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 return false;
             }
         }
-
         public bool RejectProduct(int productId, string rejectComment)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -197,10 +215,35 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 Inventory = product.Inventory,
                 StatusId = product.StatusId,
                 StatusValue = GetStatusValueByStatusId(product.StatusId),
-                IsPublished = product.IsPublished
+                IsPublished = product.IsPublished,
+                CommentForRejecting = _context.ProductComments
+                .Where(comment => comment.ProductId == product.ProductId)
+                .Select(comment => comment.RejectedComments)
+                .FirstOrDefault()
             }).ToList();
 
             return productDTO;
+        }
+
+        public int TotalProductsCount()
+        {
+            return _context.Products.Count();
+        }
+        public int PendingProductsCount()
+        {
+            return _context.Products.Where(p => p.StatusId == 1).Count();
+        }
+        public int ApprovedProductsCount()
+        {
+            return _context.Products.Where(p => p.StatusId == 2).Count();
+        }
+        public int RejectedProductsCount()
+        {
+            return _context.Products.Where(p => p.StatusId == 3).Count();
+        }
+        public int PublishedProductsCount()
+        {
+            return _context.Products.Where(p => p.IsPublished == true).Count();
         }
     }
 }

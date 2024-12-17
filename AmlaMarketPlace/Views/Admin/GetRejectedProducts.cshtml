@@ -6,6 +6,103 @@
 }
 
 <!-- Begin Page Content -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">Rejected Products</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            @if (Model == null || !Model.Any()) // Check if the list is empty
+            {
+                <div class="alert alert-warning">
+                    No rejected products found.
+                </div>
+            }
+            else
+            {
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Inventory</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@SrNo</td>
+                                <td>
+                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
+                                </td>
+                                <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
+                                <td class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
+                                <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#commentModal"
+                                            data-comment="@item.CommentForRejecting">
+                                        View Comment
+                                    </button>
+                                </td>
+                            </tr>
+                            SrNo++;
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Viewing Comment -->
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">Rejection Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="rejectionComment"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Attach an event listener to the modal to display the appropriate comment
+    var commentModal = document.getElementById('commentModal');
+    commentModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget;
+        // Extract the comment from data-* attributes
+        var comment = button.getAttribute('data-comment');
+        // Update the modal's content
+        var modalBody = commentModal.querySelector('#rejectionComment');
+        modalBody.textContent = comment;
+    });
+</script>
+
+
+@* @model IEnumerable<AmlaMarketPlace.Models.DTO.ProductDTO>
+
+@{
+    ViewData["Title"] = "Rejected Products";
+    int SrNo = 1;
+}
+
+<!-- Begin Page Content -->
 <!-- Page Heading -->
 <!-- DataTables Example -->
 <div class="card shadow mb-4">
@@ -31,6 +128,7 @@
                             <th>@Html.DisplayNameFor(model => model.Description)</th>
                             <th>@Html.DisplayNameFor(model => model.Inventory)</th>
                             <th>@Html.DisplayNameFor(model => model.StatusValue)</th>
+                            <th>@Html.DisplayNameFor(model => model.CommentForRejecting)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +145,10 @@
                                 <td class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
+                                <td class="text-truncate" style="max-width: 150px;" title="@item.CommentForRejecting">
+                                    @Html.DisplayFor(modelItem => item.CommentForRejecting)
+                                </td>
+
                             </tr>
                             SrNo++;
                         }
@@ -57,4 +159,4 @@
     </div>
 </div>
 <!-- /.container-fluid -->
-<!-- End of Main Content -->
+<!-- End of Main Content --> *@

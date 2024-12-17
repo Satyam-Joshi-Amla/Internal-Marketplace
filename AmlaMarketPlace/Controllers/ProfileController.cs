@@ -13,7 +13,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult Details(int id)
         {
             var user = _profileAgent.GetUser(id);
-            return View();
+            return View(user);
         }
     }
 }
