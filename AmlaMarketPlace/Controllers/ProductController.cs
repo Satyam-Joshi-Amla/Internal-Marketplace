@@ -173,6 +173,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult OrderHistory(int id)
         {
             List<OrderDTO> orderDTOs = _productAgent.GetOrderHistory(id);
+            ViewData["EnableUserSidePanel"] = true;
             return View(orderDTOs);
         }
 
@@ -180,6 +181,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult GetMyRequests()
         {
             int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            ViewData["EnableUserSidePanel"] = true;
             List<OrderDTO> MyRequests = _productAgent.GetMyRequests(userId);
             return View(MyRequests);
         }

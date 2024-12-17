@@ -14,63 +14,63 @@
     <div class="right-column">
         @if (TempData["SignUpMessage"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["SignUpMessage"]
             </div>
         }
 
         @if (TempData["invalidCredentials"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["invalidCredentials"]
             </div>
         }
 
         @if (TempData["emailNotRegistered"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["emailNotRegistered"]
             </div>
         }
 
         @if (TempData["UnexpectedInput"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["UnexpectedInput"]
             </div>
         }        
 
         @if (TempData["VerificationLink"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["VerificationLink"]
             </div>
         }
 
         @if (TempData["emailNotVerified"] != null)
         {
-            <div class="alert alert-info">
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["emailNotVerified"]
             </div>
         }        
 
         @if (TempData["SuccessMessage"] != null)
         {
-            <div class="alert alert-success">
+            <div class="alert alert-success m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["SuccessMessage"]
             </div>
         }
 
         @if (TempData["SignOutMessage"] != null)
         {
-            <div class="alert alert-success">
+            <div class="alert alert-success m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["SignOutMessage"]
             </div>
         }
 
         @if (TempData["ErrorMessage"] != null)
         {
-            <div class="alert alert-danger">
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["ErrorMessage"]
             </div>
         }

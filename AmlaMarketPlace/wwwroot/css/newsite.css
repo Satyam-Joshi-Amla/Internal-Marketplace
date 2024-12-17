@@ -1,9 +1,15 @@
 ﻿* {
-    
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
     
+}
+
+.bg-black {
+    background-color: #000000 !important;
 }
 
 header,
@@ -16,11 +22,6 @@ footer {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 0;
 }
 
 /* ---- Div in which contents render */
@@ -445,14 +446,6 @@ img {
     font-weight: bold;
     color: #000;
     margin: 0;
-}
-
-.text-truncate {
-    white-space: nowrap; /* Prevents the text from wrapping to the next line */
-    overflow: hidden; /* Hides any text that overflows the container */
-    text-overflow: ellipsis; /* Replaces overflow text with "..." */
-    max-width: 150px; /* Sets a maximum width for truncation */
-    display: inline-block; /* Ensures the element respects the width */
 }
 
 /* Tool tip Styling (the text box which will appear when we will hover on "..." of product name) */

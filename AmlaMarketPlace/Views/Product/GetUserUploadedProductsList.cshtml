@@ -5,78 +5,130 @@
     int SrNo = 1;
 }
 
-<div class="all-Users-list-div">
-    <div class="container">
-        <div class="all-Users-list-div-heading">
-            <h3>List of Uploaded Products</h3>
-        </div>
+<!-- Begin Page Content -->
+<!-- Page Heading -->
+<div class="mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">User Products</h6>
+    </div>
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Sr. No.</th>
-                        <th>@Html.DisplayNameFor(model => model.Name)</th>
-                        <th>@Html.DisplayNameFor(model => model.Price)</th>
-                        <th>@Html.DisplayNameFor(model => model.Description)</th>
-                        <th>@Html.DisplayNameFor(model => model.Inventory)</th>
-                        <th>@Html.DisplayNameFor(model => model.StatusValue)</th>
-                        <th></th>
-                        <th>Actions</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            @if (Model == null || !Model.Any()) // Check if the list is empty
+            {
+                <div class="alert alert-warning">
+                    No products uploaded by users.
+                </div>
+            }
+            else
+            {
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        @if (TempData["PublishedSuccess"] != null)
+                        {
+                            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+                                @TempData["PublishedSuccess"]
+                            </div>
+                        }
+                        @if (TempData["PublishedFailed"] != null)
+                        {
+                            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+                                @TempData["PublishedFailed"]
+                            </div>
+                        }
+                        @if (TempData["UnpublishedSuccess"] != null)
+                        {
+                            <div class="alert alert-warning text-danger m-3 fade show" role="alert" id="tempDataMessage">
+                                @TempData["UnpublishedSuccess"]
+                            </div>
+                        }
+                        @if (TempData["unpublishedFailed"] != null)
+                        {
+                            <div class="alert alert-warning text-danger m-3 fade show" role="alert" id="tempDataMessage">
+                                @TempData["unpublishedFailed"]
+                            </div>
+                        }
                         <tr>
-                            <td>@SrNo</td>
-                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                            <td>
-                                @(item.Description.Length > 50
-                                    ? item.Description.Substring(0, 50) + "..."
-                                    : item.Description)
-                            </td>
-                            @* <td>@Html.DisplayFor(modelItem => item.Description)</td> *@
-                            <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
-                            <td>                                
-                                @if (item.StatusValue == "Rejected")
-                                {
-                                    <span class="bg-warning">@Html.DisplayFor(modelItem => item.StatusValue)</span>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(modelItem => item.StatusValue)
-                                }
-                            </td>
-                            <td>
-                                <form asp-action="EditProduct" asp-route-id="@item.ProductId" method="get">
-                                    <button type="submit" class="btn btn-brand-color">Edit</button>
-                                </form>
-                            </td>
-                            <td>
-                                @if (item.StatusValue == "Approved")
-                                {
-                                    if (item.IsPublished == false)
+                            <th style="max-width:20px;">Sr. No.</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Inventory</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count() > 10) // Add footer if there are more than 10 rows
+                    {
+                        <tfoot>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                                <th>Inventory</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                    }
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@SrNo</td>
+                                <td>
+                                    <a title="View Product" class="nav-link text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
+                                </td>
+                                <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
+                                <td title="@item.Description" class="text-truncate">@Html.DisplayFor(modelItem => item.Description)</td>                                
+                                <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
+                                <td>
+                                    @if (item.StatusValue == "Rejected")
                                     {
-                                        <form asp-action="Publish" asp-route-id="@item.ProductId" method="post">
-                                            <button type="submit" class="btn btn-brand-color">Publish</button>
-                                        </form>
+                                        <span class="text-danger px-2 py-1 rounded">@Html.DisplayFor(modelItem => item.StatusValue)</span>
                                     }
                                     else
                                     {
-                                        <form asp-action="Unpublish" asp-route-id="@item.ProductId" method="post">
-                                            <button type="submit" class="btn btn-danger">Unpublish</button>
-                                        </form>
+                                        <span class="text-success">@Html.DisplayFor(modelItem => item.StatusValue)</span>
                                     }
-                                }
-
-                        </tr>
-                        SrNo++; // Increment Serial Number
-                    }
-                </tbody>
-            </table>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-around">
+                                        <!-- Edit Button -->
+                                        <form asp-action="EditProduct" asp-route-id="@item.ProductId" method="get">
+                                            <button type="submit" class="btn btn-info btn-sm mx-1">Edit</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (item.StatusValue == "Approved")
+                                    {
+                                        if (item.IsPublished == false)
+                                        {
+                                            <!-- Publish Button -->
+                                            <form asp-action="Publish" asp-route-id="@item.ProductId" method="post">
+                                                <button type="submit" class="btn btn-success btn-sm mx-1">Publish</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <!-- Unpublish Button -->
+                                            <form asp-action="Unpublish" asp-route-id="@item.ProductId" method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm mx-1">Unpublish</button>
+                                            </form>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                            SrNo++; // Incrementing Serial Number
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
 </div>
-
+<!-- /.container-fluid -->
+<!-- End of Main Content -->

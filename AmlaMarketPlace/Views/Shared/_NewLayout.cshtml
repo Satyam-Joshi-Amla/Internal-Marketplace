@@ -23,17 +23,15 @@
     <link href="@Url.Content("~/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">            
 </head>
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         @if (ViewData["EnableUserSidePanel"]?.ToString() == "True")
         {
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-black sidebar sidebar-dark accordion" id="accordionSidebar">
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("DashBoard", "Admin")">
-                    <div class="sidebar-brand-icon p-2">
+                <a class="my-3 sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("DashBoard", "Admin")">
+                    <div class="sidebar-brand-icon">
                         <img class="img-fluid" src="~/images/layoutimages/amla_marketplace.png" />
                     </div>
                     <!-- <div class="sidebar-brand-text mx-3">Amla Marketplace</div> -->
@@ -44,7 +42,7 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("DashBoard", "Admin")">
+                    <a class="nav-link" href="#" @* href="@Url.Action("#", "#")" *@>
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -67,15 +65,14 @@
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">View Products:</h6>
-                            <a class="collapse-item" href="@Url.Action("ProductsWaitingForApproval", "Admin")">Waiting for Approval</a>
-                            <a class="collapse-item" href="@Url.Action("GetAllApprovedProducts", "Admin")">Approved Products</a>
-                            <a class="collapse-item" href="@Url.Action("GetAllPublishedProducts", "Admin")">Published Products</a>
-                            <a class="collapse-item" href="@Url.Action("GetRejectedProducts", "Admin")">Rejected Products</a>
+                            <a class="collapse-item" href="@Url.Action("AddProduct", "Product")">Add Product</a>
+                            <a class="collapse-item" href="@Url.Action("GetUserUploadedProductsList", "Product", new { id = @Convert.ToInt32(User.FindFirst("UserId")?.Value) })">Your Products</a>
+                            <a class="collapse-item" href="@Url.Action("OrderHistory", "Product", new { id = @Convert.ToInt32(User.FindFirst("UserId")?.Value) })">Order Requests</a>
                         </div>
                     </div>
                 </li>
 
-                <!-- Divider -->
+                @* <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
@@ -95,7 +92,7 @@
                             <a class="collapse-item" href="@Url.Action("GetAllUsersList", "Admin")">All Users</a>
                         </div>
                     </div>
-                </li>
+                </li> *@
 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -114,20 +111,24 @@
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-dark bg-gradient-primary topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand bg-black bg-gradient-primary topbar static-top shadow py-5">
 
-                    @if (User.Identity.IsAuthenticated)
+                    @if (ViewData["EnableUserSidePanel"]?.ToString() != "True")
                     {
-                        <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
-                            <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
-                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
+                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                            </a>
+                        }
                     }
-                    else
-                    {
-                        <a class="" asp-area="" asp-controller="Home" asp-action="Index">
-                            <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
-                        </a>
-                    }
+                    
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <!-- Code Removed - Please refer to Admin layout for this part of code -->
@@ -138,39 +139,44 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <!-- Welcome Message  -->
-                        <div class="mx-3 text-light">Welcome @User.Identity.Name!</div>
+                        <div class="mx-3 text-uppercase">Welcome @User.Identity.Name!</div>
                     }
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
                         <!-- Nav Item - Alerts -->
                         <!-- Code Removed - Please refer to Admin layout for this part of code -->
 
                         <!-- Nav Item - User Information -->
                         @if (User.Identity.IsAuthenticated) 
                         {
+                            <li class="nav-item">
+                                <a title="Go to all product page" class="nav-link" asp-area="" asp-controller="Product" asp-action="ProductListing">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a title="Sell your products on Amla Marketplace." class="nav-link" asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
+                            </li>
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.Name</span>
-                                    <i class="fas fa-user-tie fa-lg mr-2 text-gray-400"></i>
+                                    <span class="mr-2 d-none d-lg-inline">@User.Identity.Name</span>
+                                    <i class="fas fa-user fa-lg mr-2 text-gray-400"></i>
                                     @*  <img class="img-profile rounded-circle"
-                                src="img/undraw_profile.svg"> *@
+                                        src="img/undraw_profile.svg"> *@
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
                                     <a class="dropdown-item"
-                                       asp-controller="Admin" asp-action="GetUserDetails"
+                                       asp-controller="Profile" asp-action="Details"
                                        asp-route-id="@Convert.ToInt32(User.FindFirst("UserId")?.Value)">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>
-                                    @* <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                                </a> *@
+                                    <a class="dropdown-item" asp-controller="Product" asp-action="GetMyRequests">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Your Orders
+                                    </a>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Signout
@@ -178,13 +184,31 @@
                                 </div>
                             </li>
                         }
-
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">ABOUT</a>
+                            </li>
+                            @if (ViewData["Title"]?.ToString() != "Sign up")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignUp">SIGN UP</a>
+                                </li>
+                            }
+                            @if (ViewData["Title"]?.ToString() != "Sign in")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignIn">SIGN IN</a>
+                                </li>
+                            }
+                        }
                     </ul>
 
                 </nav>
                 <!-- End of Topbar -->
+
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="main-div">
                     <main role="main">
                         @RenderBody()
                     </main>
@@ -194,10 +218,46 @@
             </div>
             <!-- End of Main Content -->
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Amla Marketplace</span>
+            <footer>
+                <div class="container footer-div">
+                    <div class="footer-first-row">
+                        <div class="footer-first-row-individual-column">
+                            <h6>Get to know us</h6>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="About">About us</a>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
+                        </div>
+
+                        <div class="footer-first-row-individual-column">
+                            <h6>Contact Us</h6>
+                            <!-- Button that opens the default email client with the specified email -->
+                            <div class="footer-icon-div">
+                                <a href="#" class="btn btn-brand-color">
+                                    <ion-icon name="call-outline"></ion-icon> 1800 1080
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="footer-first-row-individual-column">
+                            <h6>Sell on Amla Marketplace</h6>
+                            <a class="footer-link" title="Sell your products on Amla Marketplace." asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
+                        </div>
+
+                        <div class="footer-vertical-line"></div>
+
+                        <div class="footer-first-row-individual-column registered-address-div">
+                            <h6>Registered Address</h6>
+                            <p>Plot No. 2, Ground Floor South Ambazari, Ranapratap Nagar, Nagpur, Maharashtra, India, 440022.</p>
+                        </div>
+                    </div>
+
+                    <div class="row footer-second-row">
+                        <span class="copyright-footer-text">
+                            &copy; 2024 - Amla Marketplace -
+                            <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                Privacy
+                            </a>
+                        </span>
                     </div>
                 </div>
             </footer>
@@ -246,6 +306,9 @@
             });
         });
     </script>
+    
+    <!-- Site.js -->
+    <script src="~/js/site.js"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
@@ -256,7 +319,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
-
 
     <!-- For View Comments BootStrap -->
     <!-- Include Bootstrap 5 JavaScript Bundle -->
