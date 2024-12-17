@@ -1,0 +1,642 @@
+﻿* {
+    
+}
+
+@media (min-width: 768px) {
+    
+}
+
+header,
+footer {
+    background-color: #000;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---- Div in which contents render */
+.main-div {
+    padding: 2% auto;
+    min-height: 90vh;
+    min-width: 100%;
+    /* layout background color */
+    /*background-color: #6BC04B;*/
+    overflow: hidden;
+}
+
+    .main-div.container {
+        padding: 0;
+    }
+
+/* ------ Brand Things Starts ------ */
+
+.btn-brand-color {
+    background-color: #6BC04B;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+    .btn-brand-color:hover {
+        background-color: #478032;
+        border-radius: 10px;
+        color: #ffffff;
+    }
+
+/* ------ Brand Things Ends ------ */
+
+/* --------- custom-sub-layout css style to accomplish white background starts ---------- */
+
+.sub-layout-div {
+    width: 100%;
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+}
+
+
+    .sub-layout-div .container {
+        max-width: 1200px;
+    }
+
+/* ----------- custom-sub-layout css style to accomplish white background ends ---------- */
+
+/* ------ Navigation Menu CSS Starts ------ */
+
+.brand-logo {
+    width: 150px;
+}
+
+.container-fluid {
+    max-width: 1400px;
+}
+
+.navbar-collapse.collapse {
+    margin-right: 4%;
+}
+
+.nav-link {
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #fff;
+    letter-spacing: 2px;
+}
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #6BC04B;
+        text-decoration: none;
+    }
+
+.navbar.navbar-expand-sm {
+    padding: 0;
+}
+
+/* ------ Starts ------ For toggle button to have white color lines (for mobile view) ----------- */
+/* Ensure the navbar toggle has no background or border */
+.navbar-toggler {
+    background-color: transparent !important; /* Transparent background */
+    border: none !important; /* Remove border */
+}
+
+/* Style the navbar toggle icon */
+.navbar-toggler-icon {
+    display: block;
+    position: relative;
+    width: 30px; /* Set width */
+    height: 22px; /* Set height */
+    background: transparent; /* Remove any background */
+    padding: 0; /* Remove padding */
+}
+
+    .navbar-toggler-icon .line {
+        position: absolute;
+        width: 100%;
+        height: 3px; /* Set thickness of the bars */
+        background-color: white; /* Make bars white */
+        transition: all 0.3s ease;
+    }
+
+        .navbar-toggler-icon .line:nth-child(1) {
+            top: 0;
+        }
+
+        .navbar-toggler-icon .line:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .navbar-toggler-icon .line:nth-child(3) {
+            bottom: 0;
+        }
+
+    /* Add any additional effects for the hamburger menu animation when toggling */
+    .navbar-toggler-icon.collapsed .line:nth-child(1) {
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    .navbar-toggler-icon.collapsed .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .navbar-toggler-icon.collapsed .line:nth-child(3) {
+        bottom: 50%;
+        transform: translateY(50%) rotate(-45deg);
+    }
+
+
+/* ------ Ends ------ For toggle button to have white color lines ----------- */
+
+/* ------------ Side Panel CSS starts ------------ */
+
+.sidebar {
+    display: block;
+    visibility: visible;
+}
+
+.list-group {
+}
+
+.list-group-item {
+}
+
+    .list-group-item a {
+        text-decoration: none;
+    }
+
+
+/* ------------ Side Panel CSS Endss ------------ */
+/* ------ Navigation Menu CSS Ends ------ */
+/* ------ Footer CSS Starts ------ */
+.footer-div {
+    font-size: 12px;
+    color: #4d4d4d;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    max-width: 1080px;
+}
+
+    .footer-div h6 {
+        margin: 10px 0;
+        padding: 0;
+        color: #acacac;
+    }
+
+    .footer-div p {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        color: #6f6f6f;
+    }
+
+.privacy-link,
+.footer-link {
+    text-decoration: none;
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+    .privacy-link:hover {
+        color: #fff;
+    }
+
+    .footer-link:hover {
+        color: #fff;
+    }
+
+.footer-first-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.footer-first-row-individual-column {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-vertical-line {
+    width: 1px;
+    height: 70px;
+    margin: 5% 0;
+    background-color: #6f6f6f;
+}
+
+.registered-address-div {
+    max-width: 200px; /* Limits the width of the container */
+    word-wrap: break-word; /* Allows long text to wrap to the next line */
+    hyphens: auto; /* Optionally, allows automatic hyphenation for better word splitting */
+}
+
+.footer-second-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.copyright-footer-text {
+    font-size: 13px;
+    text-align: right;
+}
+
+/* ------ Footer CSS Ends ------ */
+/* ------------------ Sign In starts ----------------------- */
+.sigin-div {
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+    background-color: #6BC04B;
+}
+
+.left-column {
+    letter-spacing: 3px;
+}
+
+.signin-page-vertical-line {
+    width: 2px;
+    height: 50%;
+    background-color: white;
+}
+
+.right-column {
+    width: 30%;
+    padding: 2%;
+    border-radius: 6%;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 5%;
+}
+
+.sigin-in-box-brand-logo {
+    width: 40%;
+}
+
+@media (max-width: 768px) {
+    .sigin-div {
+    }
+
+    .right-column {
+    }
+
+    .vertical-line {
+    }
+}
+
+/* ------------------ Sign in ends  ----------------------- */
+
+/* ------------------ Sign up starts  ----------------------- */
+
+label.required::after { /* Adding Asterisk if there are required input field. */
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
+.signup-div-main-container {
+    background-color: #6BC04B;
+    padding: 20px;
+    height: 100vh;
+}
+
+.signup-div {
+    max-width: 600px;
+    margin: 4% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3%;
+    background-color: #ffffff;
+}
+
+/* Form layout with CSS Grid */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 1rem; /* Gap between columns */
+}
+
+/* Ensuring the form columns have equal width */
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input fields */
+input.form-control {
+    padding: 10px;
+}
+
+/* For responsiveness */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr; /* Stack columns for small screens */
+    }
+}
+
+/* ------------------ Sign up ends  ----------------------- */
+
+/* ------------------ About Page Starts  ----------------------- */
+
+.div-about-heading {
+    padding: 50px;
+}
+
+.about-heading {
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    line-height: 1.6;
+}
+
+img {
+    object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-page .row {
+        text-align: center; /* Center-align content on smaller screens */
+    }
+}
+
+/* ------------------ About Page Ends  ----------------------- */
+
+/* -------- Home Index starts  -------- */
+
+.home-index-div {
+    background-color: #6BC04B;
+    height: 100vh;
+}
+
+.home-index-welcome-div {
+    color: #fff;
+    text-align: center;
+    padding: 50px;
+}
+
+/* -------- Home Index Ends  -------- */
+
+/* -------- Product Listing Page CSS Starts  -------- */
+
+.div-plp-heading {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    font-family: inherit;
+}
+
+.card {
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    /*border-radius: 5px;*/
+    border: none;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+    .card:hover {
+        opacity: 0.8; /* Slightly reduce the opacity on hover */
+        transform: scale(1.05); /* Slightly scale up the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+    }
+
+.product-item-anchor {
+    text-decoration: none;
+}
+
+.card-img-top {
+    height: 350px;
+    object-fit: cover;
+    margin: 0;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    color: #343434;
+    margin: 4px;
+}
+
+.card-text {
+}
+
+.card-price {
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+}
+
+.text-truncate {
+    white-space: nowrap; /* Prevents the text from wrapping to the next line */
+    overflow: hidden; /* Hides any text that overflows the container */
+    text-overflow: ellipsis; /* Replaces overflow text with "..." */
+    max-width: 150px; /* Sets a maximum width for truncation */
+    display: inline-block; /* Ensures the element respects the width */
+}
+
+/* Tool tip Styling (the text box which will appear when we will hover on "..." of product name) */
+/*.card-title {
+    position: relative;
+}
+
+    .card-title:hover::after {
+        content: attr(title);*/ /* Use the title attribute's content */
+/*position: absolute;
+        background-color: #000;*/ /* Black background */
+/*color: #fff;*/ /* White text */
+/*padding: 5px 10px;*/ /* Add some padding */
+/*border-radius: 5px;*/ /* Rounded corners */
+/*top: 100%;*/ /* Position below the text */
+/*left: 50%;*/ /* Center align */
+/*transform: translateX(-50%);
+        white-space: nowrap;*/ /* Prevent line breaks */
+/*z-index: 10;
+        opacity: 1;*/ /* Make visible */
+/*pointer-events: none;*/ /* Prevent interactions */
+/*}
+
+    .card-title:hover::before {
+        visibility: hidden;*/ /* Hide the default browser tooltip */
+/*}*/
+
+
+.view-more-btn {
+    padding-bottom: 20px;
+}
+
+/* -------- Product Listing Page CSS Ends  -------- */
+
+/* -------- Add Product CSS Starts  -------- */
+
+.sub-layout-div-add-product-div-custom {
+    padding: 10px;
+}
+
+.add-product-mainDiv {
+    max-width: 800px;
+    margin: 4% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3%;
+    background-color: #ffffff;
+}
+
+.add-product-div-heading {
+    padding-top: 20px;
+}
+
+.add-and-close-button {
+    margin: 10px 0;
+}
+
+/* -------- Add Product CSS Ends  -------- */
+
+/* -------- Profile Details Page CSS Starts  -------- */
+
+.profile-details-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-details-div-heading {
+}
+
+/* -------- Profile Details Page CSS Ends  -------- */
+
+/* -------- List of all users CSS Stars  -------- */
+
+.table td, .table th {
+    word-wrap: break-word;
+    max-width: 200px; /* Adjust as necessary */
+}
+
+table {
+    width: 100%;
+    table-layout: fixed; /* Ensures proper column widths */
+    text-align: center;
+}
+
+.all-Users-list-div {
+    background-color: #fff;
+}
+
+.all-Users-list-div-heading {
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+/* -------- List of all users CSS Ends  -------- */
+
+
+.approve-reject-btn {
+    margin: 5px;
+}
+
+/* Product Details Page CSS Starts */
+
+.product-detail {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    padding-top: 20px;
+    margin: 0;
+}
+
+.main-image img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: transform 0.2s;
+}
+
+    .thumbnail-images img:hover {
+        transform: scale(1.1);
+        border-color: #000;
+    }
+
+.pdp-vertical-line {
+    width: 1.5px;
+    height: 400px;
+    background-color: #000;
+    margin: 0 50px;
+}
+
+.pdp-right-column {
+    flex-grow: 1;
+}
+
+.pdp-crucial-info {
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+    opacity: 50%;
+    letter-spacing: 0.4px;
+}
+
+.product-info {
+    margin-top: 20px;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-price {
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.product-inventory {
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+}
+
+.product-inventory-value {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.description-collapse {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Product Details Page CSS Ends */

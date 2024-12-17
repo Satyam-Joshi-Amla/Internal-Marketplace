@@ -16,6 +16,9 @@
     <!-- Custom styles for this template-->
     <link href="@Url.Content("~/css/sb-admin-2.css")" rel="stylesheet">
 
+    <!-- New CSS File -->
+    <link href="~/css/newsite.css" rel="stylesheet" />
+
     <!-- DataTables CSS -->
     <link href="@Url.Content("~/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">            
 </head>
@@ -113,12 +116,21 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-dark bg-gradient-primary topbar mb-4 static-top shadow">
 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
+                            <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                        </a>
+                    }
+
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <!-- Code Removed - Please refer to Admin layout for this part of code -->
 
                     <!-- Topbar Search -->
                     <!-- Code Removed - Please refer to Admin layout for this part of code -->
