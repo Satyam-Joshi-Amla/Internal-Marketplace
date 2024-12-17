@@ -1,0 +1,51 @@
+﻿@model AmlaMarketPlace.Models.DTO.UserDTO
+
+@{
+    ViewData["Title"] = "User Detail";
+}
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">
+    @($"{Model.FirstName} {Model.LastName}")
+</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <dl class="row">
+            <dt class="col-sm-4">@Html.LabelFor(model => model.FirstName)</dt>
+            <dd class="col-sm-8">@Html.EditorFor(model => model.FirstName, new { @class = "form-control" })</dd>
+
+            <dt class="col-sm-4">@Html.LabelFor(model => model.LastName)</dt>
+            <dd class="col-sm-8">@Html.EditorFor(model => model.LastName, new { @class = "form-control" })</dd>
+
+            <dt class="col-sm-4">@Html.LabelFor(model => model.EmailAddress)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.EmailAddress, new { @class = "form-control" })</dd>
+
+            <dt class="col-sm-4">@Html.LabelFor(model => model.IsEmailVerified)</dt>
+            <dd class="col-sm-8">
+                @Html.EditorFor(model => model.IsEmailVerified, new { @class = "form-check-input" }) 
+                @if (Model.IsEmailVerified)
+                {
+                    <span class="text-success">Yes</span>
+                }
+                else
+                {
+                    <span class="text-warning">No</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">@Html.LabelFor(model => model.MobileNumber)</dt>
+            <dd class="col-sm-8">
+                @Html.EditorFor(model => model.MobileNumber, new { @class = "form-control", placeholder = "Enter Mobile Number" })                
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+<div>
+    <input type="submit" value="Update" class="btn btn-primary" />
+</div>

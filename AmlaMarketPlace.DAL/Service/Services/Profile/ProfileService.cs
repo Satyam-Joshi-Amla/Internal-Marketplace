@@ -6,12 +6,10 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
 {
     public class ProfileService
     {
-        private readonly AdminService _adminService;
         private readonly AmlaMarketPlaceDbContext _context;
-        public ProfileService(AmlaMarketPlaceDbContext context, AdminService adminService)
+        public ProfileService(AmlaMarketPlaceDbContext context)
         { 
             _context = context;
-            _adminService = adminService;
         }
 
         public UserDTO GetUser(int userID)
@@ -31,7 +29,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
                     MobileNumber = user.MobileNumber,
                     IsmobileNumberVerified = user.IsmobileNumberVerified,
                     UserRoleId = user.UserRoleId,
-                    UserRole = _adminService.GetUserRoleById(user.UserRoleId), // Retrieve the user role
+                    UserRole = GetUserRoleById(user.UserRoleId), // Retrieve the user role
                     CreatedOn = user.CreatedOn,
                     EditedOn = user.EditedOn,
                     VerificationToken = user.VerificationToken,
@@ -42,6 +40,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
             }
 
             return null;
+        }
+
+        public string GetUserRoleById(int userRoleId)
+        {
+            var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
+
+            return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
         }
     }
 }
