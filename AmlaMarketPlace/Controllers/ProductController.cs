@@ -17,7 +17,7 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 16)
+        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
         {
             var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize);
 
