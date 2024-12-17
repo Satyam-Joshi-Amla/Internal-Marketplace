@@ -100,6 +100,32 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
             return productDTO;
         }
 
+        public List<ProductDTO> GetAllApprovedProducts()
+        {
+            // Fetching only pending products from the database
+            var products = _context.Products
+                .Where(product => product.StatusId == 2)
+                .ToList();
+
+            // Mapping the filtered products to ProductDTO
+            var productDTO = products.Select(product => new ProductDTO
+            {
+                ProductId = product.ProductId,
+                UserId = product.UserId,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CreatedOn = product.CreatedOn,
+                ModifiedOn = product.ModifiedOn,
+                Inventory = product.Inventory,
+                StatusId = product.StatusId,
+                StatusValue = GetStatusValueByStatusId(product.StatusId),
+                IsPublished = product.IsPublished
+            }).ToList();
+
+            return productDTO;
+        }
+
         private string GetStatusValueByStatusId(int statusID)
         {
             var status = _context.Statuses.FirstOrDefault(s => s.StatusId == statusID);

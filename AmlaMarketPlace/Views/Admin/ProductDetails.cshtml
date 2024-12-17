@@ -4,71 +4,75 @@
     ViewData["Title"] = Model.Name;
 }
 
-<div class="container">
+<div class="container mt-5">
 
-    <div class="product-detail">
-        @if (TempData["OrderPlaced"] != null)
-        {
-            @* using id to send changes in js for timing message *@
-            <div class="alert alert-success" id="orderPlacedMessage">
-                Seller Details sent on your mail successfully!
-            </div>
-        }
-
-        <div class="pdp-left-column">
+    <div class="row">
+        <!-- Left Column: Product Images -->
+        <div class="col-md-4">
             <!-- Main Image -->
-            <div class="main-image">
-                <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
+            <div class="main-image mb-4">
+                <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Product Image" id="mainImage" class="img-fluid rounded" />
             </div>
 
             <!-- Thumbnails -->
-            <div class="thumbnail-images">
+            <div class="thumbnail-images d-flex">
                 @foreach (var image in Model.Images)
                 {
-                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail img-thumbnail" style="width: auto; height: 100px;" onclick="changeMainImage('@image.ImagePath')" />
                 }
             </div>
+
         </div>
 
-        <div class="pdp-vertical-line"></div>
+        <!-- Vertical Line -->
+        <div class="col-md-1 d-none d-md-block">
+            <div class="pdp-vertical-line"></div>
+        </div>
 
-        <div class="pdp-right-column">
-            <div class="pdp-crucial-info">
-                <div>Seller: @Model.SellerName</div>
-                <div>Date Posted On: @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
+        <!-- Right Column: Product Info -->
+        <div class="col-md-6">
+            <div class="d-flex justify-content-between mb-4">
+                <div><strong>Seller:</strong> @Model.SellerName</div>
+                <div><strong>Date Posted:</strong> @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
             </div>
+
             <!-- Product Details -->
             <div class="product-info">
-                <h2 class="product-name">@Model.Name</h2>
-                <p class="product-price">₹ @Model.Price/-</p>
-                <p class="product-inventory">Available Inventory: <span class="product-inventory-value"> @Model.Inventory </span></p>
+                <h2 class="product-name mb-3">@Model.Name</h2>
+                <p class="product-price text-primary mb-3">₹ @Model.Price/-</p>
+                <p class="product-inventory mb-3">Available Inventory: <span class="text-muted">@Model.Inventory</span></p>
+
                 <form asp-action="PlaceOrder" method="post">
-                    <!-- Hidden input field to pass the Product ID -->
                     <input type="hidden" name="ProductId" value="@Model.ProductId" />
-
-                    <button type="submit" class="btn btn-brand-color">Order Now</button>
+                    <button type="submit" class="btn btn-primary btn-lg" disabled>Order Now</button>
                 </form>
-                <div class="description-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <p>
-                        Description
-                    </p>
-                    <ion-icon name="caret-down-outline"></ion-icon>
-                </div>
-                <div class="" id="collapseExample">
-                    @Model.Description
-                </div>
-            </div>
 
+                <!-- Description Toggle -->
+                <div class="description-collapse mt-4">
+                    @if (string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <button class="btn btn-link" type="button" disabled>
+                            <span>Description not provided</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-link" type="button">
+                            <span>Description</span>
+                            <ion-icon name="caret-down-outline"></ion-icon>
+                        </button>
+                        <div class="mt-3">
+                            <p>@Model.Description</p>
+                        </div>
+                    }
+                </div>
 
         </div>
     </div>
-
 </div>
 
 <script>
     function changeMainImage(imagePath) {
-        console.log(imagePath);
         document.getElementById('mainImage').src = imagePath;
     }
 </script>
-

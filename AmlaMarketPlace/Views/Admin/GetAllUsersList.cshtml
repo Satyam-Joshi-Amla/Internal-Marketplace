@@ -18,8 +18,6 @@
                         <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
                         <th>@Html.DisplayNameFor(model => model.IsEmailVerified)</th>
                         <th>@Html.DisplayNameFor(model => model.MobileNumber)</th>
-                        @* <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
-                        <th>@Html.DisplayNameFor(model => model.EditedOn)</th> *@
                         <th></th>
                     </tr>
                 </thead>
@@ -34,14 +32,7 @@
                             <td>@($"{item.FirstName} {item.LastName}")</td>
                             <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
                             <td>@(item.IsEmailVerified ? "Yes" : "No")</td>
-                            <td>@(string.IsNullOrEmpty(item.MobileNumber) ? "-" : item.MobileNumber)</td>
-                            @* <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
-                            <td>@Html.DisplayFor(modelItem => item.EditedOn)</td> *@
-                            <td>
-                                @* @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
-                            </td>
+                            <td>@(string.IsNullOrEmpty(item.MobileNumber) ? "-" : item.MobileNumber)</td>                            
                         </tr>
                     }
                 </tbody>
