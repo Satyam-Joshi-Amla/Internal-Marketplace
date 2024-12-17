@@ -462,5 +462,27 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
 
         }
+
+        public List<OrderDTO> GetMyRequests(int userId)
+        {
+            List<Order> orders = _context.Orders
+                .Where(s => s.BuyerId == userId) // Filtering all orders of specific user
+                .ToList();
+
+            List<OrderDTO> myOrders = orders.Select(o => new OrderDTO
+            {
+                OrderId = o.OrderId,
+                BuyerId = o.BuyerId,
+                BuyerName = GetUserNameByID(o.BuyerId),
+                SellerId = o.SellerId,
+                SellerName = GetUserNameByID(o.SellerId),
+                ProductId = o.ProductId,
+                ProductName = GetProductNameByID(o.ProductId),
+                OrderTime = o.OrderTime,
+                IsApproved = o.IsApproved,
+            }).ToList();
+
+            return myOrders;
+        }
     }
 }

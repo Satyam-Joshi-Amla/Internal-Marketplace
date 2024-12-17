@@ -152,5 +152,10 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             return _productService.ChangeStatusTO(3, productId);
         }
+
+        public List<OrderDTO> GetMyRequests(int userId)
+        {
+            return _productService.GetMyRequests(userId);
+        }
     }
 }

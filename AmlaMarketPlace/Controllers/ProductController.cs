@@ -174,5 +174,13 @@ namespace AmlaMarketPlace.Controllers
             List<OrderDTO> orderDTOs = _productAgent.GetOrderHistory(id);
             return View(orderDTOs);
         }
+
+        [HttpGet]
+        public IActionResult GetMyRequests()
+        {
+            int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            List<OrderDTO> MyRequests = _productAgent.GetMyRequests(userId);
+            return View(MyRequests);
+        }
     }
 }

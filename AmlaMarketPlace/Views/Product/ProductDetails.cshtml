@@ -21,11 +21,17 @@
             </div>
 
             <!-- Thumbnails -->
-            <div class="thumbnail-images">
-                @foreach (var image in Model.Images)
-                {
-                    <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
-                }
+            <div class="thumbnail-slider-container">
+                <button class="slider-btn left-btn" onclick="slideThumbnails(-1)">&#8249;</button>
+                <div class="thumbnail-images-wrapper">
+                    <div class="thumbnail-images">
+                        @foreach (var image in Model.Images)
+                        {
+                            <img src="@image.ImagePath" alt="Optional Image" class="thumbnail" onclick="changeMainImage('@image.ImagePath')" />
+                        }
+                    </div>
+                </div>
+                <button class="slider-btn right-btn" onclick="slideThumbnails(1)">&#8250;</button>
             </div>
         </div>
 
@@ -134,6 +140,27 @@
     function changeMainImage(imagePath) {
         document.getElementById('mainImage').src = imagePath;
     }
+
+    let currentSlide = 0; // Track the current starting index
+    const thumbnailContainer = document.querySelector('.thumbnail-images');
+    const thumbnailCount = document.querySelectorAll('.thumbnail').length;
+    const maxVisibleThumbnails = 4;
+
+    function slideThumbnails(direction) {
+        const thumbnailWidth = 110; // 100px width + 10px gap
+        const maxSlide = thumbnailCount - maxVisibleThumbnails;
+
+        // Update current slide index
+        currentSlide += direction;
+
+        // Restrict sliding within bounds
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide > maxSlide) currentSlide = maxSlide;
+
+        // Apply the transform for sliding
+        const offset = -currentSlide * thumbnailWidth;
+        thumbnailContainer.style.transform = `translateX(${offset}px)`;
+    }
 </script>
 
 <style>
@@ -169,5 +196,53 @@
     .main-image img {
         max-width: 100%;
         height: auto;
+
+    }
+
+    .thumbnail-slider-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+        position: relative;
+    }
+
+    /* Buttons for Slider */
+    .slider-btn {
+        background-color: #ccc;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 50%;
+        color: white;
+        background-color: #007bff;
+    }
+
+        .slider-btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Thumbnails Wrapper */
+    .thumbnail-images-wrapper {
+        width: 440px; /* 4 thumbnails * 110px (100px size + 10px gap) */
+        overflow: hidden;
+        position: relative;
+    }
+
+    .thumbnail-images {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        gap: 10px;
+    }
+
+    /* Thumbnail Images */
+    .thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        cursor: pointer;
+        flex-shrink: 0;
     }
 </style>
