@@ -16,6 +16,7 @@
                 <th>Sr. No.</th>
                 <th>@Html.DisplayNameFor(model => model.SellerName)</th>
                 <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+                <th>@Html.DisplayNameFor(model => model.Quantity)</th>
                 <th>@Html.DisplayNameFor(model => model.OrderTime)</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                             @Html.DisplayFor(modelItem => item.ProductName)
                         </a>
                     </td>
+                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
                     <td>@Html.DisplayFor(modelItem => item.OrderTime)</td>
                 </tr>
                 SrNo++;

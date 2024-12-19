@@ -157,5 +157,11 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             return _productService.GetMyRequests(userId);
         }
+
+        public bool UpdateOrder(int orderId, int orderStatus)
+        {
+            _productService.UpdateOrder(orderId, orderStatus);
+            return true;
+        }
     }
 }
