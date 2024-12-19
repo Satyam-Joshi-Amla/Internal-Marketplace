@@ -170,16 +170,26 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
         }
 
-        public IActionResult OrderHistory(int id)
+        [HttpGet]
+        public IActionResult OrderHistory()
         {
-            List<OrderDTO> orderDTOs = _productAgent.GetOrderHistory(id);
+            List<OrderDTO> orderDTOs = _productAgent.GetOrderHistory(int.Parse(User.FindFirst("UserId")?.Value));
+            ViewData["EnableUserSidePanel"] = true;
             return View(orderDTOs);
+        }
+
+        [HttpPost]
+        public IActionResult OrderHistory(int orderId, int orderStatus)
+        {
+            _productAgent.UpdateOrder(orderId, orderStatus);
+            return RedirectToAction("OrderHistory");
         }
 
         [HttpGet]
         public IActionResult GetMyRequests()
         {
             int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            ViewData["EnableUserSidePanel"] = true;
             List<OrderDTO> MyRequests = _productAgent.GetMyRequests(userId);
             return View(MyRequests);
         }

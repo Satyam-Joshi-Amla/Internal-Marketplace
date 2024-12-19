@@ -12,3 +12,11 @@ setTimeout(function () {
         messageElement.style.display = 'none';
     }
 }, 10000); // 10 seconds (10000 milliseconds)
+
+setTimeout(function () {
+    var alertElement = document.getElementById('tempDataMessage');
+    if (alertElement) {
+        alertElement.classList.remove('fade', 'show');
+        alertElement.style.display = 'none';
+    }
+}, 10000); // 10000 milliseconds = 10 seconds

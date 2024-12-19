@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewData["Title"] - Amla Marketplace</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="@Url.Content("~/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="@Url.Content("~/css/sb-admin-2.css")" rel="stylesheet">
+
+    <!-- New CSS File -->
+    <link href="~/css/newsite.css" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link href="@Url.Content("~/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">            
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        @if (ViewData["EnableUserSidePanel"]?.ToString() == "True")
+        {
+            <ul class="navbar-nav bg-black sidebar sidebar-dark accordion" id="accordionSidebar">
+                <!-- Sidebar - Brand -->
+                <a class="my-3 sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("DashBoard", "Admin")">
+                    <div class="sidebar-brand-icon">
+                        <img class="img-fluid" src="~/images/layoutimages/amla_marketplace.png" />
+                    </div>
+                    <!-- <div class="sidebar-brand-text mx-3">Amla Marketplace</div> -->
+                </a>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" @* href="@Url.Action("#", "#")" *@>
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Products
+                </div>
+
+                <!-- Nav Item - Products Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-bolt"></i>
+                        <span>Products</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">View Products:</h6>
+                            <a class="collapse-item" href="@Url.Action("AddProduct", "Product")">Add Product</a>
+                            <a class="collapse-item" href="@Url.Action("GetUserUploadedProductsList", "Product", new { id = @Convert.ToInt32(User.FindFirst("UserId")?.Value) })">Your Products</a>
+                            <a class="collapse-item" href="@Url.Action("OrderHistory", "Product", new { id = @Convert.ToInt32(User.FindFirst("UserId")?.Value) })">Order Requests</a>
+                        </div>
+                    </div>
+                </li>
+
+                @* <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Users
+                </div>
+
+                <!-- Nav Item - Users Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Users</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-bs-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Custom Utilities:</h6>
+                            <a class="collapse-item" href="@Url.Action("GetAllUsersList", "Admin")">All Users</a>
+                        </div>
+                    </div>
+                </li> *@
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+        }
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand bg-black bg-gradient-primary topbar static-top shadow py-5">
+
+                    @if (ViewData["EnableUserSidePanel"]?.ToString() != "True")
+                    {
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
+                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                            </a>
+                        }
+                    }
+                    
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <!-- Code Removed - Please refer to Admin layout for this part of code -->
+
+                    <!-- Topbar Search -->
+                    <!-- Code Removed - Please refer to Admin layout for this part of code -->
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- Welcome Message  -->
+                        <div class="mx-3 text-uppercase">Welcome @User.Identity.Name!</div>
+                    }
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Alerts -->
+                        <!-- Code Removed - Please refer to Admin layout for this part of code -->
+
+                        <!-- Nav Item - User Information -->
+                        @if (User.Identity.IsAuthenticated) 
+                        {
+                            <li class="nav-item">
+                                <a title="Go to all product page" class="nav-link" asp-area="" asp-controller="Product" asp-action="ProductListing">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a title="Sell your products on Amla Marketplace." class="nav-link" asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
+                            </li>
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline">@User.Identity.Name</span>
+                                    <i class="fas fa-user fa-lg mr-2 text-gray-400"></i>
+                                    @*  <img class="img-profile rounded-circle"
+                                        src="img/undraw_profile.svg"> *@
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item"
+                                       asp-controller="Profile" asp-action="Details"
+                                       asp-route-id="@Convert.ToInt32(User.FindFirst("UserId")?.Value)">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Product" asp-action="GetMyRequests">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Your Orders
+                                    </a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Signout
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">ABOUT</a>
+                            </li>
+                            @if (ViewData["Title"]?.ToString() != "Sign up")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignUp">SIGN UP</a>
+                                </li>
+                            }
+                            @if (ViewData["Title"]?.ToString() != "Sign in")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignIn">SIGN IN</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="main-div">
+                    <main role="main">
+                        @RenderBody()
+                    </main>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer>
+                <div class="container footer-div">
+                    <div class="footer-first-row">
+                        <div class="footer-first-row-individual-column">
+                            <h6>Get to know us</h6>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="About">About us</a>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
+                            <a class="footer-link" asp-area="" asp-controller="Home" asp-action="#">-</a>
+                        </div>
+
+                        <div class="footer-first-row-individual-column">
+                            <h6>Contact Us</h6>
+                            <!-- Button that opens the default email client with the specified email -->
+                            <div class="footer-icon-div">
+                                <a href="#" class="btn btn-brand-color">
+                                    <ion-icon name="call-outline"></ion-icon> 1800 1080
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="footer-first-row-individual-column">
+                            <h6>Sell on Amla Marketplace</h6>
+                            <a class="footer-link" title="Sell your products on Amla Marketplace." asp-area="" asp-controller="Product" asp-action="AddProduct">Sell-here</a>
+                        </div>
+
+                        <div class="footer-vertical-line"></div>
+
+                        <div class="footer-first-row-individual-column registered-address-div">
+                            <h6>Registered Address</h6>
+                            <p>Plot No. 2, Ground Floor South Ambazari, Ranapratap Nagar, Nagpur, Maharashtra, India, 440022.</p>
+                        </div>
+                    </div>
+
+                    <div class="row footer-second-row">
+                        <span class="copyright-footer-text">
+                            &copy; 2024 - Amla Marketplace -
+                            <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                Privacy
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Select "Sign-out" below if you are ready to end your session.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" class="d-inline">
+                        <button title="Log out." type="submit" class="btn btn-primary nav-link px-2">
+                            Sign Out
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom scripts for logout modal -->
+    <script>
+        $(document).ready(function () {
+            $('#logoutModal').on('shown.bs.modal', function () {
+                $(this).modal('show');
+            });
+
+            $('#sidebarToggle, #sidebarToggleTop').click(function (e) {
+                e.preventDefault();
+                $('#accordionSidebar').toggleClass('toggled');
+            });
+        });
+    </script>
+    
+    <!-- Site.js -->
+    <script src="~/js/site.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.min.js"></script>
+
+    <!-- For View Comments BootStrap -->
+    <!-- Include Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

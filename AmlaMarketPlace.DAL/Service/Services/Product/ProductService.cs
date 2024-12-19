@@ -200,6 +200,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 BuyerId = buyerId,
                 SellerId = sellerId,
                 ProductId = productId,
+                Quantity = orderQuantity
             };
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -433,6 +434,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 ProductName = GetProductNameByID(o.ProductId),
                 OrderTime = o.OrderTime,
                 IsApproved = o.IsApproved,
+                Quantity = o.Quantity
             }).ToList();
 
             return orderDTO;
@@ -480,9 +482,41 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 ProductName = GetProductNameByID(o.ProductId),
                 OrderTime = o.OrderTime,
                 IsApproved = o.IsApproved,
+                Quantity = o.Quantity
             }).ToList();
 
             return myOrders;
+        }
+
+        public bool UpdateOrder(int orderId, int orderStatus)
+        {
+            if (orderStatus == 1)
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+                if (order != null)
+                {
+                    order.IsApproved = orderStatus;
+                    _context.Orders.Update(order);
+                    _context.SaveChanges();
+                }
+            }
+            else if(orderStatus == 2)
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+                if (order != null)
+                {
+                    var product = _context.Products.FirstOrDefault(p => p.ProductId == order.ProductId);
+                    if (product != null)
+                    {
+                        product.Inventory += order.Quantity;
+                        order.IsApproved = orderStatus;
+                        _context.Products.Update(product);
+                        _context.Orders.Update(order);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+            return true;
         }
     }
 }

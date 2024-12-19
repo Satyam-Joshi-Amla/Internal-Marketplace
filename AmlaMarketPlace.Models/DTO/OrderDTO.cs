@@ -21,6 +21,7 @@ namespace AmlaMarketPlace.Models.DTO
         public string ProductName { get; set; }
         [Display(Name = "Order Time")]
         public DateTime OrderTime { get; set; }
-        public bool IsApproved { get; set; }
+        public int IsApproved { get; set; }
+        public int Quantity { get; set; }
     }
 }

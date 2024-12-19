@@ -15,7 +15,9 @@ public partial class Order
 
     public DateTime OrderTime { get; set; }
 
-    public bool IsApproved { get; set; }
+    public int IsApproved { get; set; }
+
+    public int Quantity { get; set; }
 
     public virtual User Buyer { get; set; } = null!;
 

@@ -50,6 +50,7 @@ public partial class AmlaMarketPlaceDbContext : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.Property(e => e.OrderTime).HasDefaultValueSql("(sysdatetime())");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
 
             entity.HasOne(d => d.Buyer).WithMany(p => p.OrderBuyers)
                 .HasForeignKey(d => d.BuyerId)
@@ -71,6 +72,7 @@ public partial class AmlaMarketPlaceDbContext : DbContext
         {
             entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Description).IsUnicode(false);
+            entity.Property(e => e.IsPublished).HasDefaultValue(true);
             entity.Property(e => e.ModifiedOn).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)
