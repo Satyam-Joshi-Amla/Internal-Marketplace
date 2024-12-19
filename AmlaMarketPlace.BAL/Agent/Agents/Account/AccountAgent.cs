@@ -50,8 +50,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
             return id;
         }
 
-        // Specifically for verifying the email after clicking on the link. Do not touch.
-        public bool VerifyEmail(string token)
+        public bool VerifyTokenWithTime(string token)
         {
             // Find the user by the verification token
             var userDTO = _accountService.GetUserByToken(token);
@@ -69,13 +68,18 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
                 return false;
             }
 
-            // Update the user's email verification status
-            userDTO.IsEmailVerified = true;
-            //userDTO.VerificationToken = null; // Clear the token after successful verification
-            //userDTO.TokenExpiration = null; // Clear the expiration date
+            return true;
+        }
 
-            // Update user in the database
-            _accountService.UpdateUser(userDTO);
+        // Specifically for verifying the email after sign up. Do not touch.
+        public bool VerifyEmail(string token)
+        {
+            bool IsTokenVerified = VerifyTokenWithTime(token);
+
+            string email = _accountService.GetUserByToken(token).EmailAddress;
+
+            // Update the user's email verification status
+            _accountService.UpdateIsEmailVerifiedStatus(email, true);
 
             return true; // Email verification successful
         }
@@ -90,5 +94,19 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
             return false;
         }
 
+        public bool UpdatePassword(string email, ResetPasswordViewModel resetPasswordViewModel)
+        {
+            return _accountService.UpdatePassword(email, resetPasswordViewModel.Password);
+        }
+
+        public bool SendResetPasswordVerificationLink(string email)
+        {
+            return _accountService.SendResetPasswordVerificationLink(email);            
+        }
+
+        public string GetUserEmailFromToken(string token)
+        {
+            return _accountService.GetUserByToken(token).EmailAddress;
+        }
     }
 }

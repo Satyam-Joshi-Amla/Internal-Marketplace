@@ -6,6 +6,7 @@ using AmlaMarketPlace.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
 
 namespace AmlaMarketPlace.Controllers
@@ -140,6 +141,7 @@ namespace AmlaMarketPlace.Controllers
                 return RedirectToAction("SignIn");
             }
 
+            // Specifically for verifying token and setting up isEmailVerified to true
             var isVerified = _accountAgent.VerifyEmail(token);
 
             if (isVerified)
@@ -154,27 +156,108 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("SignIn");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPasswordVerifyEmail([FromForm] string email)
+        {
+            try
+            {
+                // Validate the email input
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    return BadRequest("Email address is required.");
+                }
 
-        //[HttpPost]
-        //public IActionResult ForgotPassword([FromBody] ForgotPasswordViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Simulate email verification or sending reset link
-        //        bool isSuccess = _accountAgent.SendPasswordResetEmail(model.EmailAddress);
+                // Simulate checking if the email exists in your system
+                bool emailExists = _accountAgent.isEmailRegistered(email);
 
-        //        if (isSuccess)
-        //        {
-        //            return Json(new { success = true, message = "Password reset email sent successfully." });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "Email address not found." });
-        //        }
-        //    }
+                if (!emailExists)
+                {
+                    return BadRequest("The provided email address is not registered.");
+                }
 
-        //    return Json(new { success = false, message = "Invalid email address." });
-        //}
+                // Send verification link
+                bool linkSentSuccessfully = _accountAgent.SendResetPasswordVerificationLink(email);
 
+                if (linkSentSuccessfully)
+                {
+                    TempData["ResetPasswordLinkMessage"] = "Reset link send successfully";
+                }
+                else
+                {
+                    TempData["ResetPasswordLinkMessage"] = "There was an error to send link. Please try again later or contact us.";
+                }
+
+                return RedirectToAction("SignIn", "Account");
+            }
+            catch (Exception ex)
+            {
+                // Return a generic error message
+                return BadRequest("An error occurred while processing your request. Please try again later.");
+            }
+        }
+
+        public IActionResult VerifyAndRedirectToResetPassword(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                TempData["ErrorMessage"] = "Invalid verification link.";
+                return RedirectToAction("SignIn");
+            }
+
+            var isVerified = _accountAgent.VerifyTokenWithTime(token);
+
+            if (isVerified)
+            {
+                string userEmail = _accountAgent.GetUserEmailFromToken(token);
+                return RedirectToAction("ResetPassword", "Account", new { email = userEmail });
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "The verification link is invalid or expired.";
+            }
+
+            return RedirectToAction("SignIn");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email)
+        {
+            ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel { Email = email };
+
+            return View(resetPasswordViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool passwordResetSuccessfull = _accountAgent.UpdatePassword(resetPasswordViewModel.Email, resetPasswordViewModel);
+
+                    if (passwordResetSuccessfull)
+                    {
+                        TempData["PasswordResetSuccess"] = "Password is successfully updated.";
+                        return RedirectToAction("SignIn", "Account");
+                    }
+                    else
+                    {
+                        TempData["PasswordResetFailed"] = "We are unable to update your password. Please contact us.";
+                        return RedirectToAction("SignIn", "Account");
+                    }
+                }
+                else
+                {
+                    return View(resetPasswordViewModel);
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "We are facing some issues in reseting password. Sorry for the inconvenience. Our services will be back soon.";
+                return RedirectToAction("Error");
+            }
+        }
     }
 }

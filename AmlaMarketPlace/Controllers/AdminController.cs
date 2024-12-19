@@ -97,17 +97,16 @@ namespace AmlaMarketPlace.Controllers
         [HttpPost]
         public IActionResult Reject(int productId, string rejectComment)
         {
-            bool isApprov = _adminAgent.RejectProduct(productId, rejectComment);
-            if (isApprov)
+            bool isRejected = _adminAgent.RejectProduct(productId, rejectComment);
+            if (isRejected)
             {
                 TempData["ProductRejected"] = "Product Rejected.";
+                // Send Mail To Seller with comment.
             }
             else
             {
                 TempData["FailedToReject"] = "Failed to reject product.";
             }
-
-            // iss line pe 
 
             return RedirectToAction("ProductsWaitingForApproval", "Admin");
         }

@@ -38,7 +38,7 @@
             <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["UnexpectedInput"]
             </div>
-        }        
+        }
 
         @if (TempData["VerificationLink"] != null)
         {
@@ -52,7 +52,7 @@
             <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["emailNotVerified"]
             </div>
-        }        
+        }
 
         @if (TempData["SuccessMessage"] != null)
         {
@@ -74,6 +74,24 @@
                 @TempData["ErrorMessage"]
             </div>
         }
+        @if (TempData["PasswordResetSuccess"] != null)
+        {
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
+                @TempData["PasswordResetSuccess"]
+            </div>
+        }
+        @if (TempData["PasswordResetFailed"] != null)
+        {
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
+                @TempData["PasswordResetFailed"]
+            </div>
+        }
+        @if (TempData["ResetPasswordLinkMessage"] != null)
+        {
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+                @TempData["ResetPasswordLinkMessage"]
+            </div>
+        }
 
         <h4>Sign in</h4>
         <hr />
@@ -88,15 +106,20 @@
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
-            </div>                        
-            <div class="form-group">
+            </div>
+            <div class="form-group d-flex justify-content-between">
                 <div class="form-check">
                     <input asp-for="RememberMe" class="form-check-input" />
                     <label asp-for="RememberMe" class="form-check-label"></label>
                 </div>
+                <div class="">
+                    <button type="button" class="btn btn-link text-decoration-none" data-bs-target="#emailVerificationModal" data-bs-toggle="modal">
+                        Forgot Password?
+                    </button>
+                </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group fs-5">
                 <input type="submit" value="Sign in" class="btn btn-brand-color" />
             </div>
         </form>
@@ -104,13 +127,40 @@
     </div>
 </div>
 
+<!-- Verify Email Modal -->
+<div class="modal fade" id="emailVerificationModal" aria-hidden="true" aria-labelledby="emailVerificationLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="emailVerificationLabel">Verify Your Email</h3>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for email verification -->
+                <form id="emailVerificationForm" asp-controller="Account" asp-action="ForgotPasswordVerifyEmail" method="post">
+                    <div class="mb-3">
+                        <label for="emailInput" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="emailInput" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <p>We will send a verification link to your email to verify your identity.</p>
+                    <button class="btn btn-primary" type="submit" id="verifyButton">Verify</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <!-- Optional: You can add additional buttons here if necessary -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script>
-        
-    </script>
 
+    </script>
 }
+

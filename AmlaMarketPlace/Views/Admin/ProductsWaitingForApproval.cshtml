@@ -162,6 +162,35 @@
                     var modal = $(this);
                     modal.find('#productId').val(productId);
                 });
+
+                // Slider for thumbnail Images
+                $('.thumbnail-slider').slick({
+                    slidesToShow: 4, // Number of thumbnails visible at a time
+                    slidesToScroll: 1, // How many thumbnails scroll at a time
+                    infinite: false, // Set to false if you don't want infinite scrolling
+                    dots: false,
+                    arrows: true,
+                    focusOnSelect: true, // Focus on selected thumbnail and change main image
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                slidesToShow: 3, // Responsive for smaller screens
+                            }
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                slidesToShow: 2, // Responsive for mobile
+                            }
+                        }
+                    ]
+                });
+
+                // Function to change the main image when a thumbnail is clicked
+                window.changeMainImage = function (imagePath) {
+                    $('#mainImage').attr('src', imagePath);
+                };
             });
 
         </script>        

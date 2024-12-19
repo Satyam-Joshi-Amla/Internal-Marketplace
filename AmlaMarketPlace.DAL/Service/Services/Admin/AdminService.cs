@@ -1,16 +1,18 @@
 ﻿using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.DAL.Service.Services.Product;
+using AmlaMarketPlace.DAL.Service.Services.Account;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Admin
 {
     public class AdminService
     {
-        private readonly AmlaMarketPlaceDbContext _context;
-
-        public AdminService(AmlaMarketPlaceDbContext context)
+        private readonly AmlaMarketPlaceDbContext _context;        
+        private readonly AccountService _accountService;// To access Send mail method
+        public AdminService(AmlaMarketPlaceDbContext context, AccountService accountService)
         {
             _context = context;
+            _accountService = accountService;
         }
 
         // Utility method to retrieve the user role by ID
@@ -20,7 +22,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
         }
-
         public List<UserDTO> GetAllUsers()
         {
             // Fetching all users from the database
@@ -47,7 +48,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userDTOs;
         }
-
         public List<ProductDTO> GetAllPublishedProducts()
         {
             // Fetching only published products from the database
@@ -73,7 +73,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
-
         public List<ProductDTO> ProductsWaitingForApproval()
         {
             // Fetching only pending products from the database
@@ -99,7 +98,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
-
         public List<ProductDTO> GetAllApprovedProducts()
         {
             // Fetching only pending products from the database
@@ -125,13 +123,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
-
         private string GetStatusValueByStatusId(int statusID)
         {
             var status = _context.Statuses.FirstOrDefault(s => s.StatusId == statusID);
             return status != null ? status.StatusValue : "pending";
         }
-
         public bool MakeWaitingForApproval(int productID)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
@@ -187,6 +183,30 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
                 product.StatusId = 3;
                 _context.SaveChanges();
+
+                // Send Product Rejected Mail to Seller with Comment.                
+                string subject = "Product Rejected";
+                var user = _accountService.GetUserById(product.UserId);
+                string sellerEmail = user.EmailAddress;
+                string mailMessage = $@"
+Hi {user.FirstName} {user.LastName},    
+We regret to inform you that your product has been rejected.
+
+Here are the Product details:
+Name: {product.Name}
+Price: {product.Price}
+
+Reason of rejection: 
+{rejectComment}
+
+Please edit the product according to the comment and resend for approval.
+    
+Please contact support if you have any questions.
+Best Regards
+Amla Marketplace";
+
+                _accountService.SendMessageOnMail(sellerEmail,subject,mailMessage);
+
                 return true;
             }
             else
@@ -194,7 +214,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 return false;
             }
         }
-
         public List<ProductDTO> GetRejectedProducts()
         {
             // Fetching only rejected products from the database
@@ -224,7 +243,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
-
         public int TotalProductsCount()
         {
             return _context.Products.Count();
