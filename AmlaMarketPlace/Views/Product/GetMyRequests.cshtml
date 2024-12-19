@@ -10,32 +10,41 @@
         <h6 class="m-0 font-weight-bold text-primary">Order History</h6>
     </div>
 
-    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>@Html.DisplayNameFor(model => model.SellerName)</th>
-                <th>@Html.DisplayNameFor(model => model.ProductName)</th>
-                <th>@Html.DisplayNameFor(model => model.Quantity)</th>
-                <th>@Html.DisplayNameFor(model => model.OrderTime)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model == null || !Model.Any())
+    {
+        <div class="m-4 d-flex justify-content-center">
+            <span>You have not ordered anything.</span>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+            <thead>
                 <tr>
-                    <td>@SrNo</td>
-                    <td>@Html.DisplayFor(modelItem => item.SellerName)</td>
-                    <td class="text-center">
-                        <a title="View Product" class="text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.ProductName)
-                        </a>
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                    <td>@Html.DisplayFor(modelItem => item.OrderTime)</td>
+                    <th>Sr. No.</th>
+                    <th>@Html.DisplayNameFor(model => model.SellerName)</th>
+                    <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrderTime)</th>
                 </tr>
-                SrNo++;
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@SrNo</td>
+                        <td>@Html.DisplayFor(modelItem => item.SellerName)</td>
+                        <td class="text-center">
+                            <a title="View Product" class="text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </a>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.OrderTime)</td>
+                    </tr>
+                    SrNo++;
+                }
+            </tbody>
+        </table>
+    }
 </div>

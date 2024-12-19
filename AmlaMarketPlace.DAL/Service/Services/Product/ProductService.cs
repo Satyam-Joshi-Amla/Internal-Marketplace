@@ -106,7 +106,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 Inventory = product.Inventory,
                 StatusId = product.StatusId,
                 StatusValue = GetStatusValueByStatusId(product.StatusId),
-                IsPublished = product.IsPublished
+                IsPublished = product.IsPublished,
+                CommentForRejecting = product.StatusId == 3
+            ? _context.ProductComments
+                .Where(comment => comment.ProductId == product.ProductId)
+                .Select(comment => comment.RejectedComments)
+                .FirstOrDefault()
+            : null
             }).ToList();
 
             return productDTO;
@@ -320,7 +326,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 string wwwRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string fileName = timeStamp + Path.GetExtension(model.Image.FileName);
-                string imagesDirectory = Path.Combine(wwwRootPath, "images");
+                string imagesDirectory = Path.Combine(wwwRootPath, "images/ProductImages");
                 string filePath = Path.Combine(imagesDirectory, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -359,7 +365,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 {
                     string wwwRootPathOpt = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                     string fileNameOpt = Guid.NewGuid().ToString() + Path.GetExtension(optionalImageFile.FileName);
-                    string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images");
+                    string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images/ProductImages");
                     string filePathOpt = Path.Combine(imagesDirectoryOpt, fileNameOpt);
                     using (var stream = new FileStream(filePathOpt, FileMode.Create))
                     {
@@ -455,7 +461,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         public bool UpdateInventory(int productId, int updatedInventory)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            if(product != null)
+            if (product != null)
             {
                 product.Inventory = updatedInventory;
                 _context.Products.Update(product);
@@ -500,7 +506,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     _context.SaveChanges();
                 }
             }
-            else if(orderStatus == 2)
+            else if (orderStatus == 2)
             {
                 var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
                 if (order != null)

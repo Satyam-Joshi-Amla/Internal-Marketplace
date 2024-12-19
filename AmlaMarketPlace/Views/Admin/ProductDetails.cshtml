@@ -128,6 +128,7 @@
             $('#rejectModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var productId = button.data('id');  // Extract Product ID from data-* attributes
+                console.log(productId); // Debugging: Check if productId is being fetched
                 var modal = $(this);
                 modal.find('#productId').val(productId);
             });
