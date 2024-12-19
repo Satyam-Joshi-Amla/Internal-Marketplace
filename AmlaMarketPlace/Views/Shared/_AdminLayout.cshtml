@@ -13,8 +13,15 @@
     <link href="@Url.Content("~/vendor/fontawesome-free/css/all.min.css")" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="@Url.Content("~/css/sb-admin-2.css")" rel="stylesheet">
+    <!-- Admin Custom CSS - Developer CSS -->
+    <link href="~/css/admincustomcss.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template - Theme CSS -->
+    <link href="@Url.Content("~/css/sb-admin-2.css")" rel="stylesheet">    
+
+    <!-- CSS For Thumbnail Slider -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.9.0/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.9.0/slick-theme.css" />
 
     <!-- DataTables CSS -->
     <link href="@Url.Content("~/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
@@ -36,6 +43,14 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline mt-3">
+                <button class="rounded-circle border-0 btn-sm" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
@@ -95,10 +110,6 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
         </ul>
         <!-- End of Sidebar -->
         <!-- Content Wrapper -->
@@ -315,7 +326,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Select "Sign-out" below if you are ready to end your session.
+                    Are you sure you want to sign out ?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
@@ -353,10 +364,14 @@
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
 
-
     <!-- For View Comments BootStrap -->
     <!-- Include Bootstrap 5 JavaScript Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- For PDP Thumbnail Slider -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.9.0/slick.min.js"></script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -45,6 +45,7 @@
 
 	<ItemGroup>
 	  <_ContentIncludedByDefault Remove="Views\Product\GetMyRequests.cshtml" />
+	  <_ContentIncludedByDefault Remove="wwwroot\css\adminCustomCSS.css" />
 	</ItemGroup>
 
 	<ItemGroup>
