@@ -72,7 +72,7 @@
 </div>
 
 <!-- Modal for Order Confirmation -->
-<div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
+@* <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,7 +94,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
-    </div>
+    </div> *@
     <!-- Modal for Order Confirmation -->
     <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -163,6 +163,7 @@
             confirmOrderButton.addEventListener("click", function () {
                 modalQuantity.textContent = quantityInput.value;
                 modalTotalPrice.textContent = quantityInput.value * parseInt("@Model.Price", 10);
+                orderQuantityInput.value = quantityInput.value;
             });
         });
 

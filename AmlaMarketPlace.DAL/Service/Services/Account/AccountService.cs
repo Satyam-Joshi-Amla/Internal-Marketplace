@@ -335,6 +335,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             if (user != null)
             {
                 user.IsEmailVerified = statusValue;
+                _context.SaveChanges();
                 return true;
             }
 
