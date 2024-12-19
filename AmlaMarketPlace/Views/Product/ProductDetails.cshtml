@@ -8,10 +8,12 @@
 
     <div class="product-detail">
         @if (TempData["OrderPlaced"] != null)
-        {
-            <div class="alert alert-success" id="orderPlacedMessage">
-                Seller Details sent on your mail successfully!
-            </div>
+        { 
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    alert("Seller details sent to your mail successfully! Thank you.");
+                });
+            </script>
         }
 
         <div class="pdp-left-column">

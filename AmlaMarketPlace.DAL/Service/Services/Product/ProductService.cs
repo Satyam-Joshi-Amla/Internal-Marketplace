@@ -111,7 +111,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 Inventory = product.Inventory,
                 StatusId = product.StatusId,
                 StatusValue = GetStatusValueByStatusId(product.StatusId),
-                IsPublished = product.IsPublished
+                IsPublished = product.IsPublished,
+                CommentForRejecting = product.StatusId == 3
+            ? _context.ProductComments
+                .Where(comment => comment.ProductId == product.ProductId)
+                .Select(comment => comment.RejectedComments)
+                .FirstOrDefault()
+            : null
             }).ToList();
 
             return productDTO;
@@ -460,7 +466,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         public bool UpdateInventory(int productId, int updatedInventory)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            if(product != null)
+            if (product != null)
             {
                 product.Inventory = updatedInventory;
                 _context.Products.Update(product);
@@ -505,7 +511,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     _context.SaveChanges();
                 }
             }
-            else if(orderStatus == 2)
+            else if (orderStatus == 2)
             {
                 var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
                 if (order != null)

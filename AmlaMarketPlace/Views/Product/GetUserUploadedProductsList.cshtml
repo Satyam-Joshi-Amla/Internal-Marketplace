@@ -9,14 +9,14 @@
 <!-- Page Heading -->
 <div class="mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">User Products</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Your Products</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             @if (Model == null || !Model.Any()) // Check if the list is empty
             {
-                <div class="alert alert-warning">
-                    No products uploaded by users.
+                <div class="m-4 d-flex justify-content-center">
+                    <span>No products to show. You have not added any products.</span>
                 </div>
             }
             else
@@ -111,7 +111,7 @@
                                             <form asp-action="Publish" asp-route-id="@item.ProductId" method="post">
                                                 <button type="submit" class="btn btn-success btn-sm mx-1">Publish</button>
                                             </form>
-                                        }
+                                        }                                        
                                         else
                                         {
                                             <!-- Unpublish Button -->
@@ -119,6 +119,13 @@
                                                 <button type="submit" class="btn btn-danger btn-sm mx-1">Unpublish</button>
                                             </form>
                                         }
+                                    }
+                                    else if (item.StatusId == 3)
+                                    {
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#commentModal"
+                                                data-comment="@item.CommentForRejecting">
+                                            View Comment
+                                        </button>
                                     }
                                 </td>
                             </tr>
@@ -132,3 +139,35 @@
 </div>
 <!-- /.container-fluid -->
 <!-- End of Main Content -->
+
+<!-- Modal for Viewing Comment -->
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">Rejection Comment</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <p id="rejectionComment"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Attach an event listener to the modal to display the appropriate comment
+    var commentModal = document.getElementById('commentModal');
+    commentModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget;
+        // Extract the comment from data-* attributes
+        var comment = button.getAttribute('data-comment');
+        // Update the modal's content
+        var modalBody = commentModal.querySelector('#rejectionComment');
+        modalBody.textContent = comment;
+    });
+</script>
