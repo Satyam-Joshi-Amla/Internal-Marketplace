@@ -1,0 +1,10 @@
+﻿.thumbnail {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .thumbnail:hover {
+        transform: scale(1.1);
+    }

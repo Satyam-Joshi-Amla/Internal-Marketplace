@@ -64,6 +64,14 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// For Detailed Error Page
+// app.UseDeveloperExceptionPage();
+
+// For Production Environment
+app.UseExceptionHandler("/Home/Error"); // Redirects to the "Error" action in the "Home" controller
+// app.UseStatusCodePagesWithRedirects("/Home/Error?code={0}"); // Redirects based on status codes
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Product}/{action=ProductListing}/{id?}");

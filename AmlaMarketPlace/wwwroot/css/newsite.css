@@ -22,6 +22,7 @@ footer {
 }
 
 body {
+
 }
 
 /* ---- Div in which contents render */
@@ -355,6 +356,12 @@ input.form-control {
 
 /* ------------------ Sign up ends  ----------------------- */
 
+/* ------------------ Reset Password starts ----------------------- */
+
+
+
+/* ------------------ Reset Password ends  ----------------------- */
+
 /* ------------------ About Page Starts  ----------------------- */
 
 .div-about-heading {
@@ -421,8 +428,13 @@ img {
     }
 
 .product-item-anchor {
-    text-decoration: none;
+    text-decoration: none; /* Remove underline from anchor */
 }
+
+    .product-item-anchor:hover {
+        text-decoration: none; /* Ensure no underline on hover */
+    }
+
 
 .card-img-top {
     height: 350px;
