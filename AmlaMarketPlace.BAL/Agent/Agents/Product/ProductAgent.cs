@@ -17,9 +17,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             _productService = productService;
         }
 
-        public PaginatedResultDto GetProducts(int pageNumber, int pageSize)
+        public PaginatedResultDto GetProducts(int pageNumber, int pageSize, int userId)
         {
-            return _productService.GetProducts(pageNumber, pageSize);
+            return _productService.GetProducts(userId, pageNumber, pageSize);
         }
 
         public List<ProductDTO> GetUserUploadedProducts(int userID)
@@ -46,7 +46,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
                 string wwwRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                 string fileName = timeStamp + Path.GetExtension(model.Image.FileName);
-                string imagesDirectory = Path.Combine(wwwRootPath, "images");
+                string imagesDirectory = Path.Combine(wwwRootPath, "images/ProductImages");
                 string filePath = Path.Combine(imagesDirectory, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -60,7 +60,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
                     {
                         string wwwRootPathOpt = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                         string fileNameOpt = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
-                        string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images");
+                        string imagesDirectoryOpt = Path.Combine(wwwRootPathOpt, "images/ProductImages");
                         string filePathOpt = Path.Combine(imagesDirectoryOpt, fileNameOpt);
                         using (var stream = new FileStream(filePathOpt, FileMode.Create))
                         {
