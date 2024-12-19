@@ -242,16 +242,15 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             // Send the email
             string mailSubject = "Email Verification";
             string mailMessage = $@"
-                                    Hi {signUpViewModel.FirstName} {signUpViewModel.LastName},
+Hi {signUpViewModel.FirstName} {signUpViewModel.LastName},
+Please click the link below to verify your email address:
 
-                                    Please click the link below to verify your email address:
+{verificationLink}
 
-                                    {verificationLink}
+Thank you for joining us!
 
-                                    Thank you for joining us!
-
-                                    Best regards,  
-                                    Amla Marketplace Team";
+Best regards,
+Amla Marketplace Team";
 
             SendMessageOnMail(signUpViewModel.EmailAddress, mailSubject, mailMessage);
 
@@ -335,6 +334,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             if (user != null)
             {
                 user.IsEmailVerified = statusValue;
+                _context.SaveChanges();
                 return true;
             }
 

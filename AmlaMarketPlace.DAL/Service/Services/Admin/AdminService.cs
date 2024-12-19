@@ -100,9 +100,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
         }
         public List<ProductDTO> GetAllApprovedProducts()
         {
-            // Fetching only pending products from the database
+            // Fetching only approved products from the database
             var products = _context.Products
-                .Where(product => product.StatusId == 2)
+                .Where(product => product.StatusId == 2 && product.IsPublished == false)
                 .ToList();
 
             // Mapping the filtered products to ProductDTO
@@ -253,7 +253,7 @@ Amla Marketplace";
         }
         public int ApprovedProductsCount()
         {
-            return _context.Products.Where(p => p.StatusId == 2).Count();
+            return _context.Products.Where(p => p.StatusId == 2 && p.IsPublished == false).Count();
         }
         public int RejectedProductsCount()
         {
