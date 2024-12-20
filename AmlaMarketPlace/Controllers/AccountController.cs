@@ -225,6 +225,11 @@ namespace AmlaMarketPlace.Controllers
         {
             ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel { Email = email };
 
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["EnableUserSidePanel"] = true;
+            }
+
             return View(resetPasswordViewModel);
         }
 

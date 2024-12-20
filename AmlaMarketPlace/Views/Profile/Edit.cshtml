@@ -1,0 +1,64 @@
+﻿@model AmlaMarketPlace.Models.ViewModels.Profile.ProfileDetailsViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+
+    <h1 class="mt-4">Profile Details</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Code To send Input data Do Not Remove -->
+                <input asp-for="UserId" class="form-control" hidden/>
+                <input asp-for="IsEmailVerified" class="form-control" hidden/>
+                <!-- Code To send Input data Do Not Remove -->
+
+                <div class="row">
+                    <div class="form-group mx-2">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mx-2">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group mx-2">
+                        <label asp-for="EmailAddress" class="control-label"></label>
+                        <input asp-for="EmailAddress" class="form-control" readonly />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mx-2">
+                        <label asp-for="MobileNumber" class="control-label"></label>
+                        <input asp-for="MobileNumber" class="form-control" />
+                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group mx-2">
+                        <input type="submit" asp-action="Edit" asp-controller="Profile" value="Update" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+</script>
