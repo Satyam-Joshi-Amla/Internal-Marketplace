@@ -6,8 +6,8 @@
     </div>
 
     <hr />
-    <form asp-action="EditProduct" enctype="multipart/form-data">
-        <input type="number" asp-for="ProductId" name="ProductId" value=@Model.ProductId hidden/>
+    <form asp-action="EditProduct" id="edit-product-form" enctype="multipart/form-data">
+        <input type="number" asp-for="ProductId" name="ProductId" value=@Model.ProductId hidden />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <!-- Product Name -->
@@ -77,7 +77,9 @@
         </div>
 
         <div class="edit-and-close-button">
-            <input type="submit" value="Save" class="btn btn-brand-color" />
+            <button type="button" class="btn btn-brand-color" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                Save
+            </button>
         </div>
     </form>
 
@@ -86,6 +88,24 @@
     </div>
 </div>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Save</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save the changes and send for approval?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="confirm-save" class="btn btn-primary">Yes, Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{
@@ -129,21 +149,9 @@
                 }
             });
 
-
-            const form = document.querySelector('form');
-
-            // Add event listeners to both buttons
-            form.addEventListener('submit', function (event) {
-                const actionButton = event.submitter;
-
-                // // Check which button was clicked and adjust the form action accordingly
-                // if (actionButton.value === 'Save and Close') {
-                //     // Redirect to PLP after successful product addition
-                //     form.action = '/Product/ProductListing'; // Update this URL with the actual path to PLP
-                // } else if (actionButton.value === 'Save and Add More') {
-                //     // Redirect to Sell Here page to add another product
-                //     form.action = '/Product/AddProduct'; // Update this URL with the actual path to Sell Here page
-                // }
+            // Confirm Save Button
+            document.getElementById('confirm-save').addEventListener('click', function () {
+                document.getElementById('edit-product-form').submit();
             });
         </script>
     }

@@ -18,7 +18,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             _accountService = accountService;
         }
 
-        public PaginatedResultDto GetProducts(int pageNumber = 1, int pageSize = 20)
+        public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {
             var result = new List<ProductListViewModel>();
             int totalCount = 0; // This will store the total product count
@@ -30,7 +30,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 using (var command = connection.CreateCommand())
                 {
                     // Modify the stored procedure to take pageNumber and pageSize as parameters
-                    command.CommandText = "EXEC GetPaginatedProductsWithDefaultImage @PageNumber, @PageSize"; // Name of your updated SP
+                    command.CommandText = "EXEC GetPaginatedProductsWithDefaultImageExcludeUser @PageNumber, @PageSize, @UserId"; // Name of your updated SP
                     command.CommandType = System.Data.CommandType.Text;
 
                     // Add the parameters for pagination
@@ -43,6 +43,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     pageSizeParam.ParameterName = "@PageSize";
                     pageSizeParam.Value = pageSize;
                     command.Parameters.Add(pageSizeParam);
+
+                    var userIdParam = command.CreateParameter();
+                    userIdParam.ParameterName = "@UserId";
+                    userIdParam.Value = userId;
+                    command.Parameters.Add(userIdParam);
 
                     using (var reader = command.ExecuteReader())
                     {

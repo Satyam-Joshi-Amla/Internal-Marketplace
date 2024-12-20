@@ -4,6 +4,7 @@ using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.DAL.Service.Services.Product;
 using Microsoft.AspNetCore.Authorization;
 using AmlaMarketPlace.Models.DTO;
+using AmlaMarketPlace.DAL.Data;
 
 namespace AmlaMarketPlace.Controllers
 {
@@ -19,7 +20,8 @@ namespace AmlaMarketPlace.Controllers
         [HttpGet]
         public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
         {
-            var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize);
+            int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize, userId);
 
             List<ProductListViewModel> products = paginatedResult.Products;
             int totalProducts = paginatedResult.TotalCount;
@@ -95,8 +97,9 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("ProductDetails", "Product", new { id = productId });
         }
 
-        public IActionResult GetUserUploadedProductsList(int id)
+        public IActionResult GetUserUploadedProductsList()
         {
+            int id = int.Parse(User.FindFirst("UserId")?.Value);
             var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
             ViewData["EnableUserSidePanel"] = true;
             return View(userUploadedProducts);
@@ -129,7 +132,7 @@ namespace AmlaMarketPlace.Controllers
                 return RedirectToAction("Error", new { errorMessage = errorMessage });
             }
             
-            return RedirectToAction("ProductListing");
+            return RedirectToAction("GetUserUploadedProductsList");
         }
 
         [HttpPost]
