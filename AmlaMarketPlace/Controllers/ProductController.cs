@@ -97,8 +97,9 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("ProductDetails", "Product", new { id = productId });
         }
 
-        public IActionResult GetUserUploadedProductsList(int id)
+        public IActionResult GetUserUploadedProductsList()
         {
+            int id = int.Parse(User.FindFirst("UserId")?.Value);
             var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
             ViewData["EnableUserSidePanel"] = true;
             return View(userUploadedProducts);
@@ -131,7 +132,7 @@ namespace AmlaMarketPlace.Controllers
                 return RedirectToAction("Error", new { errorMessage = errorMessage });
             }
             
-            return RedirectToAction("ProductListing");
+            return RedirectToAction("GetUserUploadedProductsList");
         }
 
         [HttpPost]
