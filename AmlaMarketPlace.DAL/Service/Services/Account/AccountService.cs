@@ -67,7 +67,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             _context.Users.Add(newUser); // Adding the user to the Users table
             _context.SaveChanges(); // Saving the changes to the database
 
-            SendVerificationLink(signUpViewModel);
+            SendVerificationLink(signUpViewModel.EmailAddress);
 
             return true;
         }
@@ -217,7 +217,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             _context.SaveChanges();
             return newToken;
         }
-        public bool SendVerificationLink(SignUpViewModel signUpViewModel)
+
+        // To send Email Verification Link
+        public bool SendVerificationLink(string emailAddress)
         {
             //// Generate a unique verification token
             //var verificationToken = Guid.NewGuid().ToString();
@@ -225,8 +227,10 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             //// Set token expiration (e.g., 24 hours)
             //var tokenExpiration = DateTime.UtcNow.AddHours(24);
 
+            UserDTO user = GetUserByEmail(emailAddress);
+
             // This function creates new token and add validity time in hour and saves in Db
-            string verificationToken = CreateNewVerificationTokenWithValidityTime(signUpViewModel.EmailAddress, 24);
+            string verificationToken = CreateNewVerificationTokenWithValidityTime(emailAddress, 24);
 
             // Save the token and expiration in the database
             //var user = GetUserByEmail(signUpViewModel.EmailAddress);
@@ -242,7 +246,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
             // Send the email
             string mailSubject = "Email Verification";
             string mailMessage = $@"
-Hi {signUpViewModel.FirstName} {signUpViewModel.LastName},
+Hi {user.FirstName} {user.LastName},
 Please click the link below to verify your email address:
 
 {verificationLink}
@@ -252,7 +256,7 @@ Thank you for joining us!
 Best regards,
 Amla Marketplace Team";
 
-            SendMessageOnMail(signUpViewModel.EmailAddress, mailSubject, mailMessage);
+            SendMessageOnMail(emailAddress, mailSubject, mailMessage);
 
             return true; // Email sent successfully
         }

@@ -20,7 +20,7 @@
     <link href="~/css/newsite.css" rel="stylesheet" />
 
     <!-- DataTables CSS -->
-    <link href="@Url.Content("~/vendor/datatables/dataTables.bootstrap4.min.css")" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->
@@ -30,7 +30,7 @@
         {
             <ul class="navbar-nav bg-black sidebar sidebar-dark accordion" id="accordionSidebar">
                 <!-- Sidebar - Brand -->
-                <a class="my-3 sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("DashBoard", "Admin")">
+                <a class="my-3 sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("ProductListing", "Product")">
                     <div class="sidebar-brand-icon">
                         <img class="img-fluid" src="~/images/layoutimages/amla_marketplace.png" />
                     </div>
@@ -300,21 +300,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Custom scripts for logout modal -->
-    <script>
-        $(document).ready(function () {
-            $('#logoutModal').on('shown.bs.modal', function () {
-                $(this).modal('show');
-            });
-
-            $('#sidebarToggle, #sidebarToggleTop').click(function (e) {
-                e.preventDefault();
-                $('#accordionSidebar').toggleClass('toggled');
-            });
-        });
-    </script>
+    </div>    
 
     <!-- Site.js -->
     <script src="~/js/site.js"></script>
@@ -332,6 +318,26 @@
     <!-- For View Comments BootStrap -->
     <!-- Include Bootstrap 5 JavaScript Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- For DataTable -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- Custom scripts for logout modal, sidebar toggle and data table. -->
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+
+            $('#logoutModal').on('shown.bs.modal', function () {
+                $(this).modal('show');
+            });
+
+            $('#sidebarToggle, #sidebarToggleTop').click(function (e) {
+                e.preventDefault();
+                $('#accordionSidebar').toggleClass('toggled');
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

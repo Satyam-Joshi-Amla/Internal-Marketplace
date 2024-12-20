@@ -64,15 +64,34 @@
     </div>
 
     <div class="row d-flex justify-content-center">
-        <form asp-action="Approve" asp-route-id="@Model.ProductId" method="post">
-            <button type="submit" class="btn btn-success approve-reject-btn mx-2">Approve</button>
-        </form>
-        <button type="button" class="btn btn-danger approve-reject-btn"
-                data-toggle="modal"
-                data-target="#rejectModal"
-                data-id="@Model.ProductId">
-            Reject
-        </button>
+        @if (Model.StatusId == 2)
+        {
+            <button type="button" class="btn btn-danger approve-reject-btn"
+                    data-toggle="modal"
+                    data-target="#rejectModal"
+                    data-id="@Model.ProductId">
+                Reject
+            </button>
+        }
+        else if (Model.StatusId == 3)
+        {
+            <form asp-action="Approve" asp-route-id="@Model.ProductId" method="post">
+                <button type="submit" class="btn btn-success approve-reject-btn mx-2">Approve</button>
+            </form>
+        }
+        else
+        {
+            <form asp-action="Approve" asp-route-id="@Model.ProductId" method="post">
+                <button type="submit" class="btn btn-success approve-reject-btn mx-2">Approve</button>
+            </form>
+            <button type="button" class="btn btn-danger approve-reject-btn"
+                    data-toggle="modal"
+                    data-target="#rejectModal"
+                    data-id="@Model.ProductId">
+                Reject
+            </button>
+        }
+
     </div>
 </div>
 

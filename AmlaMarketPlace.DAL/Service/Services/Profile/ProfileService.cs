@@ -8,7 +8,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
     {
         private readonly AmlaMarketPlaceDbContext _context;
         public ProfileService(AmlaMarketPlaceDbContext context)
-        { 
+        {
             _context = context;
         }
 
@@ -40,6 +40,27 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
             }
 
             return null;
+        }
+
+        public bool UpdateUser(UserDTO updatedUser)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == updatedUser.UserId);
+
+            if (user != null)
+            {
+
+                user.FirstName = updatedUser.FirstName;
+                user.LastName = updatedUser.LastName;
+                user.MobileNumber = updatedUser.MobileNumber;
+                user.EditedOn = DateTime.Now;
+
+                _context.Users.Update(user);
+                _context.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
 
         public string GetUserRoleById(int userRoleId)
