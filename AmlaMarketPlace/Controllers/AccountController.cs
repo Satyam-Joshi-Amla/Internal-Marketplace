@@ -264,5 +264,18 @@ namespace AmlaMarketPlace.Controllers
                 return RedirectToAction("Error");
             }
         }
+
+        public void ResendEmailVerificationLink(string email)
+        {
+            bool isSent = _accountAgent.SendEmailVerificationLink(email);
+            if (isSent)
+            {
+                TempData["EmailVerificationLinkSentSuccessfully"] = "Verification Link is sent successfully.";
+            }
+            else
+            {
+                TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
+            }
+        }
     }
 }

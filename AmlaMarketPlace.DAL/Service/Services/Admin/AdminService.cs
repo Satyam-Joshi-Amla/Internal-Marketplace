@@ -48,6 +48,58 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userDTOs;
         }
+        public List<UserDTO> GetActiveUsers()
+        {
+            // Fetching all users from the database
+            var users = _context.Users.Where(e => e.IsEmailVerified == true).ToList();
+
+            // Mapping the database user records to UserDTO
+            var userDTOs = users.Select(user => new UserDTO
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress,
+                IsEmailVerified = user.IsEmailVerified,
+                Password = user.Password,
+                MobileNumber = user.MobileNumber,
+                IsmobileNumberVerified = user.IsmobileNumberVerified,
+                UserRoleId = user.UserRoleId,
+                UserRole = GetUserRoleById(user.UserRoleId), // Retrieve the user role
+                CreatedOn = user.CreatedOn,
+                EditedOn = user.EditedOn,
+                VerificationToken = user.VerificationToken,
+                TokenExpiration = user.TokenExpiration
+            }).ToList();
+
+            return userDTOs;
+        }
+        public List<UserDTO> GetInactiveUsers()
+        {
+            // Fetching all users from the database
+            var users = _context.Users.Where(e => e.IsEmailVerified == false).ToList();
+
+            // Mapping the database user records to UserDTO
+            var userDTOs = users.Select(user => new UserDTO
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress,
+                IsEmailVerified = user.IsEmailVerified,
+                Password = user.Password,
+                MobileNumber = user.MobileNumber,
+                IsmobileNumberVerified = user.IsmobileNumberVerified,
+                UserRoleId = user.UserRoleId,
+                UserRole = GetUserRoleById(user.UserRoleId), // Retrieve the user role
+                CreatedOn = user.CreatedOn,
+                EditedOn = user.EditedOn,
+                VerificationToken = user.VerificationToken,
+                TokenExpiration = user.TokenExpiration
+            }).ToList();
+
+            return userDTOs;
+        }
         public List<ProductDTO> GetAllPublishedProducts()
         {
             // Fetching only published products from the database

@@ -23,6 +23,14 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
         {
             return _adminService.GetAllUsers();
         }
+        public List<UserDTO> GetActiveUsers()
+        {
+            return _adminService.GetActiveUsers();
+        }
+        public List<UserDTO> GetInactiveUsers()
+        {
+            return _adminService.GetInactiveUsers();
+        }
         public List<ProductDTO> GetAllPublishedProducts()
         {
             return _adminService.GetAllPublishedProducts();

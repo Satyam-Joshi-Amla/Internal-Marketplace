@@ -50,7 +50,7 @@
         @if (TempData["emailNotVerified"] != null)
         {
             <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
-                @TempData["emailNotVerified"]
+                @TempData["emailNotVerified"]                
             </div>
         }
 
@@ -90,6 +90,18 @@
         {
             <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["ResetPasswordLinkMessage"]
+            </div>
+        }
+        @if (TempData["EmailVerificationLinkSentSuccessfully"] != null)
+        {
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+                @TempData["EmailVerificationLinkSentSuccessfully"]
+            </div>
+        }
+        @if (TempData["EmailVerificationLinkFailedToSend"] != null)
+        {
+            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+                @TempData["EmailVerificationLinkFailedToSend"]
             </div>
         }
 
