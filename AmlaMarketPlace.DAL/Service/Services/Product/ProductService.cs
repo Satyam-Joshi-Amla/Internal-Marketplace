@@ -3,6 +3,7 @@ using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using AmlaMarketPlace.DAL.Service.Services.Account;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
@@ -10,13 +11,31 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
     {
         private readonly AmlaMarketPlaceDbContext _context;
         private readonly AccountService _accountService;
+        private readonly IMemoryCache _cache;
 
         // Initialize the DbContext
-        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService)
+        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService, IMemoryCache cache)
         {
             _context = context;
             _accountService = accountService;
+            _cache = cache;
         }
+
+        //public PaginatedResultDto GetProductsCache(int userId, int pageNumber = 1, int pageSize = 20)
+        //{
+        //    string cacheKey = $"ProductList_{userId}";
+        //    if (!_cache.TryGetValue(cacheKey, out PaginatedResultDto productList))
+        //    {
+        //        productList = GetProducts(userId, pageNumber, pageSize);
+        //        var cacheOptions = new MemoryCacheEntryOptions
+        //        {
+        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+        //            SlidingExpiration = TimeSpan.FromMinutes(2)
+        //        };
+        //        _cache.Set(cacheKey, productList, cacheOptions);
+        //    }
+        //    return productList;
+        //}
 
         public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {

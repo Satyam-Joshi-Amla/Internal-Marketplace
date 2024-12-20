@@ -345,6 +345,7 @@ label.required::after { /* Adding Asterisk if there are required input field. */
 /* Input fields */
 input.form-control {
     padding: 10px;
+    height: 50px;
 }
 
 /* For responsiveness */
