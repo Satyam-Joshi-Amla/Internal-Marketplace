@@ -17,9 +17,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             _productService = productService;
         }
 
-        public PaginatedResultDto GetProducts(int pageNumber, int pageSize)
+        public PaginatedResultDto GetProducts(int pageNumber, int pageSize, int userId)
         {
-            return _productService.GetProducts(pageNumber, pageSize);
+            return _productService.GetProducts(userId, pageNumber, pageSize);
         }
 
         public List<ProductDTO> GetUserUploadedProducts(int userID)
