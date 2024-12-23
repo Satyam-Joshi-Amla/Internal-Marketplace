@@ -1,14 +1,14 @@
-﻿using System.Linq;
+﻿using System.Net;
+using System.Net.Mail;
 using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.ViewModels.Account;
 using AmlaMarketPlace.Models.DTO;
-using System.Net.Mail;
-using System.Net;
-using System.Data;
+using AmlaMarketPlace.DAL.Service.IServices.IAccount;
+using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Account
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly AmlaMarketPlaceDbContext _context;
         // Initialize the DbContext
@@ -170,36 +170,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         {
             try
             {
-                var fromAddress = new MailAddress("rockervc7@gmail.com", "Amla Marketplace");
-                var toAddress = new MailAddress(toEmail);
-                const string fromAppPassword = "cxml addl yidq sybs"; // not to be touched.
-                string subject = mailSubject;
-                string body = $"{mailMessage}";
-
-                var smtp = new SmtpClient()
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromAppPassword)
-                };
-
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
-                }
+                MailUtility.SendMessageOnMail(toEmail, mailSubject, mailMessage);
             }
             catch (Exception ex)
             {
-                // Log or handle the exception as needed
                 System.Diagnostics.Debug.WriteLine("Email sending failed: " + ex.Message);
-                throw; // Optionally rethrow the exception
+                throw new Exception("Something went wrong in account service layer", ex);
             }
         }
         public string CreateNewVerificationTokenWithValidityTime(string email, int TokenValidityTimeInHours)
@@ -221,26 +197,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
         // To send Email Verification Link
         public bool SendVerificationLink(string emailAddress)
         {
-            //// Generate a unique verification token
-            //var verificationToken = Guid.NewGuid().ToString();
-
-            //// Set token expiration (e.g., 24 hours)
-            //var tokenExpiration = DateTime.UtcNow.AddHours(24);
-
             UserDTO user = GetUserByEmail(emailAddress);
 
             // This function creates new token and add validity time in hour and saves in Db
             string verificationToken = CreateNewVerificationTokenWithValidityTime(emailAddress, 24);
 
-            // Save the token and expiration in the database
-            //var user = GetUserByEmail(signUpViewModel.EmailAddress);
-            //user.VerificationToken = verificationToken;
-            //user.TokenExpiration = tokenExpiration;
-
-            // Save changes to the database
-            // UpdateUser(user);
-
-            // Create the verification link (you should replace "YourAppUrl" with your actual domain)
             var verificationLink = $"https://localhost:44321/Account/VerifyEmail?token={verificationToken}";
 
             // Send the email
@@ -344,6 +305,5 @@ Amla Marketplace Team";
 
             return false;
         }
-
     }
 }

@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AmlaMarketPlace.BAL.Agent.Agents.Product;
 using AmlaMarketPlace.Models.ViewModels.Product;
-using AmlaMarketPlace.DAL.Service.Services.Product;
 using Microsoft.AspNetCore.Authorization;
 using AmlaMarketPlace.Models.DTO;
-using AmlaMarketPlace.DAL.Data;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
 
 namespace AmlaMarketPlace.Controllers
 {
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly ProductAgent _productAgent;
-        public ProductController(ProductAgent productAgent)
+        private readonly IProductAgent _productAgent;
+        public ProductController(IProductAgent productAgent)
         {
             _productAgent = productAgent;
         }
@@ -195,6 +193,16 @@ namespace AmlaMarketPlace.Controllers
             ViewData["EnableUserSidePanel"] = true;
             List<OrderDTO> MyRequests = _productAgent.GetMyRequests(userId);
             return View(MyRequests);
+        }
+
+        [HttpGet]
+        public IActionResult SellerDashBoard()
+        {
+            int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            ViewData["EnableUserSidePanel"] = true;
+            SellerDashBoardViewModel model = _productAgent.GetSellerDashBoardData(userId);
+
+            return View(model);
         }
     }
 }

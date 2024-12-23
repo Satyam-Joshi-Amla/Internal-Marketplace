@@ -1,18 +1,14 @@
-﻿using AmlaMarketPlace.DAL.Service.Services.Product;
-using AmlaMarketPlace.Models.ViewModels.Product;
+﻿using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using AmlaMarketPlace.DAL.Service.IServices.IProduct;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Product
 {
-    public class ProductAgent
+    public class ProductAgent : IProductAgent
     {
-        private readonly ProductService _productService;
-        public ProductAgent(ProductService productService)
+        private readonly IProductService _productService;
+        public ProductAgent(IProductService productService)
         {
             _productService = productService;
         }
@@ -162,6 +158,26 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         {
             _productService.UpdateOrder(orderId, orderStatus);
             return true;
+        }
+
+        public SellerDashBoardViewModel GetSellerDashBoardData(int userId)
+        {
+            UserDTO user = _productService.GetUserById(userId);
+
+            SellerDashBoardViewModel sellerDashBoardViewModel = new SellerDashBoardViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.EmailAddress,
+                PhoneNumber = user.MobileNumber,
+                TotalProductsCount = _productService.TotalUserUploadedProductsCount(userId),
+                RejectedProductsCount = _productService.TotalUserRejectedProductsCount(userId),
+                ApprovedProductsCount = _productService.TotalUserApprovedProductsCount(userId),
+                PublishedProductsCount = _productService.TotalUserPublishedProductsCount(userId),
+                WaitingForApprovalProductsCount = _productService.TotalUserWaitingForApprovalProductsCount(userId),
+            };
+
+            return sellerDashBoardViewModel;
         }
     }
 }

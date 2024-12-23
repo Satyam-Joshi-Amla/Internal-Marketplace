@@ -1,18 +1,16 @@
 ﻿using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.DTO;
-using AmlaMarketPlace.DAL.Service.Services.Product;
-using AmlaMarketPlace.DAL.Service.Services.Account;
+using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
+using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Admin
 {
-    public class AdminService
+    public class AdminService : IAdminService
     {
-        private readonly AmlaMarketPlaceDbContext _context;        
-        private readonly AccountService _accountService;// To access Send mail method
-        public AdminService(AmlaMarketPlaceDbContext context, AccountService accountService)
+        private readonly AmlaMarketPlaceDbContext _context;
+        public AdminService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
-            _accountService = accountService;
         }
 
         // Utility method to retrieve the user role by ID
@@ -218,6 +216,39 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 return false;
             }
         }
+        public UserDTO GetUserById(int id)
+        {
+            // Fetching the user from the database based on the email
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+
+            if (user != null)
+            {
+                var userDTO = new UserDTO
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    EmailAddress = user.EmailAddress,
+                    IsEmailVerified = user.IsEmailVerified,
+                    Password = user.Password,
+                    MobileNumber = user.MobileNumber,
+                    IsmobileNumberVerified = user.IsmobileNumberVerified,
+                    UserRoleId = user.UserRoleId,
+                    CreatedOn = user.CreatedOn,
+                    EditedOn = user.EditedOn,
+                    VerificationToken = user.VerificationToken,
+                    TokenExpiration = user.TokenExpiration
+                };
+
+                var userRoleData = _context.UserRoles.FirstOrDefault(r => r.RoleId == user.UserRoleId);
+
+                userDTO.UserRole = userRoleData != null ? userRoleData.Role : "user";
+
+                return userDTO;
+            }
+
+            return null; // Return null if no user is found
+        }
         public bool RejectProduct(int productId, string rejectComment)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -238,7 +269,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
                 // Send Product Rejected Mail to Seller with Comment.                
                 string subject = "Product Rejected";
-                var user = _accountService.GetUserById(product.UserId);
+                var user = GetUserById(product.UserId);
                 string sellerEmail = user.EmailAddress;
                 string mailMessage = $@"
 Hi {user.FirstName} {user.LastName},    
@@ -257,7 +288,7 @@ Please contact support if you have any questions.
 Best Regards
 Amla Marketplace";
 
-                _accountService.SendMessageOnMail(sellerEmail,subject,mailMessage);
+                MailUtility.SendMessageOnMail(sellerEmail,subject,mailMessage);
 
                 return true;
             }
@@ -317,6 +348,3 @@ Amla Marketplace";
         }
     }
 }
-
-
-
