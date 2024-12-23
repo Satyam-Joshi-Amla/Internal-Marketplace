@@ -180,9 +180,9 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpPost]
-        public IActionResult OrderHistory(int orderId, int orderStatus)
+        public IActionResult OrderHistory(int orderId, int orderStatus, string rejectComment = "none")
         {
-            _productAgent.UpdateOrder(orderId, orderStatus);
+            _productAgent.UpdateOrder(orderId, orderStatus, rejectComment);
             return RedirectToAction("OrderHistory");
         }
 
@@ -191,7 +191,7 @@ namespace AmlaMarketPlace.Controllers
         {
             int userId = int.Parse(User.FindFirst("UserId")?.Value);
             ViewData["EnableUserSidePanel"] = true;
-            List<OrderDTO> MyRequests = _productAgent.GetMyRequests(userId);
+            List<MyOrdersDto> MyRequests = _productAgent.GetMyRequests(userId);
             return View(MyRequests);
         }
 
