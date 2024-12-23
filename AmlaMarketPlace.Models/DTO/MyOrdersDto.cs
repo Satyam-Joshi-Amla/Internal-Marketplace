@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AmlaMarketPlace.Models.DTO
 {
-    public class OrderDTO
+    public class MyOrdersDto
     {
         public int OrderId { get; set; }
         public int BuyerId { get; set; }
@@ -21,8 +21,10 @@ namespace AmlaMarketPlace.Models.DTO
         public string ProductName { get; set; }
         [Display(Name = "Order Time")]
         public DateTime OrderTime { get; set; }
+        [Display(Name = "Status")]
+
         public int IsApproved { get; set; }
         public int Quantity { get; set; }
-        public int ActualQuantity { get; set; }
+        public string RejectComment { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using AmlaMarketPlace.DAL.Service.Services.Account;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
@@ -10,13 +11,31 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
     {
         private readonly AmlaMarketPlaceDbContext _context;
         private readonly AccountService _accountService;
+        private readonly IMemoryCache _cache;
 
         // Initialize the DbContext
-        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService)
+        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService, IMemoryCache cache)
         {
             _context = context;
             _accountService = accountService;
+            _cache = cache;
         }
+
+        //public PaginatedResultDto GetProductsCache(int userId, int pageNumber = 1, int pageSize = 20)
+        //{
+        //    string cacheKey = $"ProductList_{userId}";
+        //    if (!_cache.TryGetValue(cacheKey, out PaginatedResultDto productList))
+        //    {
+        //        productList = GetProducts(userId, pageNumber, pageSize);
+        //        var cacheOptions = new MemoryCacheEntryOptions
+        //        {
+        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+        //            SlidingExpiration = TimeSpan.FromMinutes(2)
+        //        };
+        //        _cache.Set(cacheKey, productList, cacheOptions);
+        //    }
+        //    return productList;
+        //}
 
         public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {
@@ -242,11 +261,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             // Sending Mail to Seller with Contact Details of Buyer
             _accountService.SendMessageOnMail(sellerEmail, sellerMailSubject, sellerMailMessage);
 
-            int? inventory = GetInventory(productId);
-            if (inventory >= orderQuantity)
-            {
-                UpdateInventory(productId, (int)(inventory - orderQuantity));
-            }
+            //int? inventory = GetInventory(productId);
+            //if (inventory >= orderQuantity)
+            //{
+            //    UpdateInventory(productId, (int)(inventory - orderQuantity));
+            //}
             return true;
         }
 
@@ -448,6 +467,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 Quantity = o.Quantity
             }).ToList();
 
+            foreach (OrderDTO orderDetails in orderDTO)
+            {
+                orderDetails.ActualQuantity = _context.Products.FirstOrDefault(p => p.ProductId == orderDetails.ProductId).Inventory;
+            }
+
             return orderDTO;
         }
         public bool ChangeStatusTO(int statusID, int productID)
@@ -476,13 +500,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         }
 
-        public List<OrderDTO> GetMyRequests(int userId)
+        public List<MyOrdersDto> GetMyRequests(int userId)
         {
             List<Order> orders = _context.Orders
                 .Where(s => s.BuyerId == userId) // Filtering all orders of specific user
                 .ToList();
 
-            List<OrderDTO> myOrders = orders.Select(o => new OrderDTO
+            List<MyOrdersDto> myOrders = orders.Select(o => new MyOrdersDto
             {
                 OrderId = o.OrderId,
                 BuyerId = o.BuyerId,
@@ -493,25 +517,16 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 ProductName = GetProductNameByID(o.ProductId),
                 OrderTime = o.OrderTime,
                 IsApproved = o.IsApproved,
-                Quantity = o.Quantity
+                Quantity = o.Quantity,
+                RejectComment = o.RejectComment
             }).ToList();
 
             return myOrders;
         }
 
-        public bool UpdateOrder(int orderId, int orderStatus)
+        public bool UpdateOrder(int orderId, int orderStatus, string rejectComment)
         {
             if (orderStatus == 1)
-            {
-                var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
-                if (order != null)
-                {
-                    order.IsApproved = orderStatus;
-                    _context.Orders.Update(order);
-                    _context.SaveChanges();
-                }
-            }
-            else if (orderStatus == 2)
             {
                 var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
                 if (order != null)
@@ -519,12 +534,24 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                     var product = _context.Products.FirstOrDefault(p => p.ProductId == order.ProductId);
                     if (product != null)
                     {
-                        product.Inventory += order.Quantity;
+                        product.Inventory -= order.Quantity;
                         order.IsApproved = orderStatus;
                         _context.Products.Update(product);
                         _context.Orders.Update(order);
                         _context.SaveChanges();
                     }
+                    
+                }
+            }
+            else if (orderStatus == 2)
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+                if (order != null)
+                {
+                    order.IsApproved = orderStatus;
+                    order.RejectComment = rejectComment;
+                    _context.Orders.Update(order);
+                    _context.SaveChanges();
                 }
             }
             return true;

@@ -28,7 +28,8 @@
                                 <th>Sr. No.</th>
                                 <th>@Html.DisplayNameFor(model => model.ProductName)</th>
                                 <th>@Html.DisplayNameFor(model => model.BuyerName)</th>
-                                <th>Quantity</th>
+                                <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                                <th>@Html.DisplayNameFor(Model => Model.ActualQuantity)</th>
                                 <th>@Html.DisplayNameFor(model => model.OrderTime)</th>
                                 <th>Settlement</th>
                             </tr>
@@ -49,22 +50,27 @@
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.BuyerName)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ActualQuantity)</td>
                                     <td>@Html.DisplayFor(modelItem => item.OrderTime)</td>
                                     <td>
                                         @if (item.IsApproved == 0)
                                         {
-                                            <!-- Show Buttons -->
-                                            <form asp-controller="Product" asp-action="OrderHistory" method="post" style="display:inline;">
-                                                <input type="hidden" name="orderId" value="@item.OrderId" />
-                                                <input type="hidden" name="orderStatus" value="1" />
-                                                <button type="submit" class="btn btn-success btn-sm" title="Settle Order">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                            </form>
-                                            <form asp-controller="Product" asp-action="OrderHistory" method="post" style="display:inline;">
-                                                <input type="hidden" name="orderId" value="@item.OrderId" />
-                                                <input type="hidden" name="orderStatus" value="2" />
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Reject Order">
+                                            @if (item.Quantity <= item.ActualQuantity)
+                                            {
+                                                <!-- Show Buttons -->
+                                                <form asp-controller="Product" asp-action="OrderHistory" method="post" style="display:inline;">
+                                                    <input type="hidden" name="orderId" value="@item.OrderId" />
+                                                    <input type="hidden" name="orderStatus" value="1" />
+                                                    <button type="submit" class="btn btn-success btn-sm" title="Settle Order">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            <form style="display:inline;">
+                                                <button type="button" class="btn btn-danger btn-sm" title="Reject Order"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#rejectOrderModal"
+                                                        onclick="setRejectOrderId(@item.OrderId)">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </form>
@@ -103,3 +109,33 @@
         }
     </div>
 </div>
+
+<div class="modal fade" id="rejectOrderModal" tabindex="-1" aria-labelledby="rejectOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectOrderModalLabel">Reject Order</h5>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectOrderForm" method="post">
+                    <input type="hidden" name="orderId" id="rejectOrderId" />
+                    <input type="hidden" name="orderStatus" value="2" />
+                    <div class="form-group">
+                        <label for="rejectReason">Reason for Rejection</label>
+                        <textarea name="rejectComment" id="rejectReason" class="form-control" rows="3" required>Cannot accept order due to low stock</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="rejectOrderForm" class="btn btn-danger">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setRejectOrderId(orderId) {
+        document.getElementById('rejectOrderId').value = orderId;
+    }
+</script>

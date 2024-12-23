@@ -51,6 +51,10 @@ public partial class AmlaMarketPlaceDbContext : DbContext
         {
             entity.Property(e => e.OrderTime).HasDefaultValueSql("(sysdatetime())");
             entity.Property(e => e.Quantity).HasDefaultValue(1);
+            entity.Property(e => e.RejectComment)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasDefaultValue("none");
 
             entity.HasOne(d => d.Buyer).WithMany(p => p.OrderBuyers)
                 .HasForeignKey(d => d.BuyerId)
