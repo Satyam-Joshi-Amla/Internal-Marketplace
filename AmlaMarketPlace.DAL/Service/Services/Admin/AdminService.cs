@@ -288,7 +288,7 @@ Please contact support if you have any questions.
 Best Regards
 Amla Marketplace";
 
-                MailUtility.SendMessageOnMail(sellerEmail,subject,mailMessage);
+                MailUtility.SendMessageOnMail(sellerEmail, subject, mailMessage);
 
                 return true;
             }
@@ -345,6 +345,39 @@ Amla Marketplace";
         public int PublishedProductsCount()
         {
             return _context.Products.Where(p => p.IsPublished == true).Count();
+        }
+        public int TotalUsersCount()
+        {
+            try
+            {
+                return _context.Users.Count();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving the total number of users.", ex);
+            }
+        }
+        public int ActiveUserCount()
+        {
+            try
+            {
+                return _context.Users.Where(u => u.IsEmailVerified == true).Count();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving the total number of users.", ex);
+            }
+        }
+        public int InactiveUserCount()
+        {
+            try
+            {
+                return _context.Users.Where(u => u.IsEmailVerified == false).Count();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving the total number of users.", ex);
+            }
         }
     }
 }

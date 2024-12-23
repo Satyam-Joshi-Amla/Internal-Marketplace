@@ -34,6 +34,75 @@
         </div>
     </div>
 
+    <!-- Total Users Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a asp-controller="Admin" asp-action="GetAllUsersList" class="text-decoration-none">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Users (ALL)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.TotalUsersCount
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Active Users Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a asp-controller="Admin" asp-action="GetActiveUsersList" class="text-decoration-none">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Active Users
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.ActiveUsersCount
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Inactive Users Card -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a asp-controller="Admin" asp-action="GetInactiveUsersList" class="text-decoration-none">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Inactive Users
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.InactiveUsersCount
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-cross fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
     <!-- Published Products Card -->
     <div class="col-xl-3 col-md-6 mb-4">
         <a asp-controller="Admin" asp-action="GetAllPublishedProducts" class="text-decoration-none">
@@ -125,7 +194,7 @@
             </div>
         </a>
     </div>
-
+    
     @* <!-- Tasks Card Example (Progress Bar) -->
     <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-info shadow h-100 py-2">
@@ -151,5 +220,5 @@
     </div>
     </div>
     </div>
-    </div>   *@
+    </div> *@
 </div>

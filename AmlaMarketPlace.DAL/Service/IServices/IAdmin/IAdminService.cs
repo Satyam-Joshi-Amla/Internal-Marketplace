@@ -21,5 +21,8 @@ namespace AmlaMarketPlace.DAL.Service.IServices.IAdmin
         int ApprovedProductsCount();
         int RejectedProductsCount();
         int PublishedProductsCount();
+        int TotalUsersCount();
+        int ActiveUserCount();
+        int InactiveUserCount();
     }
 }

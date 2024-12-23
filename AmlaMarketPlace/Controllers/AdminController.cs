@@ -1,9 +1,9 @@
-﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
-using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
-using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+﻿using Microsoft.AspNetCore.Mvc;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
 
 namespace AmlaMarketPlace.Controllers
 {

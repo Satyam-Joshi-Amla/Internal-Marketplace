@@ -61,6 +61,9 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
                 ApprovedProductsCount = _adminService.ApprovedProductsCount(),
                 RejectedProductsCount = _adminService.RejectedProductsCount(),
                 PublishedProductsCount = _adminService.PublishedProductsCount(),
+                TotalUsersCount = _adminService.TotalUsersCount(),
+                ActiveUsersCount = _adminService.ActiveUserCount(),
+                InactiveUsersCount = _adminService.InactiveUserCount()
             };
 
             return adminDashBoardViewModel;
