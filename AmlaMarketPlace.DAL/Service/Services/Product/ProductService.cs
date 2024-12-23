@@ -2,25 +2,20 @@
 using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
-using AmlaMarketPlace.DAL.Service.Services.Account;
-using Microsoft.Extensions.Caching.Memory;
+using AmlaMarketPlace.DAL.Service.IServices.IProduct;
+using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly AmlaMarketPlaceDbContext _context;
-        private readonly AccountService _accountService;
-        private readonly IMemoryCache _cache;
 
         // Initialize the DbContext
-        public ProductService(AmlaMarketPlaceDbContext context, AccountService accountService, IMemoryCache cache)
+        public ProductService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
-            _accountService = accountService;
-            _cache = cache;
         }
-
         //public PaginatedResultDto GetProductsCache(int userId, int pageNumber = 1, int pageSize = 20)
         //{
         //    string cacheKey = $"ProductList_{userId}";
@@ -36,7 +31,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         //    }
         //    return productList;
         //}
-
         public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {
             var result = new List<ProductListViewModel>();
@@ -256,10 +250,10 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             string sellerMailMessage = $"Hi,\nSomeone is interested in purchasing \"{productName}\" from you.\n\nHere are the buyer Details:\nName: {buyerName}\nEmail: {buyerEmail}\n\nThank you for using our service.";
 
             // Sending Mail to Buyer with Contact Details of Seller
-            _accountService.SendMessageOnMail(buyerEmail, buyerMailSubject, buyerMailMessage);
+            MailUtility.SendMessageOnMail(buyerEmail, buyerMailSubject, buyerMailMessage);
 
             // Sending Mail to Seller with Contact Details of Buyer
-            _accountService.SendMessageOnMail(sellerEmail, sellerMailSubject, sellerMailMessage);
+            MailUtility.SendMessageOnMail(sellerEmail, sellerMailSubject, sellerMailMessage);
 
             //int? inventory = GetInventory(productId);
             //if (inventory >= orderQuantity)
@@ -555,6 +549,100 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 }
             }
             return true;
+        }
+
+        public int TotalUserUploadedProductsCount(int userId)
+        {
+            var totalProductCount = _context.Products.Where(u => u.UserId == userId).Count();
+
+            if (totalProductCount != null)
+            {
+                return totalProductCount;
+            }
+
+            return 0;
+        }
+
+        public int TotalUserApprovedProductsCount(int userId)
+        {
+            var totalApprovedProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 2 && u.IsPublished == false).Count();
+
+            if (totalApprovedProductCount != null)
+            {
+                return totalApprovedProductCount;
+            }
+
+            return 0;
+        }
+
+        public int TotalUserRejectedProductsCount(int userId)
+        {
+            var totalRejectedProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 3).Count();
+
+            if (totalRejectedProductCount != null)
+            {
+                return totalRejectedProductCount;
+            }
+
+            return 0;
+        }
+
+        public int TotalUserPublishedProductsCount(int userId)
+        {
+            var totalPublishedProductCount = _context.Products.Where(u => u.UserId == userId && u.IsPublished == true).Count();
+
+            if (totalPublishedProductCount != null)
+            {
+                return totalPublishedProductCount;
+            }
+
+            return 0;
+        }
+
+        public int TotalUserWaitingForApprovalProductsCount(int userId)
+        {
+            var totalWaitingForApprovalProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 1).Count();
+
+            if (totalWaitingForApprovalProductCount != null)
+            {
+                return totalWaitingForApprovalProductCount;
+            }
+
+            return 0;
+        }
+
+        public UserDTO GetUserById(int id)
+        {
+            // Fetching the user from the database based on the email
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+
+            if (user != null)
+            {
+                var userDTO = new UserDTO
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    EmailAddress = user.EmailAddress,
+                    IsEmailVerified = user.IsEmailVerified,
+                    Password = user.Password,
+                    MobileNumber = user.MobileNumber,
+                    IsmobileNumberVerified = user.IsmobileNumberVerified,
+                    UserRoleId = user.UserRoleId,
+                    CreatedOn = user.CreatedOn,
+                    EditedOn = user.EditedOn,
+                    VerificationToken = user.VerificationToken,
+                    TokenExpiration = user.TokenExpiration
+                };
+
+                var userRoleData = _context.UserRoles.FirstOrDefault(r => r.RoleId == user.UserRoleId);
+
+                userDTO.UserRole = userRoleData != null ? userRoleData.Role : "user";
+
+                return userDTO;
+            }
+
+            return null; // Return null if no user is found
         }
     }
 }

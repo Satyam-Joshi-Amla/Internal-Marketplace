@@ -1,15 +1,13 @@
 ﻿using AmlaMarketPlace.Models.ViewModels.Account;
-using AmlaMarketPlace.DAL.Service.Services.Account;
-using System.Net.Mail;
-using System.Net;
-using AmlaMarketPlace.Models.DTO;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+using AmlaMarketPlace.DAL.Service.IServices.IAccount;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Account
 {
-    public class AccountAgent
+    public class AccountAgent : IAccountAgent
     {
-        private readonly AccountService _accountService;
-        public AccountAgent(AccountService accountService)
+        private readonly IAccountService _accountService;
+        public AccountAgent(IAccountService accountService)
         {
             _accountService = accountService;
         }

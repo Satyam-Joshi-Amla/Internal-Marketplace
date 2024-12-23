@@ -1,7 +1,6 @@
-﻿using AmlaMarketPlace.BAL.Agent.Agents.Account;
-using AmlaMarketPlace.BAL.Agent.Agents.Admin;
-using AmlaMarketPlace.BAL.Agent.Agents.Product;
-using AmlaMarketPlace.Controllers;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +10,10 @@ namespace AmlaMarketPlace.Controllers
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
-        private readonly ProductAgent _productAgent;
-        private readonly AccountAgent _accountAgent;
-        private readonly AdminAgent _adminAgent;
-        public AdminController(AdminAgent adminAgent, ProductAgent productAgent, AccountAgent accountAgent)
+        private readonly IProductAgent _productAgent;
+        private readonly IAccountAgent _accountAgent;
+        private readonly IAdminAgent _adminAgent;
+        public AdminController(IAdminAgent adminAgent, IProductAgent productAgent, IAccountAgent accountAgent)
         {
             _adminAgent = adminAgent;
             _productAgent = productAgent;

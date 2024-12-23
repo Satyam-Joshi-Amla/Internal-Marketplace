@@ -1,5 +1,4 @@
-﻿using AmlaMarketPlace.BAL.Agent.Agents.Profile;
-using AmlaMarketPlace.Models.DTO;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IProfile;
 using AmlaMarketPlace.Models.ViewModels.Profile;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,8 +6,8 @@ namespace AmlaMarketPlace.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly ProfileAgent _profileAgent;
-        public ProfileController(ProfileAgent profileAgent)
+        private readonly IProfileAgent _profileAgent;
+        public ProfileController(IProfileAgent profileAgent)
         {
             _profileAgent = profileAgent;
         }

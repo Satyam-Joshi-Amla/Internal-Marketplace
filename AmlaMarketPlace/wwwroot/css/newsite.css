@@ -73,6 +73,11 @@ body {
 
 /* ------ Navigation Menu CSS Starts ------ */
 
+.nav-link.active {
+    font-weight: bold;
+    color: #0056b3; /* Example color */
+}
+
 .brand-logo {
     width: 150px;
 }

@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 	  <Content Remove="Views\Product\GetMyRequests.cshtml" />
+	  <Content Remove="Views\Product\SellerDashBoard.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,11 +46,17 @@
 
 	<ItemGroup>
 	  <_ContentIncludedByDefault Remove="Views\Product\GetMyRequests.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Product\SellerDashBoard.cshtml" />
 	  <_ContentIncludedByDefault Remove="wwwroot\css\adminCustomCSS.css" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="Views\Product\GetMyRequests.cshtml" />
+	  <None Include="Views\Product\SellerDashBoard.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Product\SellerDashBoard.cshtml" />
 	</ItemGroup>
 
 </Project>
