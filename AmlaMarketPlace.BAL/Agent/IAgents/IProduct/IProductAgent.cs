@@ -19,8 +19,8 @@ namespace AmlaMarketPlace.BAL.Agent.IAgents.IProduct
         bool ChangeStatusTOPending(int productId); // Changes product status to pending
         bool ChangeStatusTOApproved(int productId); // Changes product status to approved
         bool ChangeStatusTORejected(int productId); // Changes product status to rejected
-        List<OrderDTO> GetMyRequests(int userId); // Retrieves the list of requests made by a user
-        bool UpdateOrder(int orderId, int orderStatus); // Updates the status of an order
+        List<MyOrdersDto> GetMyRequests(int userId);
+        bool UpdateOrder(int orderId, int orderStatus, string rejectComment);
         SellerDashBoardViewModel GetSellerDashBoardData(int userId); // Retrieves seller dashboard data
     }
 }

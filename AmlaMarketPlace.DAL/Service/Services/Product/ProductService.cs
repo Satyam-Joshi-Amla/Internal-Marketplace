@@ -2,7 +2,6 @@
 using AmlaMarketPlace.Models.ViewModels.Product;
 using AmlaMarketPlace.Models.DTO;
 using Microsoft.EntityFrameworkCore;
-using AmlaMarketPlace.DAL.Service.Services.Account;
 using AmlaMarketPlace.DAL.Service.IServices.IProduct;
 using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
@@ -17,7 +16,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         {
             _context = context;
         }
-
         //public PaginatedResultDto GetProductsCache(int userId, int pageNumber = 1, int pageSize = 20)
         //{
         //    string cacheKey = $"ProductList_{userId}";
@@ -33,7 +31,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
         //    }
         //    return productList;
         //}
-
         public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {
             var result = new List<ProductListViewModel>();

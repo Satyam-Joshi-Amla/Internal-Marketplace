@@ -25,8 +25,8 @@ namespace AmlaMarketPlace.DAL.Service.IServices.IProduct
         bool ChangeStatusTO(int statusID, int productID);
         int? GetInventory(int productId);
         bool UpdateInventory(int productId, int updatedInventory);
-        List<OrderDTO> GetMyRequests(int userId);
-        bool UpdateOrder(int orderId, int orderStatus);
+        List<MyOrdersDto> GetMyRequests(int userId);
+        bool UpdateOrder(int orderId, int orderStatus, string rejectComment);
         int TotalUserUploadedProductsCount(int userId);
         int TotalUserApprovedProductsCount(int userId);
         int TotalUserRejectedProductsCount(int userId);
