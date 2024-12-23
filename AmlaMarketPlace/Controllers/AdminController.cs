@@ -1,4 +1,5 @@
-﻿using AmlaMarketPlace.BAL.Agent.Agents.Admin;
+﻿using AmlaMarketPlace.BAL.Agent.Agents.Account;
+using AmlaMarketPlace.BAL.Agent.Agents.Admin;
 using AmlaMarketPlace.BAL.Agent.Agents.Product;
 using AmlaMarketPlace.Controllers;
 using AmlaMarketPlace.Models.DTO;
@@ -11,11 +12,13 @@ namespace AmlaMarketPlace.Controllers
     public class AdminController : Controller
     {
         private readonly ProductAgent _productAgent;
+        private readonly AccountAgent _accountAgent;
         private readonly AdminAgent _adminAgent;
-        public AdminController(AdminAgent adminAgent, ProductAgent productAgent)
+        public AdminController(AdminAgent adminAgent, ProductAgent productAgent, AccountAgent accountAgent)
         {
             _adminAgent = adminAgent;
             _productAgent = productAgent;
+            _accountAgent = accountAgent;
         }
 
         public IActionResult DashBoard()
@@ -29,6 +32,20 @@ namespace AmlaMarketPlace.Controllers
         {
             var allUsers = _adminAgent.GetAllUsers();
             return View(allUsers);
+        }
+
+        [HttpGet]
+        public IActionResult GetActiveUsersList()
+        {
+            var activeUsers = _adminAgent.GetActiveUsers();
+            return View(activeUsers);
+        }
+
+        [HttpGet]
+        public IActionResult GetInactiveUsersList()
+        {
+            var inactiveUsers = _adminAgent.GetInactiveUsers();
+            return View(inactiveUsers);
         }
 
         [HttpGet]
@@ -143,11 +160,19 @@ namespace AmlaMarketPlace.Controllers
             return View(userDetail);
         }
 
-        //[HttpGet]
-        //public IActionResult GetOnlyApprovedProducts()
-        //{
-        //    var allPublishedProducts = _adminAgent.GetAllPublishedProducts();
-        //    return View(allPublishedProducts);
-        //}
+        public IActionResult ResendEmailVerificationLink(string email)
+        {
+            bool isSent = _accountAgent.SendEmailVerificationLink(email);
+            if (isSent)
+            {
+                TempData["EmailVerificationLinkSentSuccessfully"] = "Verification Link is sent successfully.";
+            }
+            else
+            {
+                TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
+            }
+
+            return RedirectToAction("GetInactiveUsersList", "Admin");
+        }
     }
 }

@@ -225,6 +225,11 @@ namespace AmlaMarketPlace.Controllers
         {
             ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel { Email = email };
 
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["EnableUserSidePanel"] = true;
+            }
+
             return View(resetPasswordViewModel);
         }
 
@@ -257,6 +262,19 @@ namespace AmlaMarketPlace.Controllers
             {
                 TempData["ErrorMessage"] = "We are facing some issues in reseting password. Sorry for the inconvenience. Our services will be back soon.";
                 return RedirectToAction("Error");
+            }
+        }
+
+        public void ResendEmailVerificationLink(string email)
+        {
+            bool isSent = _accountAgent.SendEmailVerificationLink(email);
+            if (isSent)
+            {
+                TempData["EmailVerificationLinkSentSuccessfully"] = "Verification Link is sent successfully.";
+            }
+            else
+            {
+                TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
             }
         }
     }

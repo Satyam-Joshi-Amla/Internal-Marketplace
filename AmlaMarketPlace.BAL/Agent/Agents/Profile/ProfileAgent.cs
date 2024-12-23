@@ -1,10 +1,7 @@
-﻿using AmlaMarketPlace.DAL.Service.Services.Profile;
+﻿using System;
+using AmlaMarketPlace.DAL.Service.Services.Profile;
 using AmlaMarketPlace.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AmlaMarketPlace.Models.ViewModels.Profile;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Profile
 {
@@ -16,9 +13,35 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Profile
             _profileService = profileService;
         }
 
-        public UserDTO GetUser(int userID)
+        public ProfileDetailsViewModel GetUser(int userID)
         {
-            return _profileService.GetUser(userID);
+            UserDTO user = _profileService.GetUser(userID);
+            ProfileDetailsViewModel profileDetails = new ProfileDetailsViewModel()
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress,
+                IsEmailVerified = user.IsEmailVerified,
+                MobileNumber = user.MobileNumber
+            };
+
+            return profileDetails;
+        }
+
+        public bool UpdateUser(ProfileDetailsViewModel updatedUser)
+        {
+            UserDTO updatedUserDTO = new UserDTO()
+            {
+                UserId = updatedUser.UserId,
+                FirstName = updatedUser.FirstName,
+                LastName = updatedUser.LastName,
+                EmailAddress = updatedUser.EmailAddress,
+                IsEmailVerified = updatedUser.IsEmailVerified,
+                MobileNumber = updatedUser.MobileNumber
+            };
+
+            return _profileService.UpdateUser(updatedUserDTO);
         }
     }
 }

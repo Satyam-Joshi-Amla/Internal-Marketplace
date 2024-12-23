@@ -108,5 +108,10 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Account
         {
             return _accountService.GetUserByToken(token).EmailAddress;
         }
+
+        public bool SendEmailVerificationLink(string emailAddress)
+        {
+            return _accountService.SendVerificationLink(emailAddress);
+        }
     }
 }
