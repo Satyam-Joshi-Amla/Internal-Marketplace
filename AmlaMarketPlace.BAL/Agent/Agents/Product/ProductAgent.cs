@@ -153,14 +153,14 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
             return _productService.ChangeStatusTO(3, productId);
         }
 
-        public List<OrderDTO> GetMyRequests(int userId)
+        public List<MyOrdersDto> GetMyRequests(int userId)
         {
             return _productService.GetMyRequests(userId);
         }
 
-        public bool UpdateOrder(int orderId, int orderStatus)
+        public bool UpdateOrder(int orderId, int orderStatus, string rejectComment)
         {
-            _productService.UpdateOrder(orderId, orderStatus);
+            _productService.UpdateOrder(orderId, orderStatus, rejectComment);
             return true;
         }
     }
