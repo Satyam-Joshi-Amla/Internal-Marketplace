@@ -1,24 +1,27 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 using AmlaMarketPlace.DAL.Data;
-using AmlaMarketPlace.Models.ViewModels.Account;
-using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.DAL.Service.IServices.IAccount;
-using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
+using AmlaMarketPlace.Models.DTO;
+using AmlaMarketPlace.Models.ViewModels.Account;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Account
 {
     public class AccountService : IAccountService
     {
-
+        #region Dependency Injection : Content Field
         private readonly AmlaMarketPlaceDbContext _context;
+        #endregion
+
+        #region Constructor
         public AccountService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
         }
 
+        #endregion
 
         #region Methods
+
         /// <summary>
         /// Checks if the email exists in database
         /// </summary>

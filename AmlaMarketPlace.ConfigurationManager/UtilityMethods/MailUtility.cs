@@ -5,6 +5,13 @@ namespace AmlaMarketPlace.ConfigurationManager.UtilityMethods
 {
     public static class MailUtility
     {
+        /// <summary>
+        /// Sends an email with the specified subject and message to the given recipient.
+        /// </summary>
+        /// <param name="toEmail">The recipient's email address.</param>
+        /// <param name="mailSubject">The subject of the email.</param>
+        /// <param name="mailMessage">The body content of the email.</param>
+        /// <exception cref="Exception">Thrown if there is an error while sending the email.</exception>
         public static void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
         {
             try

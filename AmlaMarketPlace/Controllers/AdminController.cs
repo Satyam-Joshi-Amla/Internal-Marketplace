@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AmlaMarketPlace.Models.DTO;
-using Microsoft.AspNetCore.Authorization;
-using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
 using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
 using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Admin;
 using AmlaMarketPlace.Models.ViewModels.Product;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AmlaMarketPlace.Controllers
 {
@@ -96,7 +96,7 @@ namespace AmlaMarketPlace.Controllers
             List<PublishedProductsViewModel> allPublishedProducts = _adminAgent.GetAllPublishedProducts();
             return View(allPublishedProducts);
         }
-        
+
         [HttpGet]
         public IActionResult ProductsWaitingForApproval()
         {
@@ -105,7 +105,7 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllApprovedProducts ()
+        public IActionResult GetAllApprovedProducts()
         {
             List<ProductDTO> getAllApprovedProducts = _adminAgent.GetAllApprovedProducts();
             return View(getAllApprovedProducts);
@@ -121,7 +121,7 @@ namespace AmlaMarketPlace.Controllers
             }
 
             return View(productDetails);
-        }        
+        }
 
         [HttpGet]
         public IActionResult GetRejectedProducts()

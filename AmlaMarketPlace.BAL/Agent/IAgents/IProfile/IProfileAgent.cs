@@ -1,5 +1,4 @@
-﻿using AmlaMarketPlace.Models.DTO;
-using AmlaMarketPlace.Models.ViewModels.Profile;
+﻿using AmlaMarketPlace.Models.ViewModels.Profile;
 
 namespace AmlaMarketPlace.BAL.Agent.IAgents.IProfile
 {

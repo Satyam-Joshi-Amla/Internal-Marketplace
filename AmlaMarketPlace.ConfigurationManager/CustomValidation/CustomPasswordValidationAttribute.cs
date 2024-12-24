@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AmlaMarketPlace.ConfigurationManager.CustomValidation
 {
     public class CustomPasswordValidationAttribute : ValidationAttribute
     {
+        /// <summary>
+        /// Validates if the given password meets specific criteria.
+        /// </summary>
+        /// <param name="value">The password to validate.</param>
+        /// <returns>Returns `true` if the password is valid, otherwise `false`.</returns>
         public override bool IsValid(object value)
         {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
@@ -29,6 +29,7 @@ namespace AmlaMarketPlace.ConfigurationManager.CustomValidation
 
             return false;
         }
+
     }
 
 }

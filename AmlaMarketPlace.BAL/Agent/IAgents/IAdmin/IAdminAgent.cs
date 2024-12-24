@@ -1,6 +1,5 @@
 ﻿using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Admin;
-using System.Collections.Generic;
 
 namespace AmlaMarketPlace.BAL.Agent.IAgents.IAdmin
 {

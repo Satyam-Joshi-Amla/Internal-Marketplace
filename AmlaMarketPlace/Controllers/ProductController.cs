@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
 using AmlaMarketPlace.Models.DTO;
-using Microsoft.AspNetCore.Authorization;
 using AmlaMarketPlace.Models.ViewModels.Product;
-using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AmlaMarketPlace.Controllers
 {
@@ -130,7 +130,7 @@ namespace AmlaMarketPlace.Controllers
 
             return View(productDetails);
         }
-        
+
         public IActionResult PlaceOrder(int productId, int orderQuantity)
         {
             _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value), orderQuantity);

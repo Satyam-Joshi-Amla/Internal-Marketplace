@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using AmlaMarketPlace.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace AmlaMarketPlace.Controllers
 {

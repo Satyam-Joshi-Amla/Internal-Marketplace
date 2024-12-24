@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AmlaMarketPlace.DAL.Data;
+﻿namespace AmlaMarketPlace.DAL.Data;
 
 public partial class Role
 {

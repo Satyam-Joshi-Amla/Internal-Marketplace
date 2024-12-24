@@ -1,9 +1,9 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
 using AmlaMarketPlace.Models.ViewModels.Account;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AmlaMarketPlace.Controllers
 {
@@ -285,7 +285,7 @@ namespace AmlaMarketPlace.Controllers
 
             return RedirectToAction("SignIn");
         }
-        
+
         public void ResendEmailVerificationLink(string email)
         {
             bool isSent = _accountAgent.SendEmailVerificationLink(email);

@@ -1,11 +1,5 @@
 ﻿using AmlaMarketPlace.Models.ViewModels.Validations;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmlaMarketPlace.Models.ViewModels.Profile
 {
@@ -18,7 +12,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Profile
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        
+
         [Required(ErrorMessage = "Email Address is required.")]
         [EmailAddress(ErrorMessage = "Enter a valid email.")]
         [Display(Name = "Email Address")]
