@@ -1,23 +1,16 @@
-﻿using AmlaMarketPlace.DAL.Service.Services.Admin;
-using AmlaMarketPlace.DAL.Service.Services.Profile;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
+using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
 using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Admin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
 {
-    public class AdminAgent
+    public class AdminAgent : IAdminAgent
     {
-        private readonly AdminService _adminService;
-        private readonly ProfileService _profileService;
-        public AdminAgent(AdminService adminService, ProfileService profileService)
+        private readonly IAdminService _adminService;
+        public AdminAgent(IAdminService adminService)
         {
             _adminService = adminService;
-            _profileService = profileService;
         }
         public List<UserDTO> GetAllUsers()
         {
@@ -74,7 +67,7 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
         }
         public UserDTO GetUserDetail(int UserID)
         {
-            return _profileService.GetUser(UserID);
+            return _adminService.GetUserById(UserID);
         }
     }
 }

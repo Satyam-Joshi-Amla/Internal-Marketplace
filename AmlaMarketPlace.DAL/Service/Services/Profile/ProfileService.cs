@@ -1,10 +1,10 @@
 ﻿using AmlaMarketPlace.DAL.Data;
-using AmlaMarketPlace.DAL.Service.Services.Admin;
+using AmlaMarketPlace.DAL.Service.IServices.IProfile;
 using AmlaMarketPlace.Models.DTO;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Profile
 {
-    public class ProfileService
+    public class ProfileService : IProfileService
     {
         private readonly AmlaMarketPlaceDbContext _context;
         public ProfileService(AmlaMarketPlaceDbContext context)

@@ -41,16 +41,16 @@
                 <hr class="sidebar-divider my-0">
 
                 <!-- Sidebar Toggler (Sidebar) -->
-                <div class="d-flex justify-content-center mt-3">
+                @* <div class="d-flex justify-content-center mt-3">
                     <button class="rounded-circle border-0 btn-sm" id="sidebarToggle"></button>
-                </div>
+                </div> *@
 
                 <!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">
+                @* <hr class="sidebar-divider d-none d-md-block"> *@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="#" @* href="@Url.Action("#", "#")" *@>
+                    <a class="nav-link" asp-controller="Product" asp-action="SellerDashBoard">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
@@ -83,10 +83,10 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-                <!-- Heading -->
+                @* <!-- Heading -->
                 <div class="sidebar-heading">
                     Profile
-                </div>
+                </div> *@
 
                 <!-- Nav Item - Users Pages Collapse Menu -->
                 @* <li class="nav-item">
@@ -104,12 +104,12 @@
                     </div>
                 </li> *@
 
-                <li class="nav-item">
+                @* <li class="nav-item">
                     <a class="nav-link collapsed" asp-controller="Product" asp-action="GetMyRequests">
                         <i class="fas fa-fw fa-user"></i>
                         <span>Your Orders</span>
                     </a>
-                </li>
+                </li> *@
 
             </ul>
         }

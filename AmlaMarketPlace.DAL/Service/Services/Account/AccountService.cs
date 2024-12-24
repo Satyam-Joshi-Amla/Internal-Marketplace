@@ -1,32 +1,45 @@
-﻿using System.Linq;
+﻿using System.Net;
+using System.Net.Mail;
 using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.ViewModels.Account;
 using AmlaMarketPlace.Models.DTO;
-using System.Net.Mail;
-using System.Net;
-using System.Data;
+using AmlaMarketPlace.DAL.Service.IServices.IAccount;
+using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Account
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
+
         private readonly AmlaMarketPlaceDbContext _context;
-        // Initialize the DbContext
         public AccountService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
         }
+
+
+        #region Methods
+        /// <summary>
+        /// Checks if the email exists in database
+        /// </summary>
+        /// <param name="email">Email entered by user</param>
+        /// <returns>Returns true if email exists else returns false</returns>
         public bool DoesUserExists(string email)
         {
-            // Checking if the user already exists in the database
             var existingUser = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
             if (existingUser != null)
             {
                 return true;
             }
-
             return false;
         }
+
+
+        /// <summary>
+        /// Checks if the password entered is correct
+        /// </summary>
+        /// <param name="signInViewModel">Email and password entered by the user</param>
+        /// <returns>Returns true if the entered password is correct else returns false</returns>
         public bool IsValidCredentials(SignInViewModel signInViewModel)
         {
             if (!DoesUserExists(signInViewModel.EmailAddress))
@@ -43,6 +56,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
 
             return false;
         }
+
+
+        /// <summary>
+        /// Creates new user in the database
+        /// </summary>
+        /// <param name="signUpViewModel">Contains details entered by the user</param>
+        /// <returns>Returns true if new user is created successfully else returns false</returns>
         public bool AddNewUser(SignUpViewModel signUpViewModel)
         {
             if (DoesUserExists(signUpViewModel.EmailAddress))
@@ -50,7 +70,6 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                 return false;
             }
 
-            // Creating a new user and adding it to the database
             var newUser = new User
             {
                 FirstName = signUpViewModel.FirstName,
@@ -64,16 +83,22 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                 EditedOn = DateTime.Now
             };
 
-            _context.Users.Add(newUser); // Adding the user to the Users table
-            _context.SaveChanges(); // Saving the changes to the database
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
 
             SendVerificationLink(signUpViewModel.EmailAddress);
 
             return true;
         }
+
+
+        /// <summary>
+        /// Fetches user details by email
+        /// </summary>
+        /// <param name="email">Email of the user</param>
+        /// <returns>Returns UserDTO containing information of the user if user exists else returns null</returns>
         public UserDTO GetUserByEmail(string email)
         {
-            // Fetching the user from the database based on the email
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
 
             if (user != null)
@@ -102,11 +127,17 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                 return userDTO;
             }
 
-            return null; // Return null if no user is found
+            return null;
         }
+
+
+        /// <summary>
+        /// Fetches user details by user id
+        /// </summary>
+        /// <param name="id">User's id</param>
+        /// <returns>Returns UserDTO with details of user if exists else returns null</returns>
         public UserDTO GetUserById(int id)
         {
-            // Fetching the user from the database based on the email
             var user = _context.Users.FirstOrDefault(u => u.UserId == id);
 
             if (user != null)
@@ -135,16 +166,20 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
                 return userDTO;
             }
 
-            return null; // Return null if no user is found
+            return null;
         }
+
+
+        /// <summary>
+        /// Updates the user information as per the details in UserDTO
+        /// </summary>
+        /// <param name="userDTO">Contains details of the user</param>
+        /// <returns>Returns string based on success or failure of update</returns>
         public string UpdateUser(UserDTO userDTO)
         {
-            // Fetch the existing user by email
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == userDTO.EmailAddress);
-
             if (user != null)
             {
-                // Update the user properties with the values from the UserDTO
                 user.FirstName = userDTO.FirstName;
                 user.LastName = userDTO.LastName;
                 user.IsEmailVerified = userDTO.IsEmailVerified;
@@ -158,119 +193,89 @@ namespace AmlaMarketPlace.DAL.Service.Services.Account
 
                 _context.Users.Update(user);
                 _context.SaveChanges();
-
                 return "User updated successfully.";
             }
-
-            return "User not found."; // Return message if user not found
+            return "User not found.";
         }
 
-        // Utility method we can say
+
+        /// <summary>
+        /// Shoots an email based on the parameters
+        /// </summary>
+        /// <param name="toEmail">Email id of the reciever</param>
+        /// <param name="mailSubject">String type subject of the email</param>
+        /// <param name="mailMessage">String body of the email</param>
+        /// <exception cref="Exception"></exception>
         public void SendMessageOnMail(string toEmail, string mailSubject, string mailMessage)
         {
             try
             {
-                var fromAddress = new MailAddress("rockervc7@gmail.com", "Amla Marketplace");
-                var toAddress = new MailAddress(toEmail);
-                const string fromAppPassword = "cxml addl yidq sybs"; // not to be touched.
-                string subject = mailSubject;
-                string body = $"{mailMessage}";
-
-                var smtp = new SmtpClient()
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromAppPassword)
-                };
-
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
-                }
+                MailUtility.SendMessageOnMail(toEmail, mailSubject, mailMessage);
             }
             catch (Exception ex)
             {
-                // Log or handle the exception as needed
                 System.Diagnostics.Debug.WriteLine("Email sending failed: " + ex.Message);
-                throw; // Optionally rethrow the exception
+                throw new Exception("Something went wrong in account service layer", ex);
             }
         }
+
+
+        /// <summary>
+        /// Creates an unique verification token for verifying the email of the user and saves the token for the user in db
+        /// </summary>
+        /// <param name="email">Email of the user</param>
+        /// <param name="TokenValidityTimeInHours">Expiration duration for token in hours</param>
+        /// <returns>Returns the unique verification token</returns>
         public string CreateNewVerificationTokenWithValidityTime(string email, int TokenValidityTimeInHours)
         {
             var user = GetUserByEmail(email);
-
             string newToken = Guid.NewGuid().ToString();
             var newTokenExpiration = DateTime.UtcNow.AddHours(TokenValidityTimeInHours);
-
             var dbUser = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
-
             dbUser.VerificationToken = newToken;
             dbUser.TokenExpiration = newTokenExpiration;
-
             _context.SaveChanges();
             return newToken;
         }
 
-        // To send Email Verification Link
+
+        /// <summary>
+        /// Shoots an email to the user with verification link
+        /// </summary>
+        /// <param name="emailAddress">Email id of the user</param>
+        /// <returns>Returns true</returns>
         public bool SendVerificationLink(string emailAddress)
         {
-            //// Generate a unique verification token
-            //var verificationToken = Guid.NewGuid().ToString();
-
-            //// Set token expiration (e.g., 24 hours)
-            //var tokenExpiration = DateTime.UtcNow.AddHours(24);
-
             UserDTO user = GetUserByEmail(emailAddress);
-
-            // This function creates new token and add validity time in hour and saves in Db
             string verificationToken = CreateNewVerificationTokenWithValidityTime(emailAddress, 24);
-
-            // Save the token and expiration in the database
-            //var user = GetUserByEmail(signUpViewModel.EmailAddress);
-            //user.VerificationToken = verificationToken;
-            //user.TokenExpiration = tokenExpiration;
-
-            // Save changes to the database
-            // UpdateUser(user);
-
-            // Create the verification link (you should replace "YourAppUrl" with your actual domain)
             var verificationLink = $"https://localhost:44321/Account/VerifyEmail?token={verificationToken}";
-
-            // Send the email
             string mailSubject = "Email Verification";
             string mailMessage = $@"
-Hi {user.FirstName} {user.LastName},
-Please click the link below to verify your email address:
+            Hi {user.FirstName} {user.LastName},
+            Please click the link below to verify your email address:
 
-{verificationLink}
+            {verificationLink}
 
-Thank you for joining us!
+            Thank you for joining us!
 
-Best regards,
-Amla Marketplace Team";
+            Best regards,
+            Amla Marketplace Team";
 
             SendMessageOnMail(emailAddress, mailSubject, mailMessage);
-
-            return true; // Email sent successfully
+            return true;
         }
+
+
+        /// <summary>
+        /// Sends password reset link to the user on email id
+        /// </summary>
+        /// <param name="email">Email id of the user</param>
+        /// <returns>Returns true</returns>
         public bool SendResetPasswordVerificationLink(string email)
         {
-            // This function creates new token and add validity time in hour and saves in Db
             string verificationToken = CreateNewVerificationTokenWithValidityTime(email, 24);
-
-            // Create the verification link (you should replace "YourAppUrl" with your actual domain)
             var verificationLink = $"https://localhost:44321/Account/VerifyAndRedirectToResetPassword?token={verificationToken}";
-
             UserDTO user = GetUserByEmail(email);
-
-            // Send the email
             string mailSubject = "Email Verification for Reset Password";
             string mailMessage = $@"
              Hi {user.FirstName} {user.LastName},
@@ -285,12 +290,17 @@ Amla Marketplace Team";
              Amla Marketplace Team";
 
             SendMessageOnMail(user.EmailAddress, mailSubject, mailMessage);
-
-            return true; // Email sent successfully
+            return true;
         }
+
+
+        /// <summary>
+        /// Fetches user details with reference to token string
+        /// </summary>
+        /// <param name="token">Unique token string sent to the user</param>
+        /// <returns>Returns UserDTO type user details if user exists else returns null</returns>
         public UserDTO GetUserByToken(string token)
         {
-            // Find the user with the provided token
             var user = _context.Users.FirstOrDefault(u => u.VerificationToken == token);
 
             if (user != null)
@@ -309,12 +319,18 @@ Amla Marketplace Team";
                     VerificationToken = user.VerificationToken,
                     TokenExpiration = user.TokenExpiration
                 };
-
                 return userDTO;
             }
-
             return null;
         }
+
+
+        /// <summary>
+        /// Updates the password of the user
+        /// </summary>
+        /// <param name="email">Email id of the user</param>
+        /// <param name="password">New password set by the user</param>
+        /// <returns>Returns true if the password is updated else returns false</returns>
         public bool UpdatePassword(string email, string password)
         {
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
@@ -329,8 +345,15 @@ Amla Marketplace Team";
                 _context.SaveChanges();
                 return true;
             }
-
         }
+
+
+        /// <summary>
+        /// Updates the status of email verification
+        /// </summary>
+        /// <param name="email">Email id of the user</param>
+        /// <param name="statusValue">Status of the verification</param>
+        /// <returns>Returns true if the status is updated else returns false</returns>
         public bool UpdateIsEmailVerifiedStatus(string email, bool statusValue)
         {
             var user = _context.Users.FirstOrDefault(u => u.EmailAddress == email);
@@ -341,9 +364,8 @@ Amla Marketplace Team";
                 _context.SaveChanges();
                 return true;
             }
-
             return false;
         }
-
+        #endregion
     }
 }

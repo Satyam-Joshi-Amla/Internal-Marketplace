@@ -11,6 +11,14 @@ using AmlaMarketPlace.DAL.Service.Services.Admin;
 using AmlaMarketPlace.BAL.Agent.Agents.Admin;
 using AmlaMarketPlace.BAL.Agent.Agents.Profile;
 using AmlaMarketPlace.DAL.Service.Services.Profile;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
+using AmlaMarketPlace.DAL.Service.IServices.IAccount;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using AmlaMarketPlace.DAL.Service.IServices.IProduct;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
+using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProfile;
+using AmlaMarketPlace.DAL.Service.IServices.IProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,14 +26,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AmlaMarketPlaceDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registering for DI
-builder.Services.AddScoped<AccountAgent>();
-builder.Services.AddScoped<AccountService>();
-builder.Services.AddScoped<ProductAgent>();
-builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<AdminAgent>();
-builder.Services.AddScoped<AdminService>();
-builder.Services.AddScoped<ProfileAgent>();
-builder.Services.AddScoped<ProfileService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAccountAgent, AccountAgent>();
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductAgent, ProductAgent>();
+
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminAgent, AdminAgent>();
+
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IProfileAgent, ProfileAgent>();
+
 
 // Adding cookie authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
@@ -68,7 +80,7 @@ app.UseAuthorization();
 // app.UseDeveloperExceptionPage();
 
 // For Production Environment
-app.UseExceptionHandler("/Home/Error"); // Redirects to the "Error" action in the "Home" controller
+// app.UseExceptionHandler("/Home/Error"); // Redirects to the "Error" action in the "Home" controller
 // app.UseStatusCodePagesWithRedirects("/Home/Error?code={0}"); // Redirects based on status codes
 
 

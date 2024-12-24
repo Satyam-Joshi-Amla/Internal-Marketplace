@@ -1,14 +1,14 @@
-﻿using System;
-using AmlaMarketPlace.DAL.Service.Services.Profile;
-using AmlaMarketPlace.Models.DTO;
+﻿using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Profile;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProfile;
+using AmlaMarketPlace.DAL.Service.IServices.IProfile;
 
 namespace AmlaMarketPlace.BAL.Agent.Agents.Profile
 {
-    public class ProfileAgent
+    public class ProfileAgent : IProfileAgent
     {
-        private readonly ProfileService _profileService;
-        public ProfileAgent(ProfileService profileService)
+        private readonly IProfileService _profileService;
+        public ProfileAgent(IProfileService profileService)
         {
             _profileService = profileService;
         }

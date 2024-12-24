@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Amla
 
-using AmlaMarketPlace.BAL.Agent.Agents.Account;
+using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
 using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -13,8 +13,8 @@ namespace AmlaMarketPlace.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountAgent _accountAgent;
-        public AccountController(AccountAgent accountAgent)
+        private readonly IAccountAgent _accountAgent;
+        public AccountController(IAccountAgent accountAgent)
         {
             _accountAgent = accountAgent;
         }

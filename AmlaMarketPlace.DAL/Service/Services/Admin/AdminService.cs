@@ -1,33 +1,39 @@
 ﻿using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.Models.DTO;
-using AmlaMarketPlace.DAL.Service.Services.Product;
-using AmlaMarketPlace.DAL.Service.Services.Account;
+using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
+using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Admin
 {
-    public class AdminService
+    public class AdminService : IAdminService
     {
-        private readonly AmlaMarketPlaceDbContext _context;        
-        private readonly AccountService _accountService;// To access Send mail method
-        public AdminService(AmlaMarketPlaceDbContext context, AccountService accountService)
+        private readonly AmlaMarketPlaceDbContext _context;
+        public AdminService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
-            _accountService = accountService;
         }
 
-        // Utility method to retrieve the user role by ID
+
+        /// <summary>
+        /// Fetches role of the user by user's role id
+        /// </summary>
+        /// <param name="userRoleId">Role id of the user</param>
+        /// <returns>Returns "user" if user else returns admin</returns>
         public string GetUserRoleById(int userRoleId)
         {
             var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
 
-            return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
+            return userRole != null ? userRole.Role : "user";
         }
+
+
+        /// <summary>
+        /// Fetches list of all users
+        /// </summary>
+        /// <returns>Returns List of UserDTO type user details</returns>
         public List<UserDTO> GetAllUsers()
         {
-            // Fetching all users from the database
             var users = _context.Users.ToList();
-
-            // Mapping the database user records to UserDTO
             var userDTOs = users.Select(user => new UserDTO
             {
                 UserId = user.UserId,
@@ -48,12 +54,15 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userDTOs;
         }
+
+
+        /// <summary>
+        /// Fetches list of all users whose email id is verified
+        /// </summary>
+        /// <returns>Returns list of UserDTO type user details</returns>
         public List<UserDTO> GetActiveUsers()
         {
-            // Fetching all users from the database
             var users = _context.Users.Where(e => e.IsEmailVerified == true).ToList();
-
-            // Mapping the database user records to UserDTO
             var userDTOs = users.Select(user => new UserDTO
             {
                 UserId = user.UserId,
@@ -74,12 +83,15 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userDTOs;
         }
+
+
+        /// <summary>
+        /// Fetches list of users whose email id is unverified
+        /// </summary>
+        /// <returns>Returns list of UserDTO type user details</returns>
         public List<UserDTO> GetInactiveUsers()
         {
-            // Fetching all users from the database
             var users = _context.Users.Where(e => e.IsEmailVerified == false).ToList();
-
-            // Mapping the database user records to UserDTO
             var userDTOs = users.Select(user => new UserDTO
             {
                 UserId = user.UserId,
@@ -100,14 +112,17 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return userDTOs;
         }
+
+
+        /// <summary>
+        /// Fetches list of all published products
+        /// </summary>
+        /// <returns>Returns list of ProductDTO type product details</returns>
         public List<ProductDTO> GetAllPublishedProducts()
         {
-            // Fetching only published products from the database
             var products = _context.Products
-                .Where(product => product.IsPublished) // Filtering published products
+                .Where(product => product.IsPublished)
                 .ToList();
-
-            // Mapping the filtered products to ProductDTO
             var productDTO = products.Select(product => new ProductDTO
             {
                 ProductId = product.ProductId,
@@ -125,14 +140,17 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
+
+
+        /// <summary>
+        /// Fetches list of products whose approval status is pending
+        /// </summary>
+        /// <returns>Returns list of ProductDTO type product details</returns>
         public List<ProductDTO> ProductsWaitingForApproval()
         {
-            // Fetching only pending products from the database
             var products = _context.Products
                 .Where(product => product.StatusId == 1)
                 .ToList();
-
-            // Mapping the filtered products to ProductDTO
             var productDTO = products.Select(product => new ProductDTO
             {
                 ProductId = product.ProductId,
@@ -150,6 +168,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
             return productDTO;
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<ProductDTO> GetAllApprovedProducts()
         {
             // Fetching only approved products from the database
@@ -218,6 +242,39 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
                 return false;
             }
         }
+        public UserDTO GetUserById(int id)
+        {
+            // Fetching the user from the database based on the email
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+
+            if (user != null)
+            {
+                var userDTO = new UserDTO
+                {
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    EmailAddress = user.EmailAddress,
+                    IsEmailVerified = user.IsEmailVerified,
+                    Password = user.Password,
+                    MobileNumber = user.MobileNumber,
+                    IsmobileNumberVerified = user.IsmobileNumberVerified,
+                    UserRoleId = user.UserRoleId,
+                    CreatedOn = user.CreatedOn,
+                    EditedOn = user.EditedOn,
+                    VerificationToken = user.VerificationToken,
+                    TokenExpiration = user.TokenExpiration
+                };
+
+                var userRoleData = _context.UserRoles.FirstOrDefault(r => r.RoleId == user.UserRoleId);
+
+                userDTO.UserRole = userRoleData != null ? userRoleData.Role : "user";
+
+                return userDTO;
+            }
+
+            return null; // Return null if no user is found
+        }
         public bool RejectProduct(int productId, string rejectComment)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -238,7 +295,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Admin
 
                 // Send Product Rejected Mail to Seller with Comment.                
                 string subject = "Product Rejected";
-                var user = _accountService.GetUserById(product.UserId);
+                var user = GetUserById(product.UserId);
                 string sellerEmail = user.EmailAddress;
                 string mailMessage = $@"
 Hi {user.FirstName} {user.LastName},    
@@ -257,7 +314,7 @@ Please contact support if you have any questions.
 Best Regards
 Amla Marketplace";
 
-                _accountService.SendMessageOnMail(sellerEmail,subject,mailMessage);
+                MailUtility.SendMessageOnMail(sellerEmail, subject, mailMessage);
 
                 return true;
             }
@@ -317,6 +374,3 @@ Amla Marketplace";
         }
     }
 }
-
-
-
