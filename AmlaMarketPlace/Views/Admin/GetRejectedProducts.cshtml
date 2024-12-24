@@ -37,13 +37,15 @@
                         {
                             <tr>
                                 <td>@SrNo</td>
-                                <td>
-                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 100%; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </a>
                                 </td>
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                                <td class="text-truncate" style="max-width: 200px;">@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td class="text-truncate" style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
                                 <td>

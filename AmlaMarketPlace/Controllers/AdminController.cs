@@ -4,15 +4,24 @@ using Microsoft.AspNetCore.Authorization;
 using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
 using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
 using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using AmlaMarketPlace.Models.ViewModels.Admin;
+using AmlaMarketPlace.Models.ViewModels.Product;
 
 namespace AmlaMarketPlace.Controllers
 {
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
+        #region Dependency Injection: Agent Fields
+
         private readonly IProductAgent _productAgent;
         private readonly IAccountAgent _accountAgent;
         private readonly IAdminAgent _adminAgent;
+
+        #endregion
+
+        #region Constructor
+
         public AdminController(IAdminAgent adminAgent, IProductAgent productAgent, IAccountAgent accountAgent)
         {
             _adminAgent = adminAgent;
@@ -20,11 +29,19 @@ namespace AmlaMarketPlace.Controllers
             _accountAgent = accountAgent;
         }
 
+        #endregion
+
+        #region Admin DashBoard
+
         public IActionResult DashBoard()
         {
-            var dashBoardNumbers = _adminAgent.GetDashBoardNumbers();
+            AdminDashBoardViewModel dashBoardNumbers = _adminAgent.GetDashBoardNumbers();
             return View(dashBoardNumbers);
         }
+
+        #endregion
+
+        #region User
 
         [HttpGet]
         public IActionResult GetAllUsersList()
@@ -48,9 +65,35 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetUserDetails(int id)
+        {
+            UserDTO userDetail = _adminAgent.GetUserDetail(id);
+            return View(userDetail);
+        }
+
+        public IActionResult ResendEmailVerificationLink(string email)
+        {
+            bool isSent = _accountAgent.SendEmailVerificationLink(email);
+            if (isSent)
+            {
+                TempData["EmailVerificationLinkSentSuccessfully"] = "Verification Link is sent successfully.";
+            }
+            else
+            {
+                TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
+            }
+
+            return RedirectToAction("GetInactiveUsersList", "Admin");
+        }
+
+        #endregion
+
+        #region Products
+
+        [HttpGet]
         public IActionResult GetAllPublishedProducts()
         {
-            var allPublishedProducts = _adminAgent.GetAllPublishedProducts();
+            List<PublishedProductsViewModel> allPublishedProducts = _adminAgent.GetAllPublishedProducts();
             return View(allPublishedProducts);
         }
         
@@ -71,29 +114,25 @@ namespace AmlaMarketPlace.Controllers
         [HttpGet]
         public IActionResult ProductDetails(int id)
         {
-            var productDetails = _productAgent.GetIndividualProduct(id);
+            ProductDetailsViewModel productDetails = _productAgent.GetIndividualProduct(id);
             if (productDetails == null)
             {
                 return NotFound();
             }
 
             return View(productDetails);
+        }        
+
+        [HttpGet]
+        public IActionResult GetRejectedProducts()
+        {
+            var productRejected = _adminAgent.GetRejectedProducts();
+            return View(productRejected);
         }
 
-        [HttpPost]
-        public IActionResult PutProductToWaitingForApproval(int id)
-        {
-            bool isWaitingForApproved = _adminAgent.MakeWaitingForApproval(id);
-            if (isWaitingForApproved)
-            {
-                TempData["WaitingForApprovedSuccess"] = "Product status changes to Pending.";
-            }
-            else
-            {
-                TempData["WaitingForApprovedFailed"] = "Failed to change Product status to Pending.";
-            }
-            return RedirectToAction("GetAllApprovedProducts", "Admin");
-        }
+        #endregion
+
+        #region Product Actions
 
         [HttpPost]
         public IActionResult Approve(int id)
@@ -146,32 +185,21 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("GetAllPublishedProducts", new { id = userId });
         }
 
-        [HttpGet]
-        public IActionResult GetRejectedProducts()
+        [HttpPost]
+        public IActionResult PutProductToWaitingForApproval(int id)
         {
-            var productRejected = _adminAgent.GetRejectedProducts();
-            return View(productRejected);
-        }
-
-        public IActionResult GetUserDetails(int id)
-        {
-            UserDTO userDetail = _adminAgent.GetUserDetail(id);
-            return View(userDetail);
-        }
-
-        public IActionResult ResendEmailVerificationLink(string email)
-        {
-            bool isSent = _accountAgent.SendEmailVerificationLink(email);
-            if (isSent)
+            bool isWaitingForApproved = _adminAgent.MakeWaitingForApproval(id);
+            if (isWaitingForApproved)
             {
-                TempData["EmailVerificationLinkSentSuccessfully"] = "Verification Link is sent successfully.";
+                TempData["WaitingForApprovedSuccess"] = "Product status changes to Pending.";
             }
             else
             {
-                TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
+                TempData["WaitingForApprovedFailed"] = "Failed to change Product status to Pending.";
             }
-
-            return RedirectToAction("GetInactiveUsersList", "Admin");
+            return RedirectToAction("GetAllApprovedProducts", "Admin");
         }
+
+        #endregion        
     }
 }

@@ -24,9 +24,34 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Admin
         {
             return _adminService.GetInactiveUsers();
         }
-        public List<ProductDTO> GetAllPublishedProducts()
+        public List<PublishedProductsViewModel> GetAllPublishedProducts()
         {
-            return _adminService.GetAllPublishedProducts();
+            List<ProductDTO> listOfPublishedProducts = _adminService.GetAllPublishedProducts();
+
+            List<PublishedProductsViewModel> listOfPublishedProductsViewModel = listOfPublishedProducts
+            .Select(product =>
+            {
+                var userDetail = GetUserDetail(product.UserId);
+                return new PublishedProductsViewModel
+                {
+                    ProductId = product.ProductId,
+                    UserId = product.UserId,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Description = product.Description,
+                    CreatedOn = product.CreatedOn,
+                    ModifiedOn = product.ModifiedOn,
+                    Inventory = product.Inventory,
+                    StatusId = product.StatusId,
+                    StatusValue = product.StatusValue,
+                    IsPublished = product.IsPublished,
+                    CommentForRejecting = product.CommentForRejecting,
+                    UserName = $"{userDetail.FirstName} {userDetail.LastName}",
+                };
+            }).ToList();
+
+            return listOfPublishedProductsViewModel;
+
         }
         public List<ProductDTO> GetAllApprovedProducts()
         {

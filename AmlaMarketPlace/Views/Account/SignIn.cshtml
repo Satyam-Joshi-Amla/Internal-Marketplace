@@ -76,7 +76,7 @@
         }
         @if (TempData["PasswordResetSuccess"] != null)
         {
-            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
+            <div class="alert alert-success m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["PasswordResetSuccess"]
             </div>
         }
@@ -94,13 +94,13 @@
         }
         @if (TempData["EmailVerificationLinkSentSuccessfully"] != null)
         {
-            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+            <div class="alert alert-success m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["EmailVerificationLinkSentSuccessfully"]
             </div>
         }
         @if (TempData["EmailVerificationLinkFailedToSend"] != null)
         {
-            <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
+            <div class="alert alert-danger m-3 fade show" role="alert" id="tempDataMessage">
                 @TempData["EmailVerificationLinkFailedToSend"]
             </div>
         }
