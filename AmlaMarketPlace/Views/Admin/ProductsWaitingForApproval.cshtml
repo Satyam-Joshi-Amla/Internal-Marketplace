@@ -6,7 +6,6 @@
 }
 
 <!-- Begin Page Content -->
-
 <!-- Page Heading -->
 @* <h1 class="h3 mb-2 text-gray-800">Tables</h1>
 <p class="mb-4">
@@ -64,26 +63,23 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    @* @if (Model.Count() > 10)
-                    {
-                        <tfoot>
-                            <tr>
-                                <th>Sr. No.</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Inventory</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </tfoot>
-                    }      *@               
                     <tbody>
                         @foreach (var item in Model)
                         {
 
                             <tr>
                                 <td>@SrNo</td>
-                                <td><a title="View Product" class="nav-link" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails">@Html.DisplayFor(modelItem => item.Name)</a></td>
+                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <a title="View Product" 
+                                        class="nav-link" 
+                                        asp-area="" 
+                                        asp-route-id="@item.ProductId" 
+                                        asp-controller="Admin"
+                                       asp-action="ProductDetails" 
+                                       style="display: inline-block; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
+                                </td>
                                 <td>₹@Html.DisplayFor(modelItem => item.Price)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>@Html.DisplayFor(modelItem => item.StatusValue)</td>
@@ -161,10 +157,10 @@
                     var productId = button.data('id');  // Extract Product ID from data-* attributes
                     var modal = $(this);
                     modal.find('#productId').val(productId);
-                });                
+                });
             });
 
-        </script>        
+        </script>
     }
 </div>
 <!-- /.container-fluid -->

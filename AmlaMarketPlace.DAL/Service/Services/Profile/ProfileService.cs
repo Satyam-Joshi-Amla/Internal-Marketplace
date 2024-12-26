@@ -6,12 +6,24 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
 {
     public class ProfileService : IProfileService
     {
+        #region Dependency Injection : Database Fields
         private readonly AmlaMarketPlaceDbContext _context;
+        #endregion
+
+        #region Constructor
         public ProfileService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
         }
+        #endregion
 
+        #region User Services
+
+        /// <summary>
+        /// Retrieves the user details based on the given user ID.
+        /// </summary>
+        /// <param name="userID">The ID of the user to retrieve.</param>
+        /// <returns>A `UserDTO` object containing user details, or `null` if the user is not found.</returns>
         public UserDTO GetUser(int userID)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userID);
@@ -42,6 +54,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
             return null;
         }
 
+        /// <summary>
+        /// Updates the user information based on the provided UserDTO.
+        /// </summary>
+        /// <param name="updatedUser">The user data transfer object containing updated user information.</param>
+        /// <returns> true if the user is updated successfully, otherwise false.</returns>
         public bool UpdateUser(UserDTO updatedUser)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == updatedUser.UserId);
@@ -63,11 +80,18 @@ namespace AmlaMarketPlace.DAL.Service.Services.Profile
             return false;
         }
 
+        /// <summary>
+        /// Retrieves the user role based on the provided role ID.
+        /// </summary>
+        /// <param name="userRoleId">The ID of the user role.</param>
+        /// <returns> The role name if found, otherwise "user" as the default role.</returns>
         public string GetUserRoleById(int userRoleId)
         {
             var userRole = _context.UserRoles.FirstOrDefault(r => r.RoleId == userRoleId);
 
             return userRole != null ? userRole.Role : "user"; // Default to "user" if role not found
         }
+
+        #endregion
     }
 }

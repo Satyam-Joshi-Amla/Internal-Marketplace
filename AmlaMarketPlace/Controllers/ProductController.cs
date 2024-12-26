@@ -1,19 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
-using AmlaMarketPlace.Models.DTO;
-using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AmlaMarketPlace.Controllers
 {
     [Authorize]
     public class ProductController : Controller
     {
+        #region Dependency Injection : Agent Fields
+
         private readonly IProductAgent _productAgent;
+
+        #endregion
+
+        #region Constructor
         public ProductController(IProductAgent productAgent)
         {
             _productAgent = productAgent;
         }
+        #endregion
+
+        #region Products Catalog
 
         [HttpGet]
         public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
@@ -31,6 +40,10 @@ namespace AmlaMarketPlace.Controllers
 
             return View();
         }
+
+        #endregion
+
+        #region Product Add, Edit & View
 
         [HttpGet]
         public IActionResult AddProduct()
@@ -77,33 +90,6 @@ namespace AmlaMarketPlace.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProductDetails(int id)
-        {
-            var productDetails = _productAgent.GetIndividualProduct(id);
-            if (productDetails == null)
-            {
-                return NotFound();
-            }
-
-            return View(productDetails);
-        }
-
-        public IActionResult PlaceOrder(int productId, int orderQuantity)
-        {
-            _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value), orderQuantity);
-            TempData["OrderPlaced"] = true;
-            return RedirectToAction("ProductDetails", "Product", new { id = productId });
-        }
-
-        public IActionResult GetUserUploadedProductsList()
-        {
-            int id = int.Parse(User.FindFirst("UserId")?.Value);
-            var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
-            ViewData["EnableUserSidePanel"] = true;
-            return View(userUploadedProducts);
-        }
-
-        [HttpGet]
         public IActionResult EditProduct(int id)
         {
             var productDetails = _productAgent.GetEditDetails(id);
@@ -129,9 +115,32 @@ namespace AmlaMarketPlace.Controllers
                 var errorMessage = "An error occurred while editing the product. Please try again later. from controller";
                 return RedirectToAction("Error", new { errorMessage = errorMessage });
             }
-            
+
             return RedirectToAction("GetUserUploadedProductsList");
         }
+
+        [HttpGet]
+        public IActionResult ProductDetails(int id)
+        {
+            var productDetails = _productAgent.GetIndividualProduct(id);
+            if (productDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetails);
+        }
+
+        public IActionResult PlaceOrder(int productId, int orderQuantity)
+        {
+            _productAgent.PlaceOrder(productId, int.Parse(User.FindFirst("UserId")?.Value), orderQuantity);
+            TempData["OrderPlaced"] = true;
+            return RedirectToAction("ProductDetails", "Product", new { id = productId });
+        }
+
+        #endregion
+
+        #region Product Actions
 
         [HttpPost]
         public IActionResult Publish(int id)
@@ -171,6 +180,28 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("GetUserUploadedProductsList", new { id = userId });
         }
 
+        #endregion
+
+        #region Seller User
+
+        [HttpGet]
+        public IActionResult SellerDashBoard()
+        {
+            int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            ViewData["EnableUserSidePanel"] = true;
+            SellerDashBoardViewModel model = _productAgent.GetSellerDashBoardData(userId);
+
+            return View(model);
+        }
+
+        public IActionResult GetUserUploadedProductsList()
+        {
+            int id = int.Parse(User.FindFirst("UserId")?.Value);
+            var userUploadedProducts = _productAgent.GetUserUploadedProducts(id);
+            ViewData["EnableUserSidePanel"] = true;
+            return View(userUploadedProducts);
+        }
+
         [HttpGet]
         public IActionResult OrderHistory()
         {
@@ -186,6 +217,10 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("OrderHistory");
         }
 
+        #endregion
+
+        #region Buyer User
+
         [HttpGet]
         public IActionResult GetMyRequests()
         {
@@ -195,14 +230,6 @@ namespace AmlaMarketPlace.Controllers
             return View(MyRequests);
         }
 
-        [HttpGet]
-        public IActionResult SellerDashBoard()
-        {
-            int userId = int.Parse(User.FindFirst("UserId")?.Value);
-            ViewData["EnableUserSidePanel"] = true;
-            SellerDashBoardViewModel model = _productAgent.GetSellerDashBoardData(userId);
-
-            return View(model);
-        }
+        #endregion
     }
 }

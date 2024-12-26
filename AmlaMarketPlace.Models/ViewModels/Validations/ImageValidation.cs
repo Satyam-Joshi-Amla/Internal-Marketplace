@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using Microsoft.AspNetCore.Http;
 
 namespace AmlaMarketPlace.Models.ViewModels.Validations
 {

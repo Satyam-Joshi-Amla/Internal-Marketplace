@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using AmlaMarketPlace.Models.ViewModels.Validations;
-
+﻿using AmlaMarketPlace.Models.ViewModels.Validations;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace AmlaMarketPlace.Models.ViewModels.Product
 {
@@ -34,7 +27,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Product
         [ImageValidation(ErrorMessage = "Only image files (JPG, PNG) are allowed.")]
         public IFormFile Image { get; set; }
 
-        
+
         [OptionalImagesValidation(9, new[] { ".jpg", ".png" })]
         public List<IFormFile>? OptionalImages { get; set; }
     }

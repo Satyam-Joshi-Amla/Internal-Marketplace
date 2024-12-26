@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AmlaMarketPlace.Models.ViewModels.Product
+﻿namespace AmlaMarketPlace.Models.ViewModels.Product
 {
     public class ProductDetailsViewModel
     {

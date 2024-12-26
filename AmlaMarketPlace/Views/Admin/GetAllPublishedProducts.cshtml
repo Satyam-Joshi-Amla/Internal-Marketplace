@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AmlaMarketPlace.Models.DTO.ProductDTO>
+﻿@model IEnumerable<AmlaMarketPlace.Models.ViewModels.Admin.PublishedProductsViewModel>
 
 @{
     ViewData["Title"] = "Published Products";
@@ -7,7 +7,6 @@
 
 <!-- Begin Page Content -->
 <!-- Page Heading -->
-
 <!-- DataTables Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -30,41 +29,35 @@
                             <p>@TempData["UnpublishedSuccess"]</p>
                         </div>
                     }
-                <thead>
-                    <tr>
-                        <th>Sr. No.</th>
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Seller Name</th>
                             <th>Inventory</th>
                             <th>Action</th>
-                    </tr>
-                </thead>
-                    @if (Model.Count() > 10)
-                    {
-                        <tfoot>
-                            <tr>
-                                <th style="max-width: 100px;">Sr. No.</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Inventory</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                    }
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
 
-                        <tr>
-                            <td>@SrNo</td>
-                                <td>
-                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <tr>
+                                <td>@SrNo</td>
+                                <td style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 100%; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </a>
                                 </td>
 
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
+                                <td>
+                                    <a title="View Seller Details" class="nav-link text-truncate" asp-route-id="@item.UserId" asp-controller="Admin" asp-action="GetUserDetails">
+                                        @Html.DisplayFor(modelItem => item.UserName)
+                                    </a>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>
                                     @if (item.StatusValue == "Approved")
                                     {
@@ -75,11 +68,11 @@
                                         </div>
                                     }
                                 </td>
-                        </tr>
+                            </tr>
                             SrNo++; // Incrementing Serial Number
-                    }
-                </tbody>
-            </table>
+                        }
+                    </tbody>
+                </table>
             }
         </div>
     </div>

@@ -1,36 +1,42 @@
-﻿using AmlaMarketPlace.DAL.Data;
-using AmlaMarketPlace.Models.ViewModels.Product;
-using AmlaMarketPlace.Models.DTO;
-using Microsoft.EntityFrameworkCore;
+﻿using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
+using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.DAL.Service.IServices.IProduct;
-using AmlaMarketPlace.ConfigurationManager.UtilityMethods;
+using AmlaMarketPlace.Models.DTO;
+using AmlaMarketPlace.Models.ViewModels.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
     public class ProductService : IProductService
     {
+        #region Dependency Injection - Database Context
+
         private readonly AmlaMarketPlaceDbContext _context;
+
+        #endregion
+
+        #region Constructor
 
         // Initialize the DbContext
         public ProductService(AmlaMarketPlaceDbContext context)
         {
             _context = context;
         }
-        //public PaginatedResultDto GetProductsCache(int userId, int pageNumber = 1, int pageSize = 20)
-        //{
-        //    string cacheKey = $"ProductList_{userId}";
-        //    if (!_cache.TryGetValue(cacheKey, out PaginatedResultDto productList))
-        //    {
-        //        productList = GetProducts(userId, pageNumber, pageSize);
-        //        var cacheOptions = new MemoryCacheEntryOptions
-        //        {
-        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-        //            SlidingExpiration = TimeSpan.FromMinutes(2)
-        //        };
-        //        _cache.Set(cacheKey, productList, cacheOptions);
-        //    }
-        //    return productList;
-        //}
+
+        #endregion
+
+        #region Methods
+
+        #region Product Services
+
+        /// <summary>
+        /// Retrieves a paginated list of products for a specific user, excluding their own products.
+        /// This method leverages a stored procedure to efficiently fetch product details and total count.
+        /// </summary>
+        /// <param name="userId">The ID of the user making the request, used to exclude their own products from the results.</param>
+        /// <param name="pageNumber">The page number for pagination. Defaults to 1 if not specified.</param>
+        /// <param name="pageSize">The number of products to include per page. Defaults to 20 if not specified.</param>
+        /// <returns>A `PaginatedResultDto` containing the list of products for the specified page and the total product count.</returns>
         public PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20)
         {
             var result = new List<ProductListViewModel>();
@@ -98,12 +104,23 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             };
         }
 
+        /// <summary>
+        /// Retrieves the descriptive status value associated with a given status ID.
+        /// If no matching status is found, it defaults to "pending."
+        /// </summary>
+        /// <param name="statusID">The unique identifier of the status to look up.</param>
+        /// <returns>A string representing the status value, or "pending" if the status ID does not exist.</returns>
         public string GetStatusValueByStatusId(int statusID)
         {
             var status = _context.Statuses.FirstOrDefault(s => s.StatusId == statusID);
             return status != null ? status.StatusValue : "pending";
         }
 
+        /// <summary>
+        /// Gets a list of products uploaded by a specific user. It includes details like status, and rejection comments if the product was rejected.
+        /// </summary>
+        /// <param name="userID">The ID of the user whose products you want to get.</param>
+        /// <returns>A list of products with all their details.</returns>
         public List<ProductDTO> GetUserUploadedProducts(int userID)
         {
             // Fetching only published products from the database
@@ -136,6 +153,12 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return productDTO;
         }
 
+        /// <summary>
+        /// Retrieves detailed information about a specific product, including images and seller information.
+        /// </summary>
+        /// <param name="productId">The ID of the product to fetch details for.</param>
+        /// <returns>A detailed view model containing product and seller information.</returns>
+        /// <exception cref="Exception">Throws an exception if something goes wrong while retrieving product details.</exception>
         public ProductDetailsViewModel GetProductDetails(int productId)
         {
             try
@@ -175,6 +198,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             }
         }
 
+        /// <summary>
+        /// Adds a new product to the database along with its associated images.
+        /// </summary>
+        /// <param name="Dto">The product details and image information to be added.</param>
+        /// <returns>Returns true if the product is successfully added.</returns>
         public bool AddProduct(AddProductDto Dto)
         {
             var product = new AmlaMarketPlace.DAL.Data.Product();
@@ -216,6 +244,14 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
+        /// <summary>
+        /// Places an order for a product, sends email notifications to both the buyer and the seller with their respective contact details, 
+        /// and updates the database with the order information.
+        /// </summary>
+        /// <param name="productId">The ID of the product being ordered.</param>
+        /// <param name="buyerId">The ID of the buyer placing the order.</param>
+        /// <param name="orderQuantity">The quantity of the product to be ordered.</param>
+        /// <returns>Returns true if the order is successfully placed.</returns>
         public bool PlaceOrder(int productId, int buyerId, int orderQuantity)
         {
             var sellerId = _context.Products.Where(p => p.ProductId == productId).Select(p => p.UserId).FirstOrDefault();
@@ -263,6 +299,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
+        /// <summary>
+        /// Publishes a product by setting its isPublished status to true in the database.
+        /// </summary>
+        /// <param name="productID">The ID of the product to be published.</param>
+        /// <returns>Returns true if the product is successfully published; otherwise, false.</returns>
         public bool PublishProductSuccessfully(int productID)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
@@ -278,6 +319,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return false;
         }
 
+        /// <summary>
+        /// Unpublishes a product by setting its published status to false in the database.
+        /// </summary>
+        /// <param name="productID">The ID of the product to be unpublished.</param>
+        /// <returns>Returns true if the product is successfully unpublished; otherwise, false.</returns>
         public bool UnpublishProductSuccessfully(int productID)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
@@ -293,6 +339,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return false;
         }
 
+        /// <summary>
+        /// Retrieves the details of a product for editing, including its images.
+        /// </summary>
+        /// <param name="id">The ID of the product to retrieve.</param>
+        /// <returns>An EditProductViewModel containing the product details and images, or null if the product does not exist.</returns>
         public EditProductViewModel GetEditDetails(int id)
         {
             var product = _context.Products
@@ -320,6 +371,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return productViewModel;
         }
 
+        /// <summary>
+        /// Updates the details of a product and its associated images in the database.
+        /// </summary>
+        /// <param name="model">The model containing updated product information.</param>
+        /// <returns>Returns true if the update was successful; otherwise, false.</returns>
         public bool EditProduct(EditProductViewModel model)
         {
             var product = _context.Products
@@ -404,6 +460,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
+        /// <summary>
+        /// Converts a full file path to a relative path by removing the "wwwroot" directory.
+        /// </summary>
+        /// <param name="fullPath">The full path of the file.</param>
+        /// <returns>The relative path from "wwwroot" onwards, with forward slashes.</returns>
         public string GetRelativeImagePath(string fullPath)
         {
             // Find the index of "wwwroot" in the full path
@@ -422,25 +483,22 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return string.Empty;
         }
 
-        private string GetUserNameByID(int id)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
-            string name = $"{user.FirstName} {user.LastName}";
-            return name;
-        }
-
-        private string GetUserEmailByID(int id)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
-            return user.EmailAddress;
-        }
-
+        /// <summary>
+        /// Retrieves the name of a product by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the product.</param>
+        /// <returns>The name of the product, or an empty string if not found.</returns>
         private string GetProductNameByID(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
             return $"{product.Name}";
         }
 
+        /// <summary>
+        /// Retrieves the order history for a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose order history is being fetched.</param>
+        /// <returns>A list of order details related to the user.</returns>
         public List<OrderDTO> GetOrderHistory(int userId)
         {
             List<Order> orders = _context.Orders
@@ -468,6 +526,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             return orderDTO;
         }
+
+        /// <summary>
+        /// Changes the status of a product to the specified status ID.
+        /// </summary>
+        /// <param name="statusID">The ID of the new status to apply to the product.</param>
+        /// <param name="productID">The ID of the product whose status is being updated.</param>
+        /// <returns>Returns true if the status was successfully updated.</returns>
         public bool ChangeStatusTO(int statusID, int productID)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productID);
@@ -475,12 +540,23 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
+        /// <summary>
+        /// Retrieves the inventory count of a specified product.
+        /// </summary>
+        /// <param name="productId">The ID of the product whose inventory count is to be retrieved.</param>
+        /// <returns>The inventory count if the product exists; otherwise, null.</returns>
         public int? GetInventory(int productId)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             return product?.Inventory;
         }
 
+        /// <summary>
+        /// Updates the inventory count of a specified product.
+        /// </summary>
+        /// <param name="productId">The ID of the product to update.</param>
+        /// <param name="updatedInventory">The new inventory count.</param>
+        /// <returns>A boolean indicating if the update was successful.</returns>
         public bool UpdateInventory(int productId, int updatedInventory)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -494,6 +570,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
         }
 
+        /// <summary>
+        /// Retrieves the list of order requests made by a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose order requests are to be fetched.</param>
+        /// <returns>A list of order details for the specified user.</returns>
         public List<MyOrdersDto> GetMyRequests(int userId)
         {
             List<Order> orders = _context.Orders
@@ -518,6 +599,13 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return myOrders;
         }
 
+        /// <summary>
+        /// Updates the status and details of an order based on the given order ID and status.
+        /// </summary>
+        /// <param name="orderId">The ID of the order to be updated.</param>
+        /// <param name="orderStatus">The status to update the order to (e.g., approved or rejected).</param>
+        /// <param name="rejectComment">The rejection comment, if the order is rejected.</param>
+        /// <returns>A boolean indicating whether the update was successful.</returns>
         public bool UpdateOrder(int orderId, int orderStatus, string rejectComment)
         {
             if (orderStatus == 1)
@@ -534,7 +622,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                         _context.Orders.Update(order);
                         _context.SaveChanges();
                     }
-                    
+
                 }
             }
             else if (orderStatus == 2)
@@ -551,6 +639,15 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return true;
         }
 
+        #endregion
+
+        #region Seller DashBoard Counts
+
+        /// <summary>
+        /// Gets the total count of products uploaded by a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose product count is to be retrieved.</param>
+        /// <returns>The total number of products uploaded by the specified user, or 0 if none found.</returns>
         public int TotalUserUploadedProductsCount(int userId)
         {
             var totalProductCount = _context.Products.Where(u => u.UserId == userId).Count();
@@ -563,6 +660,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return 0;
         }
 
+        /// <summary>
+        /// Gets the total count of products approved by a specific user that are not published yet.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose approved product count is to be retrieved.</param>
+        /// <returns>The total number of approved, non-published products uploaded by the specified user, or 0 if none found.</returns>
         public int TotalUserApprovedProductsCount(int userId)
         {
             var totalApprovedProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 2 && u.IsPublished == false).Count();
@@ -575,6 +677,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return 0;
         }
 
+        /// <summary>
+        /// Gets the total count of products rejected by a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose rejected product count is to be retrieved.</param>
+        /// <returns>The total number of rejected products uploaded by the specified user, or 0 if none found.</returns>
         public int TotalUserRejectedProductsCount(int userId)
         {
             var totalRejectedProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 3).Count();
@@ -587,6 +694,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return 0;
         }
 
+        /// <summary>
+        /// Gets the total count of products published by a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose published product count is to be retrieved.</param>
+        /// <returns>The total number of published products uploaded by the specified user, or 0 if none found.</returns>
         public int TotalUserPublishedProductsCount(int userId)
         {
             var totalPublishedProductCount = _context.Products.Where(u => u.UserId == userId && u.IsPublished == true).Count();
@@ -599,6 +711,11 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return 0;
         }
 
+        /// <summary>
+        /// Gets the total count of products uploaded by a specific user that are waiting for approval.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose waiting-for-approval product count is to be retrieved.</param>
+        /// <returns>The total number of products uploaded by the user that are waiting for approval, or 0 if none found.</returns>
         public int TotalUserWaitingForApprovalProductsCount(int userId)
         {
             var totalWaitingForApprovalProductCount = _context.Products.Where(u => u.UserId == userId && u.StatusId == 1).Count();
@@ -611,6 +728,15 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
             return 0;
         }
 
+        #endregion
+
+        #region User Related
+
+        /// <summary>
+        /// Retrieves user details based on the provided user ID and maps the result to a UserDTO.
+        /// </summary>
+        /// <param name="id">The ID of the user to fetch details for.</param>
+        /// <returns>A UserDTO object containing user information, or null if no user is found.</returns>
         public UserDTO GetUserById(int id)
         {
             // Fetching the user from the database based on the email
@@ -644,5 +770,33 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
 
             return null; // Return null if no user is found
         }
+
+        /// <summary>
+        /// Retrieves the email address of a user by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The email address of the user, or an empty string if not found.</returns>
+        private string GetUserEmailByID(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            return user.EmailAddress;
+        }
+
+        /// <summary>
+        /// Retrieves the full name of a user by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user.</param>
+        /// <returns>The full name of the user, or an empty string if not found.</returns>
+        private string GetUserNameByID(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            string name = $"{user.FirstName} {user.LastName}";
+            return name;
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }
