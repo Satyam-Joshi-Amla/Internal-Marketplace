@@ -1,24 +1,22 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.Options;
-using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.BAL.Agent.Agents.Account;
-using AmlaMarketPlace.BAL.Agent.Agents.Product;
-using AmlaMarketPlace.DAL.Service.Services.Account;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
-using AmlaMarketPlace.DAL.Service.Services.Product;
-using AmlaMarketPlace.DAL.Service.Services.Admin;
 using AmlaMarketPlace.BAL.Agent.Agents.Admin;
+using AmlaMarketPlace.BAL.Agent.Agents.Product;
 using AmlaMarketPlace.BAL.Agent.Agents.Profile;
-using AmlaMarketPlace.DAL.Service.Services.Profile;
 using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
-using AmlaMarketPlace.DAL.Service.IServices.IAccount;
-using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
-using AmlaMarketPlace.DAL.Service.IServices.IProduct;
 using AmlaMarketPlace.BAL.Agent.IAgents.IAdmin;
-using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
+using AmlaMarketPlace.BAL.Agent.IAgents.IProduct;
 using AmlaMarketPlace.BAL.Agent.IAgents.IProfile;
+using AmlaMarketPlace.DAL.Data;
+using AmlaMarketPlace.DAL.Service.IServices.IAccount;
+using AmlaMarketPlace.DAL.Service.IServices.IAdmin;
+using AmlaMarketPlace.DAL.Service.IServices.IProduct;
 using AmlaMarketPlace.DAL.Service.IServices.IProfile;
+using AmlaMarketPlace.DAL.Service.Services.Account;
+using AmlaMarketPlace.DAL.Service.Services.Admin;
+using AmlaMarketPlace.DAL.Service.Services.Product;
+using AmlaMarketPlace.DAL.Service.Services.Profile;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

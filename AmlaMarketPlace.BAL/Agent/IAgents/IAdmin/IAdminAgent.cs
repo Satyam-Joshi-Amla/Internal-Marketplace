@@ -1,6 +1,5 @@
 ﻿using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Admin;
-using System.Collections.Generic;
 
 namespace AmlaMarketPlace.BAL.Agent.IAgents.IAdmin
 {
@@ -9,7 +8,7 @@ namespace AmlaMarketPlace.BAL.Agent.IAgents.IAdmin
         List<UserDTO> GetAllUsers(); // Retrieves all users
         List<UserDTO> GetActiveUsers(); // Retrieves active users
         List<UserDTO> GetInactiveUsers(); // Retrieves inactive users
-        List<ProductDTO> GetAllPublishedProducts(); // Retrieves all published products
+        List<PublishedProductsViewModel> GetAllPublishedProducts(); // Retrieves all published products
         List<ProductDTO> GetAllApprovedProducts(); // Retrieves approved products
         bool MakeWaitingForApproval(int ProductID); // Marks a product as waiting for approval
         bool ApproveProduct(int ProductID); // Approves a product

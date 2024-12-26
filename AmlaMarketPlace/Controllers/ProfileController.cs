@@ -6,11 +6,21 @@ namespace AmlaMarketPlace.Controllers
 {
     public class ProfileController : Controller
     {
+        #region Dependency Injection : Agent Fields
+
         private readonly IProfileAgent _profileAgent;
+
+        #endregion
+
+        #region Constructor
         public ProfileController(IProfileAgent profileAgent)
         {
             _profileAgent = profileAgent;
         }
+
+        #endregion
+
+        #region View & Update
         public IActionResult Details()
         {
             int id = int.Parse(User.FindFirst("UserId")?.Value);
@@ -46,5 +56,7 @@ namespace AmlaMarketPlace.Controllers
 
             return View();
         }
+
+        #endregion
     }
 }

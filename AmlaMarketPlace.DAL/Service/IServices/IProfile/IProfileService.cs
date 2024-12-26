@@ -1,6 +1,4 @@
 ﻿using AmlaMarketPlace.Models.DTO;
-using global::AmlaMarketPlace.Models.DTO;
-using System;
 
 namespace AmlaMarketPlace.DAL.Service.IServices.IProfile
 {

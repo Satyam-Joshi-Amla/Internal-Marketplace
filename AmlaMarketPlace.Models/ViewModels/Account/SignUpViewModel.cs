@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AmlaMarketPlace.ConfigurationManager.CustomValidation;
-using AmlaMarketPlace.Models.ViewModels.Validations;
+﻿using AmlaMarketPlace.Models.ViewModels.Validations;
+using System.ComponentModel.DataAnnotations;
 
 namespace AmlaMarketPlace.Models.ViewModels.Account
 {

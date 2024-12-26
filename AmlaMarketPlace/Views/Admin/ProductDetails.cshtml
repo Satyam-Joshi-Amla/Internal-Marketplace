@@ -30,7 +30,12 @@
         <!-- Right Column: Product Info -->
         <div class="col-md-6">
             <div class="d-flex justify-content-between mb-4">
-                <div class="text-uppercase"><strong>Seller:</strong> @Model.SellerName</div>
+                <div class="text-uppercase">
+                    <strong>Seller:</strong>
+                    <a title="View Seller Details" class="nav-link d-inline text-truncate" asp-route-id="@Model.SellerId" asp-controller="Admin" asp-action="GetUserDetails">
+                        @Model.SellerName
+                    </a>
+                </div>
                 <div class="text-uppercase"><strong>Date Posted:</strong> @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
             </div>
 
@@ -51,7 +56,7 @@
                     else
                     {
 
-                        <span class="" style="font-weight: bold;">Description</span>                        
+                        <span class="" style="font-weight: bold;">Description</span>
 
                         <div class="mt-3">
                             <p>@Model.Description</p>
@@ -119,7 +124,7 @@
                 </div>
             </form>
         </div>
-    </div>    
+    </div>
 </div>
 
 @section Scripts {
@@ -151,7 +156,7 @@
                 var modal = $(this);
                 modal.find('#productId').val(productId);
             });
-        });        
+        });
 
     </script>
 }

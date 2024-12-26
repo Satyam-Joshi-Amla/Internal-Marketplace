@@ -1,23 +1,29 @@
-﻿// Ignore Spelling: Amla
-
-using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
-using AmlaMarketPlace.Models.DTO;
+﻿using AmlaMarketPlace.BAL.Agent.IAgents.IAccount;
 using AmlaMarketPlace.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
 
 namespace AmlaMarketPlace.Controllers
 {
     public class AccountController : Controller
     {
+        #region Dependency Injection: Agent Fields
+
         private readonly IAccountAgent _accountAgent;
+
+        #endregion
+
+        #region Constructor
         public AccountController(IAccountAgent accountAgent)
         {
             _accountAgent = accountAgent;
         }
+
+        #endregion
+
+        #region Sign-up
 
         [HttpGet]
         public IActionResult SignUp()
@@ -48,6 +54,10 @@ namespace AmlaMarketPlace.Controllers
             // if something goes wrong
             return View(signUpViewModel);
         }
+
+        #endregion
+
+        #region Sign-in
 
         [HttpGet]
         public IActionResult SignIn()
@@ -124,6 +134,59 @@ namespace AmlaMarketPlace.Controllers
             return View();
         }
 
+        #endregion
+
+        #region Reset Password
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email)
+        {
+            ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel { Email = email };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["EnableUserSidePanel"] = true;
+            }
+
+            return View(resetPasswordViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool passwordResetSuccessfull = _accountAgent.UpdatePassword(resetPasswordViewModel.Email, resetPasswordViewModel);
+
+                    if (passwordResetSuccessfull)
+                    {
+                        TempData["PasswordResetSuccess"] = "Password is successfully updated.";
+                        return RedirectToAction("SignIn", "Account");
+                    }
+                    else
+                    {
+                        TempData["PasswordResetFailed"] = "We are unable to update your password. Please contact us.";
+                        return RedirectToAction("SignIn", "Account");
+                    }
+                }
+                else
+                {
+                    return View(resetPasswordViewModel);
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "We are facing some issues in reseting password. Sorry for the inconvenience. Our services will be back soon.";
+                return RedirectToAction("Error");
+            }
+        }
+
+        #endregion
+
+        #region Sign-out
+
         [HttpPost]
         public IActionResult SignOut()
         {
@@ -132,6 +195,9 @@ namespace AmlaMarketPlace.Controllers
             TempData["SignOutMessage"] = "You have successfully signed out.";
             return RedirectToAction("SignIn", "Account");
         }
+        #endregion
+
+        #region Email (Sent/Retrieval/Verify/Redirection after verification)
 
         public IActionResult VerifyEmail(string token)
         {
@@ -220,51 +286,6 @@ namespace AmlaMarketPlace.Controllers
             return RedirectToAction("SignIn");
         }
 
-        [HttpGet]
-        public IActionResult ResetPassword(string email)
-        {
-            ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel { Email = email };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                ViewData["EnableUserSidePanel"] = true;
-            }
-
-            return View(resetPasswordViewModel);
-        }
-
-        [HttpPost]
-        public IActionResult ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    bool passwordResetSuccessfull = _accountAgent.UpdatePassword(resetPasswordViewModel.Email, resetPasswordViewModel);
-
-                    if (passwordResetSuccessfull)
-                    {
-                        TempData["PasswordResetSuccess"] = "Password is successfully updated.";
-                        return RedirectToAction("SignIn", "Account");
-                    }
-                    else
-                    {
-                        TempData["PasswordResetFailed"] = "We are unable to update your password. Please contact us.";
-                        return RedirectToAction("SignIn", "Account");
-                    }
-                }
-                else
-                {
-                    return View(resetPasswordViewModel);
-                }
-            }
-            catch (Exception)
-            {
-                TempData["ErrorMessage"] = "We are facing some issues in reseting password. Sorry for the inconvenience. Our services will be back soon.";
-                return RedirectToAction("Error");
-            }
-        }
-
         public void ResendEmailVerificationLink(string email)
         {
             bool isSent = _accountAgent.SendEmailVerificationLink(email);
@@ -277,5 +298,7 @@ namespace AmlaMarketPlace.Controllers
                 TempData["EmailVerificationLinkFailedToSend"] = "Failed to send Verification Link. Please contact us.";
             }
         }
+
+        #endregion
     }
 }

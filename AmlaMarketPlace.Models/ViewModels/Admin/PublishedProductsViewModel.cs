@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AmlaMarketPlace.Models.DTO
+namespace AmlaMarketPlace.Models.ViewModels.Admin
 {
-    public class ProductDTO
+    public class PublishedProductsViewModel
     {
         public int ProductId { get; set; }
         public int UserId { get; set; }
+        public string UserName { get; set; }
         public string Name { get; set; } = null!;
         public decimal Price { get; set; }
         public string? Description { get; set; }
