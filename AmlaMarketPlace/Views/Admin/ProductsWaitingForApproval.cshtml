@@ -158,12 +158,25 @@
                 // Set Product ID in Modal
                 $('#rejectModal').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
-                    var productId = button.data('id');  // Extract Product ID from data-* attributes
+                    var productId = button.getAttribute('data-id');  // Extract Product ID from data-* attributes
                     var modal = $(this);
                     modal.find('#productId').val(productId);
                 });                
             });
 
+            document.addEventListener("DOMContentLoaded", function () {
+                // Set Product ID and show alert with product ID when Reject button is clicked
+                var rejectButtons = document.querySelectorAll('[data-toggle="modal"][data-target="#rejectModal"]');
+
+                rejectButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        var productId = button.getAttribute('data-id');
+                        //alert("Product ID: " + productId);  // Show alert with product ID
+                        var modal = document.querySelector('#rejectModal');
+                        modal.querySelector('#productId').value = productId;  // Set the productId in the hidden input
+                    });
+                });
+            });
         </script>        
     }
 </div>

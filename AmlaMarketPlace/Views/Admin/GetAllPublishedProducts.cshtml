@@ -36,10 +36,10 @@
                             <th>Name</th>
                             <th>Price</th>
                             <th>Inventory</th>
-                            <th>Action</th>
+                            @* <th>Action</th> *@
                     </tr>
                 </thead>
-                    @if (Model.Count() > 10)
+                    @* @if (Model.Count() > 10)
                     {
                         <tfoot>
                             <tr>
@@ -50,7 +50,7 @@
                                 <th>Action</th>
                             </tr>
                         </tfoot>
-                    }
+                    } *@
                 <tbody>
                     @foreach (var item in Model)
                     {
@@ -65,7 +65,7 @@
 
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
                             <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
-                                <td>
+                                @* <td>
                                     @if (item.StatusValue == "Approved")
                                     {
                                         <div class="d-flex">
@@ -74,7 +74,7 @@
                                             </form>
                                         </div>
                                     }
-                                </td>
+                                </td> *@
                         </tr>
                             SrNo++; // Incrementing Serial Number
                     }
