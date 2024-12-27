@@ -32,7 +32,7 @@
                 <!-- Sidebar - Brand -->
                 <a class="my-3 sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("ProductListing", "Product")">
                     <div class="sidebar-brand-icon">
-                        <img class="img-fluid" src="~/images/layoutimages/amla_marketplace.png" />
+                        <img class="img-fluid" style="width: 120px;" src="~/images/layoutimages/amla_marketplace.png" />
                     </div>
                     <!-- <div class="sidebar-brand-text mx-3">Amla Marketplace</div> -->
                 </a>
@@ -124,18 +124,20 @@
 
                     @if (ViewData["EnableUserSidePanel"]?.ToString() != "True")
                     {
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
-                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="" asp-area="" asp-controller="Home" asp-action="Index">
-                                <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
-                            </a>
-                        }
+                        <div class="ml-4 mt-1" style="width: 120px">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a title="Go to Product Catalog" class="" asp-area="" asp-controller="Product" asp-action="ProductListing">
+                                    <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
+                                </a>
+                            }
+                        </div>                        
                     }
 
 

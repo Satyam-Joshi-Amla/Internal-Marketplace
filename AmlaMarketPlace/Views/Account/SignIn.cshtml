@@ -50,7 +50,7 @@
         @if (TempData["emailNotVerified"] != null)
         {
             <div class="alert alert-warning m-3 fade show" role="alert" id="tempDataMessage">
-                @TempData["emailNotVerified"]                
+                @TempData["emailNotVerified"]
             </div>
         }
 
@@ -120,22 +120,25 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group d-flex justify-content-between">
-                <div class="form-check">
+                <div title="On checking the box, you will be logged in for 30 minutes." class="form-check">
                     <input asp-for="RememberMe" class="form-check-input" />
                     <label asp-for="RememberMe" class="form-check-label"></label>
                 </div>
-                <div class="">
+                <div title="Reset your password." class="">
                     <button type="button" class="btn btn-link text-decoration-none" data-bs-target="#emailVerificationModal" data-bs-toggle="modal">
-                        Forgot Password?
+                        Forgot Password ?
                     </button>
                 </div>
             </div>
 
-            <div class="form-group fs-5">
+            <div title="Sign-in" class="form-group fs-5">
                 <input type="submit" value="Sign in" class="btn btn-brand-color" />
             </div>
         </form>
-        <img class="sigin-in-box-brand-logo" src="~/images/layoutimages/amla_marketplace.png" />
+        <div class="d-flex justify-content-start">
+            <img style="width: 100px;" class="sigin-in-box-brand-logo" src="~/images/layoutimages/amla_marketplace.png" />
+        </div>
+
     </div>
 </div>
 
