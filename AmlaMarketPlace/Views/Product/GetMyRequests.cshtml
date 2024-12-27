@@ -20,11 +20,11 @@
     {
         <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
             <thead>
-                <tr>
-                    <th>Sr. No.</th>
-                    <th>@Html.DisplayNameFor(model => model.SellerName)</th>
+                <tr class="text-center">
+                    <th style="max-width: 50px;">Sr. No.</th>
+                    <th style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">@Html.DisplayNameFor(model => model.SellerName)</th>
                     <th>@Html.DisplayNameFor(model => model.ProductName)</th>
-                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th style="max-width: 50px;">@Html.DisplayNameFor(model => model.Quantity)</th>
                     <th>@Html.DisplayNameFor(model => model.OrderTime)</th>
                     <th>@Html.DisplayNameFor(model => model.IsApproved)</th>
                 </tr>
@@ -34,7 +34,7 @@
                 {
                     <tr>
                         <td>@SrNo</td>
-                        <td>@Html.DisplayFor(modelItem => item.SellerName)</td>
+                        <td class="text-truncate">@Html.DisplayFor(modelItem => item.SellerName)</td>
                         <td class="text-center">
                             <a title="View Product" class="text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                 @Html.DisplayFor(modelItem => item.ProductName)

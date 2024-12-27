@@ -4,11 +4,11 @@
     ViewData["Title"] = Model.Name;
 }
 
-<div class="container">
+<div class="bg-white p-4">
 
-    <div class="product-detail">
+    <div class="product-detail my-4 mx-4">
         @if (TempData["OrderPlaced"] != null)
-        { 
+        {
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     alert("Seller details sent to your mail successfully! Thank you.");
@@ -16,10 +16,14 @@
             </script>
         }
 
-        <div class="pdp-left-column">
+        <div class="pdp-left-column col-md-5">
             <!-- Main Image -->
-            <div class="main-image">
+            <div class="main-image d-flex justify-content-center">
                 <img src="@Model.Images.First(i => i.IsDefault).ImagePath" alt="Default Image" id="mainImage" />
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <hr style="width: 400px;" />
             </div>
 
             <!-- Thumbnails -->
@@ -39,7 +43,7 @@
 
         <div class="pdp-vertical-line"></div>
 
-        <div class="pdp-right-column">
+        <div class="pdp-right-column col">
             <div class="pdp-crucial-info">
                 <div>Seller: @Model.SellerName</div>
                 <div>Date Posted On: @Model.CreatedOn.ToString("dd/MM/yyyy")</div>
@@ -47,22 +51,22 @@
             <!-- Product Details -->
             <div class="product-info">
                 <h2 class="product-name">@Model.Name</h2>
-                <p class="product-price">₹ @Model.Price/-</p>
-                <p class="product-inventory">Available Inventory: <span class="product-inventory-value"> @Model.Inventory </span></p>
+                <p class="product-price my-4">₹ @Model.Price/-</p>
+                <p class="product-inventory">Available: <span class="product-inventory-value"> @Model.Inventory </span></p>
 
                 <!-- Quantity Selector -->
                 <div class="quantity-selector">
-                    <button type="button" class="btn btn-secondary" id="decreaseQuantity">-</button>
+                    <button type="button" class="btn d-flex justify-content-center" id="decreaseQuantity">-</button>
                     <input type="number" id="quantity" name="quantity" value="1" min="1" max="@Model.Inventory" oninput="validateQuantity(this)" />
-                    <button type="button" class="btn btn-secondary" id="increaseQuantity">+</button>
+                    <button type="button" class="btn d-flex justify-content-center" id="increaseQuantity">+</button>
                 </div>
 
-                <button type="button" class="btn btn-brand-color mt-3" id="confirmOrderButton" data-bs-toggle="modal" data-bs-target="#orderConfirmationModal">
-                    Order Now
+                <button type="button" class="btn btn-brand-color my-4" id="confirmOrderButton" data-bs-toggle="modal" data-bs-target="#orderConfirmationModal">
+                    Contact Now
                 </button>
 
-                <div class="description-collapse" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <p>Description</p>
+                <div class="description-collapse mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <h4>Description</h4>
                     <ion-icon name="caret-down-outline"></ion-icon>
                 </div>
                 <div class="" id="collapseExample">
@@ -74,12 +78,12 @@
 </div>
 
 <!-- Modal for Order Confirmation -->
-@* <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
+<div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="orderConfirmationModalLabel">Confirm Your Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <p><strong>Product Name:</strong> <span id="modalProductName">@Model.Name</span></p>
@@ -91,208 +95,174 @@
                 <form asp-action="PlaceOrder" method="post">
                     <input type="hidden" name="ProductId" value="@Model.ProductId" />
                     <input type="hidden" id="orderQuantity" name="OrderQuantity" value="1" />
-                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    <button type="submit" class="btn btn-primary">Get Seller Details</button>
                 </form>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
-    </div> *@
-    <!-- Modal for Order Confirmation -->
-    <div class="modal fade" id="orderConfirmationModal" tabindex="-1" aria-labelledby="orderConfirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orderConfirmationModalLabel">Confirm Your Order</h5>
-                    <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">X</button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Product Name:</strong> <span id="modalProductName">@Model.Name</span></p>
-                    <p><strong>Seller Name:</strong> <span id="modalSellerName">@Model.SellerName</span></p>
-                    <p><strong>Quantity:</strong> <span id="modalQuantity">1</span></p>
-                    <p><strong>Total Price:</strong> ₹<span id="modalTotalPrice">@Model.Price</span>/-</p>
-                </div>
-                <div class="modal-footer">
-                    <form asp-action="PlaceOrder" method="post">
-                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
-                        <input type="hidden" id="orderQuantity" name="OrderQuantity" value="1" />
-                        <button type="submit" class="btn btn-primary">Place Order</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const decreaseBtn = document.getElementById("decreaseQuantity");
-            const increaseBtn = document.getElementById("increaseQuantity");
-            const quantityInput = document.getElementById("quantity");
-            const orderQuantityInput = document.getElementById("orderQuantity");
-            const maxInventory = parseInt(quantityInput.max, 10);
-            const modalQuantity = document.getElementById("modalQuantity");
-            const modalTotalPrice = document.getElementById("modalTotalPrice");
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const decreaseBtn = document.getElementById("decreaseQuantity");
+        const increaseBtn = document.getElementById("increaseQuantity");
+        const quantityInput = document.getElementById("quantity");
+        const orderQuantityInput = document.getElementById("orderQuantity");
+        const maxInventory = parseInt(quantityInput.max, 10);
+        const modalQuantity = document.getElementById("modalQuantity");
+        const modalTotalPrice = document.getElementById("modalTotalPrice");
 
-            decreaseBtn.addEventListener("click", function () {
-                let currentValue = parseInt(quantityInput.value, 10);
-                if (currentValue > 1) {
-                    currentValue--;
-                    quantityInput.value = currentValue;
-                    orderQuantityInput.value = currentValue;
-                    modalQuantity.textContent = currentValue;
-                    modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
-                }
-            });
-
-            increaseBtn.addEventListener("click", function () {
-                let currentValue = parseInt(quantityInput.value, 10);
-                if (currentValue < maxInventory) {
-                    currentValue++;
-                    quantityInput.value = currentValue;
-                    orderQuantityInput.value = currentValue;
-                    modalQuantity.textContent = currentValue;
-                    modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
-                }
-            });
-
-            quantityInput.addEventListener("input", function () {
-                validateQuantity(quantityInput);
-                updateModalDetails(parseInt(quantityInput.value, 10));
-            });
-
-            // Update modal details on Order Now button click
-            const confirmOrderButton = document.getElementById("confirmOrderButton");
-            confirmOrderButton.addEventListener("click", function () {
-                modalQuantity.textContent = quantityInput.value;
-                modalTotalPrice.textContent = quantityInput.value * parseInt("@Model.Price", 10);
-                orderQuantityInput.value = quantityInput.value;
-            });
+        decreaseBtn.addEventListener("click", function () {
+            let currentValue = parseInt(quantityInput.value, 10);
+            if (currentValue > 1) {
+                currentValue--;
+                quantityInput.value = currentValue;
+                orderQuantityInput.value = currentValue;
+                modalQuantity.textContent = currentValue;
+                modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
+            }
         });
 
-        function changeMainImage(imagePath) {
-            document.getElementById('mainImage').src = imagePath;
-        }
-        function validateQuantity(input) {
-            const min = parseInt(input.min, 10);
-            const max = parseInt(input.max, 10);
-            let value = parseInt(input.value, 10);
-
-            // Remove non-numeric characters
-            if (isNaN(value)) {
-                input.value = min; // Default to min value
-                return;
+        increaseBtn.addEventListener("click", function () {
+            let currentValue = parseInt(quantityInput.value, 10);
+            if (currentValue < maxInventory) {
+                currentValue++;
+                quantityInput.value = currentValue;
+                orderQuantityInput.value = currentValue;
+                modalQuantity.textContent = currentValue;
+                modalTotalPrice.textContent = currentValue * parseInt("@Model.Price", 10);
             }
+        });
 
-            // Ensure the value stays within the range
-            if (value < min) {
-                input.value = min;
-            } else if (value > max) {
-                input.value = max;
-            }
+        quantityInput.addEventListener("input", function () {
+            validateQuantity(quantityInput);
+            updateModalDetails(parseInt(quantityInput.value, 10));
+        });
+
+        // Update modal details on Order Now button click
+        const confirmOrderButton = document.getElementById("confirmOrderButton");
+        confirmOrderButton.addEventListener("click", function () {
+            modalQuantity.textContent = quantityInput.value;
+            modalTotalPrice.textContent = quantityInput.value * parseInt("@Model.Price", 10);
+            orderQuantityInput.value = quantityInput.value;
+        });
+    });
+
+    function changeMainImage(imagePath) {
+        document.getElementById('mainImage').src = imagePath;
+    }
+    function validateQuantity(input) {
+        const min = parseInt(input.min, 10);
+        const max = parseInt(input.max, 10);
+        let value = parseInt(input.value, 10);
+
+        // Remove non-numeric characters
+        if (isNaN(value)) {
+            input.value = min; // Default to min value
+            return;
         }
 
-        let currentSlide = 0; // Track the current starting index
-        const thumbnailContainer = document.querySelector('.thumbnail-images');
-        const thumbnailCount = document.querySelectorAll('.thumbnail').length;
-        const maxVisibleThumbnails = 4;
-
-        function slideThumbnails(direction) {
-            const thumbnailWidth = 110; // 100px width + 10px gap
-            const maxSlide = thumbnailCount - maxVisibleThumbnails;
-
-            // Update current slide index
-            currentSlide += direction;
-
-            // Restrict sliding within bounds
-            if (currentSlide < 0) currentSlide = 0;
-            if (currentSlide > maxSlide) currentSlide = maxSlide;
-
-            // Apply the transform for sliding
-            const offset = -currentSlide * thumbnailWidth;
-            thumbnailContainer.style.transform = `translateX(${offset}px)`;
+        // Ensure the value stays within the range
+        if (value < min) {
+            input.value = min;
+        } else if (value > max) {
+            input.value = max;
         }
-    </script>
+    }
 
-    <style>
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
+    let currentSlide = 0; // Track the current starting index
+    const thumbnailContainer = document.querySelector('.thumbnail-images');
+    const thumbnailCount = document.querySelectorAll('.thumbnail').length;
+    const maxVisibleThumbnails = 4;
 
-            .quantity-selector input {
-                width: 60px;
-                text-align: center;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                padding: 5px;
-            }
+    function slideThumbnails(direction) {
+        const thumbnailWidth = 110; // 100px width + 10px gap
+        const maxSlide = thumbnailCount - maxVisibleThumbnails;
 
-            .quantity-selector button {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                text-align: center;
-            }
+        // Update current slide index
+        currentSlide += direction;
 
-        .thumbnail {
-            max-width: 100px;
-            margin: 5px;
-            cursor: pointer;
+        // Restrict sliding within bounds
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide > maxSlide) currentSlide = maxSlide;
+
+        // Apply the transform for sliding
+        const offset = -currentSlide * thumbnailWidth;
+        thumbnailContainer.style.transform = `translateX(${offset}px)`;
+    }
+</script>
+
+<style>
+    .quantity-selector {
+        display: flex;
+        gap: 10px;
+    }
+
+        .quantity-selector button {            
+            width: 20px;
+            height: auto;
+            font-size: 18px;
+            text-align: center;
         }
 
-        .main-image img {
-            max-width: 100%;
-            height: 400px;
-            /* height: auto; */
-        }
-
-        .thumbnail-slider-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-            position: relative;
-        }
-
-        /* Buttons for Slider */
-        .slider-btn {
-            background-color: #ccc;
+        .quantity-selector input {
+            text-align: center;
+            font-size: 12px;
             border: none;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 50%;
-            color: white;
-            background-color: #007bff;
+            border-radius: 4px;
+        }        
+
+    .thumbnail {
+        max-width: 100px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    .main-image img {
+        max-width: 100%;
+        height: 400px;
+    }
+
+    .thumbnail-slider-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    /* Buttons for Slider */
+    .slider-btn {
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 1px 10px;
+        border-radius: 50%;
+        color: black;
+    }
+
+        .slider-btn:hover {
+            background-color: #6BC04B;
+            color: #fff;
         }
 
-            .slider-btn:hover {
-                background-color: #0056b3;
-            }
+    /* Thumbnails Wrapper */
+    .thumbnail-images-wrapper {
+        width: 400px;
+        overflow: hidden;
+        position: relative;
+    }
 
-        /* Thumbnails Wrapper */
-        .thumbnail-images-wrapper {
-            width: 440px; /* 4 thumbnails * 110px (100px size + 10px gap) */
-            overflow: hidden;
-            position: relative;
-        }
+    .thumbnail-images {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        gap: 10px;
+    }
 
-        .thumbnail-images {
-            display: flex;
-            transition: transform 0.3s ease-in-out;
-            gap: 10px;
-        }
-
-        /* Thumbnail Images */
-        .thumbnail {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-    </style>
+    /* Thumbnail Images */
+    .thumbnail {
+        object-fit: cover;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+</style>
