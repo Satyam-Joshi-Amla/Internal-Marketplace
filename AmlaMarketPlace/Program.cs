@@ -36,6 +36,13 @@ builder.Services.AddScoped<IAdminAgent, AdminAgent>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProfileAgent, ProfileAgent>();
 
+// Addind session services to the container
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true;                // Prevent client-side access
+    options.Cookie.IsEssential = true;            // Required for non-EU cookie laws
+});
 
 // Adding cookie authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
@@ -73,6 +80,7 @@ app.UseRouting();
 // Added authentication and authorization middle ware
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 // For Detailed Error Page
 // app.UseDeveloperExceptionPage();
