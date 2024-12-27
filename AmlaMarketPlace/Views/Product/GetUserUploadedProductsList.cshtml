@@ -58,21 +58,6 @@
                             <th></th>
                         </tr>
                     </thead>
-                    @if (Model.Count() > 10) // Add footer if there are more than 10 rows
-                    {
-                        <tfoot>
-                            <tr>
-                                <th>Sr. No.</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Description</th>
-                                <th>Inventory</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    }
                     <tbody>
                         @foreach (var item in Model)
                         {
