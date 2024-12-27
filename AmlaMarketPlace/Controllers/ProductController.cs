@@ -25,10 +25,23 @@ namespace AmlaMarketPlace.Controllers
         #region Products Catalog
 
         [HttpGet]
-        public IActionResult ProductListing(int pageNumber = 1, int pageSize = 8)
+        public IActionResult ProductListing(string? actionType = null)
         {
             int userId = int.Parse(User.FindFirst("UserId")?.Value);
-            var paginatedResult = _productAgent.GetProducts(pageNumber, pageSize, userId);
+            int pageNumber = HttpContext.Session.GetInt32("PageNumber") ?? 1;
+
+            if (actionType == "Next")
+            {
+                pageNumber++;
+            }
+
+            else if (actionType == "Previous" && pageNumber > 1)
+            {
+                pageNumber--;
+            }
+            HttpContext.Session.SetInt32("PageNumber", pageNumber);
+
+            var paginatedResult = _productAgent.GetProducts(pageNumber, 8, userId);
 
             List<ProductListViewModel> products = paginatedResult.Products;
             int totalProducts = paginatedResult.TotalCount;
@@ -36,7 +49,7 @@ namespace AmlaMarketPlace.Controllers
             ViewData["Products"] = products;
             ViewData["TotalProducts"] = totalProducts;
             ViewData["CurrentPage"] = pageNumber;
-            ViewData["PageSize"] = pageSize;
+            ViewData["PageSize"] = 8;
 
             return View();
         }
