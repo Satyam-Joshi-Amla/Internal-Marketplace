@@ -3,6 +3,7 @@ using AmlaMarketPlace.DAL.Data;
 using AmlaMarketPlace.DAL.Service.IServices.IProduct;
 using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Product;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
@@ -145,8 +146,9 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 CommentForRejecting = product.StatusId == 3
             ? _context.ProductComments
                 .Where(comment => comment.ProductId == product.ProductId)
+                .OrderBy(comment => comment.Date)
                 .Select(comment => comment.RejectedComments)
-                .FirstOrDefault()
+                .LastOrDefault()
             : null
             }).ToList();
 
