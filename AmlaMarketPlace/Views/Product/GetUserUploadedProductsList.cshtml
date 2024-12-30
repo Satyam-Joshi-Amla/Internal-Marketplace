@@ -52,10 +52,10 @@
                             <th>Name</th>
                             <th>Price</th>
                             <th>Description</th>
-                            <th>Inventory</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                            <th></th>
+                            <th style="max-width: 50px">Inventory</th>
+                            <th style="max-width: 60px">Status</th>
+                            <th style="max-width: 50px">Actions</th>
+                            <th style="max-width: 60px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,7 +69,7 @@
                                     </a>
                                 </td>
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                                <td title="@item.Description" class="text-truncate">@Html.DisplayFor(modelItem => item.Description)</td>                                
+                                <td title="@item.Description" class="text-truncate">@Html.DisplayFor(modelItem => item.Description)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>
                                     @if (item.StatusValue == "Rejected")
