@@ -40,7 +40,10 @@ namespace AmlaMarketPlace.Controllers
                 pageNumber--;
             }
             HttpContext.Session.SetInt32("PageNumber", pageNumber);
-
+            if (!string.IsNullOrEmpty(actionType))
+            {
+                return RedirectToAction(nameof(ProductListing));
+            }
             var paginatedResult = _productAgent.GetProducts(pageNumber, 8, userId);
 
             List<ProductListViewModel> products = paginatedResult.Products;
