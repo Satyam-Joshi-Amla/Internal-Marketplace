@@ -59,7 +59,8 @@
                         <span class="" style="font-weight: bold;">Description</span>
 
                         <div class="mt-3">
-                            <p>@Model.Description</p>
+                            <!-- Use Html.Raw to render HTML content from the database -->
+                            <p>@Html.Raw(Model.Description)</p>
                         </div>
                     }
                 </div>

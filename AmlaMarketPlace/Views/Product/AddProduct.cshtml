@@ -45,13 +45,6 @@
                         <span asp-validation-for="Inventory" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -69,6 +62,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input id="tinyMCEEditor" asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
 
             <div class="add-and-close-button">
                 <input type="submit" value="Save and Close" class="btn btn-brand-color" name="action" />
@@ -83,7 +85,7 @@
 
         @* this button takes to previous page as recorded by browser *@
         @* <div class="">
-            <button class="btn btn-brand-color" onclick="history.back()">Back</button>
+        <button class="btn btn-brand-color" onclick="history.back()">Back</button>
         </div> *@
 
     </div>
