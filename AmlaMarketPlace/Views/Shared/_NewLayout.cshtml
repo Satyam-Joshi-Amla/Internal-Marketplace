@@ -69,11 +69,11 @@
 
                 <!-- Nav Item - Products Pages Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-bolt"></i>
                         <span>Products</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">View Products:</h6>
                             <a class="collapse-item" href="@Url.Action("AddProduct", "Product")">Add Product</a>
@@ -82,6 +82,7 @@
                         </div>
                     </div>
                 </li>
+
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
@@ -164,7 +165,7 @@
                                 <div class="input-group mt-3 mr-5">
                                     <input type="text" name="searchTerm" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" value="@ViewData["CurrentSearchTerm"]">
                                     <div class="input-group-append">
-                                        <button class="btn btn-brand-color" type="submit">
+                                        <button class="btn btn-light" type="submit">
                                             <i class="fas fa-search fa-sm"></i>
                                         </button>
                                     </div>
@@ -350,28 +351,11 @@
                 e.preventDefault();
                 $('#accordionSidebar').toggleClass('toggled');
             });
-
-            $('[title]').tooltip({
-                html: true
-            });
         });
-
-        function TruncateText(text, maxLength) {
-            if (text.length <= maxLength) {
-                return text;
-            }
-            return text.substr(0, maxLength) + '...';
-        }
 
         tinymce.init({
             selector: '#tinyMCEEditor',
-            plugins: [
-                // Core editing features
-                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                // Your account includes a free trial of TinyMCE premium features
-                // Try the most popular premium features until Jan 13, 2025:
-                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
-            ],
+            
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
