@@ -37,6 +37,22 @@ namespace AmlaMarketPlace.BAL.Agent.Agents.Product
         }
 
         /// <summary>
+        /// Searches for products based on a search term and retrieves a paginated list for a specific user.
+        /// Utilizes the _productService to filter products by the search term, userId, pageNumber, and pageSize.
+        /// </summary>
+        /// <param name="searchTerm">The term used to filter products.</param>
+        /// <param name="userId">The ID of the user whose products are being searched.</param>
+        /// <param name="pageNumber">The page number for pagination.</param>
+        /// <param name="pageSize">The number of products per page.</param>
+        /// <returns>
+        /// A PaginatedResultDto containing the filtered and paginated list of products for the specified user.
+        /// </returns>
+        public PaginatedResultDto SearchProducts(string searchTerm, int userId, int pageNumber, int pageSize)
+        {
+            return _productService.SearchProducts(searchTerm, userId, pageNumber, pageSize);
+        }
+
+        /// <summary>
         /// Retrieves a list of products uploaded by a specific user. It calls _productService to fetch the products based on the userID.
         /// </summary>
         /// <param name="userID">The ID of the user whose uploaded products are to be fetched.</param>

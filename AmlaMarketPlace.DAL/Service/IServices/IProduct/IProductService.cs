@@ -6,6 +6,7 @@ namespace AmlaMarketPlace.DAL.Service.IServices.IProduct
     public interface IProductService
     {
         PaginatedResultDto GetProducts(int userId, int pageNumber = 1, int pageSize = 20);
+        PaginatedResultDto SearchProducts(string searchTerm, int userId, int pageNumber = 1, int pageSize = 20);
         string GetStatusValueByStatusId(int statusID);
         List<ProductDTO> GetUserUploadedProducts(int userID);
         ProductDetailsViewModel GetProductDetails(int productId);
