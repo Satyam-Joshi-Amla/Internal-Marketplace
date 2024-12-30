@@ -96,6 +96,7 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                         }
                     }
                 }
+                connection.Close();
             }
 
             return new PaginatedResultDto
