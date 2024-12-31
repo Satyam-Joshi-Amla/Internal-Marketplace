@@ -10,12 +10,12 @@
 <div class="sub-layout-div">
     <div class="container">
         <div class="div-plp-heading">
-            <h4>Product Listing</h4>
+            <h4></h4>
         </div>
         <div class="row">
             @foreach (var item in products)
             {
-                <div class="col-md-3 mb-4">
+                <div class="col-md-2 mb-4">
                     <a class="product-item-anchor" asp-action="ProductDetails" asp-route-id="@item.ProductId">
                         <div class="card h-100">
                             <img src="@item.ImageLink" class="card-img-top" alt="@item.Name">

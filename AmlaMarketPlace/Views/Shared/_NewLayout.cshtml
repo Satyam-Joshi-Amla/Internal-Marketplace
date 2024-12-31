@@ -45,8 +45,8 @@
 
                 <!-- Sidebar Toggler (Sidebar) -->
                 @* <div class="d-flex justify-content-center mt-3">
-                    <button class="rounded-circle border-0 btn-sm" id="sidebarToggle"></button>
-                </div> *@
+            <button class="rounded-circle border-0 btn-sm" id="sidebarToggle"></button>
+            </div> *@
 
                 <!-- Divider -->
                 @* <hr class="sidebar-divider d-none d-md-block"> *@
@@ -69,11 +69,11 @@
 
                 <!-- Nav Item - Products Pages Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-bolt"></i>
                         <span>Products</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">View Products:</h6>
                             <a class="collapse-item" href="@Url.Action("AddProduct", "Product")">Add Product</a>
@@ -83,36 +83,37 @@
                     </div>
                 </li>
 
+
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 @* <!-- Heading -->
-                <div class="sidebar-heading">
-                    Profile
-                </div> *@
+            <div class="sidebar-heading">
+            Profile
+            </div> *@
 
                 <!-- Nav Item - Users Pages Collapse Menu -->
                 @* <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-user"></i>
-                        <span>@User.Identity.Name</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-bs-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Utilities:</h6>
-                            <a class="collapse-item" href="@Url.Action("Details", "Profile")">Profile</a>
-                            <a class="collapse-item" href="@Url.Action("OrderHistory", "Product")">Your Orders</a>
-                            <a class="collapse-item" href="@Url.Action("ResetPassword", "Account")">Reset Password</a>
-                        </div>
-                    </div>
-                </li> *@
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-user"></i>
+            <span>@User.Identity.Name</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-bs-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Custom Utilities:</h6>
+            <a class="collapse-item" href="@Url.Action("Details", "Profile")">Profile</a>
+            <a class="collapse-item" href="@Url.Action("OrderHistory", "Product")">Your Orders</a>
+            <a class="collapse-item" href="@Url.Action("ResetPassword", "Account")">Reset Password</a>
+            </div>
+            </div>
+            </li> *@
 
                 @* <li class="nav-item">
-                    <a class="nav-link collapsed" asp-controller="Product" asp-action="GetMyRequests">
-                        <i class="fas fa-fw fa-user"></i>
-                        <span>Your Orders</span>
-                    </a>
-                </li> *@
+            <a class="nav-link collapsed" asp-controller="Product" asp-action="GetMyRequests">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Your Orders</span>
+            </a>
+            </li> *@
 
             </ul>
         }
@@ -140,14 +141,12 @@
                                     <img class="img-fluid brand-logo" src="~/images/layoutimages/amla_marketplace.png" alt="Amla Marketplace Logo" />
                                 </a>
                             }
-                        </div>                        
+                        </div>
                     }
-
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <!-- Code Removed - Please refer to Admin layout for this part of code -->
-                    <!-- Topbar Search -->
-                    <!-- Code Removed - Please refer to Admin layout for this part of code -->
+                    
                     <!-- Welcome Message  -->
                     @* @if (User.Identity.IsAuthenticated)
                     {
@@ -161,6 +160,19 @@
                         <!-- Nav Item - User Information -->
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <!-- Top-bar Search Form -->
+                            <form asp-action="SearchProduct" asp-controller="Product" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-md-0 mw-100 navbar-search">
+                                <div class="input-group mt-3 mr-5">
+                                    <input type="text" name="searchTerm" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" value="@ViewData["CurrentSearchTerm"]">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-light" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+
                             <li class="nav-item">
                                 <a title="Go to all product page" class="nav-link" asp-area="" asp-controller="Product" asp-action="ProductListing">Products</a>
                             </li>
@@ -172,8 +184,6 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline">@User.Identity.Name</span>
                                     <i class="fas fa-user fa-lg mr-2 text-gray-400"></i>
-                                    @*  <img class="img-profile rounded-circle"
-                                src="img/undraw_profile.svg"> *@
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -305,7 +315,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <!-- Site.js -->
     <script src="~/js/site.js"></script>
@@ -345,13 +355,7 @@
 
         tinymce.init({
             selector: '#tinyMCEEditor',
-            plugins: [
-                // Core editing features
-                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                // Your account includes a free trial of TinyMCE premium features
-                // Try the most popular premium features until Jan 13, 2025:
-                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
-            ],
+            
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
@@ -361,6 +365,8 @@
             ],
             ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
         });
+
+
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

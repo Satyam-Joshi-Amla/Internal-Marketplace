@@ -57,6 +57,37 @@ namespace AmlaMarketPlace.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult SearchProduct(string searchTerm, string? actionType = null)
+        {
+            int userId = int.Parse(User.FindFirst("UserId")?.Value);
+            int pageNumber = HttpContext.Session.GetInt32("PageNumber") ?? 1;
+
+            if (actionType == "Next")
+            {
+                pageNumber++;
+            }
+            else if (actionType == "Previous" && pageNumber > 1)
+            {
+                pageNumber--;
+            }
+            HttpContext.Session.SetInt32("PageNumber", pageNumber);
+
+            var paginatedResult = _productAgent.SearchProducts(searchTerm, userId, pageNumber, 8);
+
+            List<ProductListViewModel> products = paginatedResult.Products;
+            int totalProducts = paginatedResult.TotalCount;
+
+            ViewData["Products"] = products;
+            ViewData["TotalProducts"] = totalProducts;
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["PageSize"] = 8;
+            ViewData["CurrentSearchTerm"] = searchTerm; // Store the current search term
+
+            // Return the ProductListing view to display the search results
+            return View("ProductListing");
+        }
+
         #endregion
 
         #region Product Add, Edit & View
