@@ -51,7 +51,7 @@
                             <th style="max-width:20px;">Sr. No.</th>
                             <th>Name</th>
                             <th>Price</th>
-                            <th>Description</th>
+                            @* <th>Description</th> *@
                             <th style="max-width: 50px">Inventory</th>
                             <th style="max-width: 60px">Status</th>
                             <th style="max-width: 50px">Actions</th>
@@ -64,12 +64,15 @@
                             <tr>
                                 <td>@SrNo</td>
                                 <td>
-                                    <a title="View Product" class="nav-link text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <a title="View Product" class="nav-link text-truncate" asp-route-id="@item.ProductId" asp-controller="Product" asp-action="ProductDetails" style="max-width: 200px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </a>
                                 </td>
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                                <td title="@item.Description" class="text-truncate">@Html.DisplayFor(modelItem => item.Description)</td>
+                                @* <td title="@item.Description" class="text-truncate">
+                                    @Html.Raw(item.Description)
+                                </td> *@
+
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>
                                     @if (item.StatusValue == "Rejected")

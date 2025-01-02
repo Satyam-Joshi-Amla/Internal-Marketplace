@@ -40,7 +40,7 @@
                             <th>Sr. No.</th>
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
                             <th>@Html.DisplayNameFor(model => model.Price)</th>
-                            <th>@Html.DisplayNameFor(model => model.Description)</th>
+                            @* <th>@Html.DisplayNameFor(model => model.Description)</th> *@
                             <th>@Html.DisplayNameFor(model => model.Inventory)</th>
                             <th>Actions</th>
                         </tr>
@@ -51,12 +51,12 @@
                             <tr>
                                 <td>@SrNo</td>
                                 <td>
-                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 150px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    <a title="View Product" class="nav-link text-truncate" asp-area="" asp-route-id="@item.ProductId" asp-controller="Admin" asp-action="ProductDetails" style="max-width: 400px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </a>
                                 </td>
                                 <td>₹ @Html.DisplayFor(modelItem => item.Price)</td>
-                                <td class="text-truncate" style="max-width: 150px;">@Html.DisplayFor(modelItem => item.Description)</td>
+                                @* <td class="text-truncate" style="max-width: 150px;">@Html.DisplayFor(modelItem => item.Description)</td> *@
                                 <td>@Html.DisplayFor(modelItem => item.Inventory)</td>
                                 <td>
                                     @if (item.StatusValue == "Approved")

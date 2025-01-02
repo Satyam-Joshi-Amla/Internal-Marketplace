@@ -5,6 +5,8 @@ using AmlaMarketPlace.Models.DTO;
 using AmlaMarketPlace.Models.ViewModels.Product;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace AmlaMarketPlace.DAL.Service.Services.Product
 {
@@ -105,6 +107,88 @@ namespace AmlaMarketPlace.DAL.Service.Services.Product
                 TotalCount = totalCount // Total product count
             };
         }
+
+        /// <summary>
+        /// Retrieves a paginated list of products matching the search criteria for a specific user, excluding their own products.
+        /// This method leverages a stored procedure to efficiently fetch product details and total count based on search terms.
+        /// </summary>
+        /// <param name="searchTerm">The term to search in product name or description.</param>
+        /// <param name="userId">The ID of the user making the request, used to exclude their own products from the results.</param>
+        /// <param name="pageNumber">The page number for pagination. Defaults to 1 if not specified.</param>
+        /// <param name="pageSize">The number of products to include per page. Defaults to 20 if not specified.</param>
+        /// <returns>A `PaginatedResultDto` containing the list of products matching the search term, page details, and total product count.</returns>
+        public PaginatedResultDto SearchProducts(string searchTerm, int userId, int pageNumber = 1, int pageSize = 20)
+        {
+            var result = new List<ProductListViewModel>();
+            int totalCount = 0; // This will store the total product count
+
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                connection.Open(); // Open the database connection
+
+                using (var command = connection.CreateCommand())
+                {
+                    // Call the stored procedure for searching products
+                    command.CommandText = "EXEC SearchProductsWithDynamicFilter @SearchTerm, @PageNumber, @PageSize, @UserId"; // Name of your SP
+                    command.CommandType = System.Data.CommandType.Text;
+
+                    // Add the parameters for search and pagination
+                    var searchTermParam = command.CreateParameter();
+                    searchTermParam.ParameterName = "@SearchTerm";
+                    searchTermParam.Value = searchTerm ?? string.Empty;
+                    command.Parameters.Add(searchTermParam);
+
+                    var pageNumberParam = command.CreateParameter();
+                    pageNumberParam.ParameterName = "@PageNumber";
+                    pageNumberParam.Value = pageNumber;
+                    command.Parameters.Add(pageNumberParam);
+
+                    var pageSizeParam = command.CreateParameter();
+                    pageSizeParam.ParameterName = "@PageSize";
+                    pageSizeParam.Value = pageSize;
+                    command.Parameters.Add(pageSizeParam);
+
+                    var userIdParam = command.CreateParameter();
+                    userIdParam.ParameterName = "@UserId";
+                    userIdParam.Value = userId;
+                    command.Parameters.Add(userIdParam);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        // Read the products for the current page based on the search
+                        while (reader.Read())
+                        {
+                            result.Add(new ProductListViewModel
+                            {
+                                ProductId = reader.GetInt32(0),       // Index 0: ProductId
+                                Name = reader.GetString(1),           // Index 1: ProductName
+                                Price = (float)reader.GetDecimal(2),  // Index 2: Price
+                                Description = reader.GetString(3),    // Index 3: Description
+                                CreatedOn = reader.GetDateTime(4),
+                                ModifiedOn = reader.GetDateTime(5),
+                                Inventory = reader.GetInt32(6),
+                                StatusId = reader.GetInt32(7),
+                                IsPublished = reader.GetBoolean(8),
+                                ImageLink = reader.GetString(9)
+                            });
+                        }
+
+                        // Assuming the stored procedure returns the total product count as the last column in the result set
+                        if (reader.NextResult() && reader.Read())
+                        {
+                            totalCount = reader.GetInt32(0); // The total count of matching products
+                        }
+                    }
+                }
+            }
+
+            return new PaginatedResultDto
+            {
+                Products = result, // List of products for the current page
+                TotalCount = totalCount // Total product count
+            };
+        }
+
 
         /// <summary>
         /// Retrieves the descriptive status value associated with a given status ID.
