@@ -44,7 +44,7 @@ namespace AmlaMarketPlace.Controllers
             {
                 return RedirectToAction(nameof(ProductListing));
             }
-            var paginatedResult = _productAgent.GetProducts(pageNumber, 8, userId);
+            var paginatedResult = _productAgent.GetProducts(pageNumber, 12, userId);
 
             List<ProductListViewModel> products = paginatedResult.Products;
             int totalProducts = paginatedResult.TotalCount;
@@ -52,7 +52,7 @@ namespace AmlaMarketPlace.Controllers
             ViewData["Products"] = products;
             ViewData["TotalProducts"] = totalProducts;
             ViewData["CurrentPage"] = pageNumber;
-            ViewData["PageSize"] = 8;
+            ViewData["PageSize"] = 12;
 
             return View();
         }
