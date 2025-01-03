@@ -5,18 +5,16 @@
 }
 
 <div class="container">
-
     <h1 class="mt-4">Profile Details</h1>
-
     <hr />
     <div class="row">
         <div class="col-md-6">
-            <form asp-action="Edit">
+            <form id="profileForm" asp-action="Edit" onsubmit="return validateForm()">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <!-- Code To send Input data Do Not Remove -->
-                <input asp-for="UserId" class="form-control" hidden/>
-                <input asp-for="IsEmailVerified" class="form-control" hidden/>
+                <input asp-for="UserId" class="form-control" hidden />
+                <input asp-for="IsEmailVerified" class="form-control" hidden />
                 <!-- Code To send Input data Do Not Remove -->
 
                 <div class="row">
@@ -41,24 +39,39 @@
 
                     <div class="form-group mx-2">
                         <label asp-for="MobileNumber" class="control-label"></label>
-                        <input asp-for="MobileNumber" class="form-control" />
-                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                        <input asp-for="MobileNumber" class="form-control" id="MobileNumber" name="MobileNumber" />
+                        <span id="mobileError" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group mx-2">
-                        <input type="submit" asp-action="Edit" asp-controller="Profile" value="Update" class="btn btn-primary" />
+                        <input type="submit" value="Update" class="btn btn-primary" />
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
-
-
 </div>
 
 <script>
+    function validateForm() {
+        const mobileInput = document.getElementById("MobileNumber");
+        const errorSpan = document.getElementById("mobileError");
 
+        // Clear previous error
+        errorSpan.textContent = "";
+
+        // Validation rule: Mobile number must be 10 digits if provided
+        const mobileRegex = /^\d{10}$/;
+
+        // If a value is entered, validate it
+        if (mobileInput.value && !mobileRegex.test(mobileInput.value)) {
+            errorSpan.textContent = "Mobile number must be exactly 10 digits.";
+            return false; // Prevent form submission
+        }
+
+        // If no issues, allow submission
+        return true;
+    }
 </script>

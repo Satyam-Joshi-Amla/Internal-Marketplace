@@ -25,7 +25,7 @@ namespace AmlaMarketPlace.Controllers
         {
             int id = int.Parse(User.FindFirst("UserId")?.Value);
             ProfileDetailsViewModel user = _profileAgent.GetUser(id);
-            ViewData["EnableUserSidePanel"] = true;
+            ViewData["EnableUserSidePanel"] = false;
             return View(user);
         }
 
@@ -33,7 +33,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult Edit(int id)
         {
             ProfileDetailsViewModel user = _profileAgent.GetUser(id);
-            ViewData["EnableUserSidePanel"] = true;
+            ViewData["EnableUserSidePanel"] = false;
             return View(user);
         }
 
