@@ -145,7 +145,7 @@ namespace AmlaMarketPlace.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["EnableUserSidePanel"] = true;
+                ViewData["EnableUserSidePanel"] = false;
             }
 
             return View(resetPasswordViewModel);

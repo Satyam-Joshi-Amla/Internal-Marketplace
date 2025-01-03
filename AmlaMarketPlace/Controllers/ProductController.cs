@@ -272,7 +272,7 @@ namespace AmlaMarketPlace.Controllers
         public IActionResult GetMyRequests()
         {
             int userId = int.Parse(User.FindFirst("UserId")?.Value);
-            ViewData["EnableUserSidePanel"] = true;
+            ViewData["EnableUserSidePanel"] = false;
             List<MyOrdersDto> MyRequests = _productAgent.GetMyRequests(userId);
             return View(MyRequests);
         }

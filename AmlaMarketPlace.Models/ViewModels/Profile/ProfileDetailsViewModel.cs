@@ -7,9 +7,11 @@ namespace AmlaMarketPlace.Models.ViewModels.Profile
     {
         public int UserId { get; set; }
 
+        [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
+        [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -23,8 +25,7 @@ namespace AmlaMarketPlace.Models.ViewModels.Profile
         public bool IsEmailVerified { get; set; }
 
         [Display(Name = "Mobile Number")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone number must be exactly 10 digits.")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Mobile number must be a 10 digit number.")]
-        public string MobileNumber { get; set; }
+        [RegularExpression(@"^(\d{10})?$", ErrorMessage = "Mobile number must be exactly 10 digits.")]
+        public string? MobileNumber { get; set; }
     }
 }
