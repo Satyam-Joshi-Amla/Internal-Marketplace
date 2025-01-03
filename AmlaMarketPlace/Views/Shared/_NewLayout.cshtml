@@ -161,7 +161,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <!-- Top-bar Search Form -->
-                            <form asp-action="SearchProduct" asp-controller="Product" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-md-0 mw-100 navbar-search">
+                            @* <form asp-action="SearchProduct" asp-controller="Product" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-md-0 mw-100 navbar-search">
                                 <div class="input-group mt-3 mr-5">
                                     <input type="text" name="searchTerm" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" value="@ViewData["CurrentSearchTerm"]">
                                     <div class="input-group-append">
@@ -170,7 +170,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form> *@
 
 
                             <li class="nav-item">
@@ -277,7 +277,7 @@
 
                     <div class="row footer-second-row">
                         <span class="copyright-footer-text">
-                            &copy; 2024 - Amla Marketplace -
+                            &copy; 2025 - Amla Marketplace -
                             <a class="privacy-link" asp-area="" asp-controller="Home" asp-action="Privacy">
                                 Privacy
                             </a>
